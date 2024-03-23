@@ -11,7 +11,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/cmp-cmdline'
   Plug 'hrsh7th/nvim-cmp'
-  Plug 'rafamadriz/friendly-snippets'
+  " Plug 'rafamadriz/friendly-snippets'
     "----- luasnip
   Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
@@ -35,7 +35,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'majutsushi/tagbar'
     " ----- vimux
   Plug 'preservim/vimux'
-  Plug '~/.vim/autoload/vimux_plus.vim'
     " ----- autopair brackets
   Plug 'windwp/nvim-autopairs'
     " ----- looks
@@ -46,6 +45,7 @@ call plug#begin('~/.vim/plugged')
     " ----- vim obsession
   Plug 'tpope/vim-obsession'
 call plug#end()
+source ~/.vim/autoload/vimux_plus.vim
 
 " ----- Basic settings
 set colorcolumn=81
@@ -60,7 +60,6 @@ set smartindent
 set smartcase
 set cindent
 set laststatus=0            "0 = hide 2 = always
-set title
 set showmatch
 set hlsearch
 set backspace=eol,start,indent
@@ -76,13 +75,15 @@ set list
 set listchars=eol:↴
 set signcolumn=number
 set encoding=utf-8
-set fileencodings=utf-8,cp949
+set fileencodings=utf-8-sig,cp949
 set breakindent
 let &t_Cs="\e[4:3m"
 let &t_Ce="\e[4:0m"
 " set termguicolors 
 let g:tex_flavor = "latex"
 " set textwidth=80
+set title
+set titlestring=nvim\ -\ %{pathshorten(expand('%p'))}
 
 " ----- line number auto toggle
 :augroup numbertoggle
@@ -90,14 +91,6 @@ let g:tex_flavor = "latex"
 :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 :augroup END
-
-" ----- keep cursor line vertically centered
-autocmd CursorMoved,CursorMovedI * call Center_cursor()
-function! Center_cursor()
-    let pos = getpos(".")
-    normal! zz
-    call setpos(".", pos)
-endfunction
 
 " ----- Copy to and Paste from clipboard
 vnoremap  <leader>y  "+y
@@ -150,8 +143,8 @@ autocmd BufReadPost * silent!
 " cabbrev obs Obsess ~/.vim/session/
 " cabbrev obd Obsess!
 let g:session_dir = '~/.vim/session'
-exec 'nnoremap <Leader>ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
-exec 'nnoremap <Leader>sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap ,ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 
 " ----- Vimux seting 
 " -- C
@@ -160,8 +153,8 @@ exec 'nnoremap <Leader>sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
 
 " -- Tex
-autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -pdflatex -pv " . bufname('%'))<CR>
-autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c " . bufname('%'))<CR>
+autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -p -quiet " . expand('%:p'))<CR>
+autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c " . expand('%:p'))<CR>
 
 " -- Rmd
 " autocmd FileType Rmd,rmd nnoremap <C-T> :call system("Rscript -e \"rmarkdown::render(\'" . bufname('%') . "\')\" \&& open -g -a skim " . expand('%:t:r') . ".pdf")<CR>
@@ -254,6 +247,20 @@ require'nvim-treesitter.configs'.setup {
 }
 
 ----- nvim-cmp settings
+-- import nvim-cmp plugin safely
+local cmp_status, cmp = pcall(require, "cmp")
+if not cmp_status then
+  return
+end
+
+-- import luasnip plugin safely
+local luasnip_status, luasnip = pcall(require, "luasnip")
+if not luasnip_status then
+  return
+end
+-- local luasnip = require("luasnip")
+-- local cmp = require'cmp'
+
 -- Load vs-code style snippets
 require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.vim/custom_snips"}
@@ -264,8 +271,6 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-local luasnip = require("luasnip")
-local cmp = require'cmp'
 luasnip.filetype_extend("rmarkdown", { "markdown" }) -- treat rmarkdown as markdown
 cmp.setup({
   snippet = {
@@ -288,24 +293,30 @@ cmp.setup({
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ["<Tab>"] = cmp.mapping(function(fallback)
-      -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
-      -- that way you will only jump inside the snippet region
-      if luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif cmp.visible() then
+      if luasnip.locally_jumpable(1) then
+        luasnip.jump(1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<C-j>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
         cmp.select_next_item()
-      -- elseif has_words_before() then
-      --   cmp.complete()
       else
         fallback()
       end
     end, { "i", "s" }),
 
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    ["<C-k>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
       else
         fallback()
       end
@@ -392,47 +403,37 @@ lsp.texlab.setup{
 }
 
 ----- autopairs settings
-local remap = vim.api.nvim_set_keymap
-local npairs = require('nvim-autopairs')
-
-npairs.setup({
-    map_bs = false, 
-    map_cr = false,
-    enable_check_bracket_line = false
-    })
-
-vim.g.coq_settings = { keymap = { recommended = false } }
-
--- these mappings are coq recommended mappings unrelated to nvim-autopairs
-remap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
-remap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true, noremap = true })
-remap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true, noremap = true })
-remap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true, noremap = true })
-
--- skip it, if you use another global object
-_G.MUtils= {}
-
-MUtils.CR = function()
-  if vim.fn.pumvisible() ~= 0 then
-    if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
-      return npairs.esc('<c-y>')
-    else
-      return npairs.esc('<c-e>') .. npairs.autopairs_cr()
-    end
-  else
-    return npairs.autopairs_cr()
-  end
+-- Import nvim-autopairs safely
+local autopairs_setup, autopairs = pcall(require, "nvim-autopairs")
+if not autopairs_setup then
+  return
 end
-remap('i', '<cr>', 'v:lua.MUtils.CR()', { expr = true, noremap = true })
 
-MUtils.BS = function()
-  if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
-    return npairs.esc('<c-e>') .. npairs.autopairs_bs()
-  else
-    return npairs.autopairs_bs()
-  end
+-- Configure autopairs
+autopairs.setup({
+  check_ts = true, -- Enable treesitter
+  ts_config = {
+    lua = { "string", "source" }, -- Don't add pairs in lua string treesitter nodes
+    javascript = { "template_string" }, -- Don't add pairs in JavaScript template_string treesitter nodes
+    java = false, -- Don't check treesitter on Java
+  },
+})
+-- Import nvim-autopairs completion functionality safely
+local cmp_autopairs_setup, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
+if not cmp_autopairs_setup then
+  return
 end
-remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
+
+-- Import nvim-cmp plugin safely (completions plugin)
+local cmp_setup, cmp = pcall(require, "cmp")
+if not cmp_setup then
+  return
+end
+-- do not work for backticks
+autopairs.remove_rule('`')
+autopairs.remove_rule('```')
+-- Make autopairs and completion work together
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 ----- diagnostics 
 -- hover line diagnostic
