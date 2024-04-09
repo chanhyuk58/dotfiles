@@ -11,7 +11,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/cmp-cmdline'
   Plug 'hrsh7th/nvim-cmp'
-  " Plug 'rafamadriz/friendly-snippets'
     "----- luasnip
   Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
@@ -40,7 +39,7 @@ call plug#begin('~/.vim/plugged')
     " ----- looks
   " Plug 'vim-airline/vim-airline'
   " Plug 'vim-airline/vim-airline-themes'
-  Plug 'ryanoasis/vim-devicons'
+  " Plug 'ryanoasis/vim-devicons'
   " Plug 'rmehri01/onenord.nvim', { 'branch': 'main' }
     " ----- vim obsession
   Plug 'tpope/vim-obsession'
@@ -146,7 +145,7 @@ let g:session_dir = '~/.vim/session'
 exec 'nnoremap ,ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
 exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 
-" ----- Vimux seting 
+" ----- Vimux seting
 " -- C
 " autocmd FileType c nmap <buffer><silent> <C-T> :!clang % -o %:t:r && ./%:t:r <CR>
 
@@ -157,8 +156,8 @@ autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualate
 autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c " . expand('%:p'))<CR>
 
 " -- Rmd
-" autocmd FileType Rmd,rmd nnoremap <C-T> :call system("Rscript -e \"rmarkdown::render(\'" . bufname('%') . "\')\" \&& open -g -a skim " . expand('%:t:r') . ".pdf")<CR>
-autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . bufname('%') . "\')")<CR><CR>
+" autocmd FileType Rmd,rmd nnoremap <C-T> :call system("Rscript -e \"rmarkdown::render(\'" . expand('%:p') . "\')\" \&& open -g -a skim " . expand('%:t:r') . ".pdf")<CR>
+autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
 
 " -- Python and R interpreter
 autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
@@ -167,10 +166,8 @@ autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
 " autocmd FileType python noremap <silent> <C-n> :call RunTmuxPythonCell(0)<CR>
 " autocmd FileType python noremap <C-a> :call RunTmuxPythonAllCellsAbove()<CR>
 
-" ----- NERDTree and Tagbar toggle 
-nmap <F9> :NERDTreeToggle<CR> 
+" ----- Tagbar toggle 
 nmap <F8> :TagbarToggle<CR> 
-" autocmd FileType python,tex,r,c TagbarOpen
 let g:tagbar_left=1
 
 " ----- XkbSwitch Settings
@@ -185,7 +182,7 @@ nnoremap <leader>e <esc>:let @/=""<CR>
   " --- nabla
 nnoremap ,s :lua require("nabla").popup()<CR>
   " --- telescope
-nnoremap ,ls :Telescope buffers<CR>
+nnoremap ,bb :Telescope buffers<CR>
 nnoremap ,ff :Telescope find_files<CR>
 nnoremap ,bib :Telescope bibtex<CR>
   " --- luasnips
@@ -207,6 +204,7 @@ require("ibl").setup()
 dofile("/Users/chanhyuk/.vim/plugged/new_note.lua")
 
 ----- tree-sitter settings
+vim.treesitter.language.register('markdown', 'rmd')
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {"c", "lua", "latex", "python", "vim", "r"},
     
@@ -219,12 +217,11 @@ require'nvim-treesitter.configs'.setup {
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
-
     -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
     -- the name of the parser)
     -- list of language that will be disabled
-    disable = { "markdown" },
+    -- disable = { "markdown" },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
@@ -233,45 +230,49 @@ require'nvim-treesitter.configs'.setup {
             return true
         end
     end,
-
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
-  
   indent = {
       enable = true
   }
 }
 
------ nvim-cmp settings
+----- luasnip settings
+-- import luasnip plugin safely
+local luasnip_status, luasnip = pcall(require, "luasnip")
+if not luasnip_status then
+  return
+end
+
+-- Load vs-code style snippets
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.vim/custom_snips/vs_snippets"})
+require("luasnip.loaders.from_lua").lazy_load({paths = "~/.vim/custom_snips/lua_snippets"})
+
+-- LuaSnip settings
+require("luasnip").setup({
+    -- Enable autotriggered snippets
+    enable_autosnippets = true,
+    -- use Tab key to trigger visual store_selection_keys
+    store_selection_keys = "<Tab>"
+})
+
+-- luasnip filetype extend
+luasnip.filetype_extend("rmd", { "math" }) -- treat R markdown as markdown
+luasnip.filetype_extend("markdown", { "math" }) -- treat R markdown as markdown
+luasnip.filetype_extend("tex", { "math" }) -- treat R markdown as markdown
+
+----- nvim-cmp setings
 -- import nvim-cmp plugin safely
 local cmp_status, cmp = pcall(require, "cmp")
 if not cmp_status then
   return
 end
 
--- import luasnip plugin safely
-local luasnip_status, luasnip = pcall(require, "luasnip")
-if not luasnip_status then
-  return
-end
--- local luasnip = require("luasnip")
--- local cmp = require'cmp'
-
--- Load vs-code style snippets
-require("luasnip.loaders.from_vscode").lazy_load()
-require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.vim/custom_snips"}
-)
-local has_words_before = function()
-  unpack = unpack or table.unpack
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
-luasnip.filetype_extend("rmarkdown", { "markdown" }) -- treat rmarkdown as markdown
 cmp.setup({
   snippet = {
     -- REQUIRED - you must specify a snippet engine
@@ -289,44 +290,45 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ["<CR>"] = cmp.mapping({
+       i = function(fallback)
+         if cmp.visible() and cmp.get_active_entry() then
+           cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+         else
+           fallback()
+         end
+       end,
+       s = cmp.mapping.confirm({ select = true }),
+       c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+     }),
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if luasnip.locally_jumpable(1) then
+      if cmp.visible() then
+        if #cmp.get_entries() == 1 then
+          cmp.confirm({ select = true })
+        else
+          cmp.select_next_item()
+        end
+      elseif luasnip.locally_jumpable(1) then
         luasnip.jump(1)
+      elseif require("luasnip.extras.expand_conditions").line_begin then
+        fallback()
       else
         fallback()
       end
     end, { "i", "s" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if luasnip.locally_jumpable(-1) then
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.locally_jumpable(-1) then
         luasnip.jump(-1)
       else
         fallback()
       end
     end, { "i", "s" }),
-    ["<C-j>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-
-    ["<C-k>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),-- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   }),
   sources = cmp.config.sources({
-    -- { name = 'vsnip' }, -- For vsnip users.
     { name = 'luasnip' }, -- For luasnip users.
-    -- { name = 'ultisnips' }, -- For ultisnips users.
-    -- { name = 'snippy' }, -- For snippy users.
   },{
     { name = 'path' },
   },{
@@ -366,16 +368,14 @@ cmp.setup.cmdline(':', {
 -- Set up lspconfig.
 local lsp = require "lspconfig"
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-lsp.marksman.setup{capabilities = capabilities}
 lsp.ltex.setup{capabilities = capabilities}
 lsp.pyright.setup{capabilities = capabilities}
 lsp.ccls.setup{capabilities = capabilities}
 lsp.r_language_server.setup{capabilities = capabilities}
 lsp.texlab.setup{
-    enabled = {"rmd", "tex", "bibtex"},
+    enabled = {"tex", "bibtex"},
     require('cmp_nvim_lsp').default_capabilities{
-        filetypes = {"tex", "bib", "markdown", "rmd", "Rmd"},
-        settings = {
+        filetypes = {"tex", "bib",},
             texlab = {
                 build = {
                     executable = "latexmk",
@@ -387,18 +387,12 @@ lsp.texlab.setup{
                     onOpenAndSave = true
                 },
                 forwardSearch = {
-                    executable = "sioyek",
+                    executable = "open",
                     args = {
-                        '--reuse-window',
-                        '--execute-command', 'toggle_synctex', -- Open Sioyek in synctex mode.
-                        '--inverse-search',
-                        [[nvim-texlabconfig -file %%%1 -line %%%2 -server ]] .. vim.v.servername,
-                        '--forward-search-file', '%f',
-                        '--forward-search-line', '%l', '%p'
+                        "-g", "-a skim"
                     }
                 }
             }
-        }
     }
 }
 
@@ -424,11 +418,6 @@ if not cmp_autopairs_setup then
   return
 end
 
--- Import nvim-cmp plugin safely (completions plugin)
-local cmp_setup, cmp = pcall(require, "cmp")
-if not cmp_setup then
-  return
-end
 -- do not work for backticks
 autopairs.remove_rule('`')
 autopairs.remove_rule('```')
@@ -442,7 +431,7 @@ vim.diagnostic.config({
    signs = false,
    update_in_insert = true,
    severity_sort = false,
- })
+})
 vim.o.updatetime = 200
 vim.keymap.set(
     'n' , ',d', function() vim.diagnostic.open_float(nil, {focus=false, scope="cursor"}) end
