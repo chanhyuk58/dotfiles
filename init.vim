@@ -82,7 +82,7 @@ let &t_Ce="\e[4:0m"
 let g:tex_flavor = "latex"
 " set textwidth=80
 set title
-set titlestring=nvim\ -\ %{pathshorten(expand('%p'))}
+set titlestring=%{pathshorten(expand('%p'))}
 
 " ----- line number auto toggle
 :augroup numbertoggle
@@ -202,6 +202,7 @@ lua<<EOF
 -- indent-blankline
 require("ibl").setup()
 dofile("/Users/chanhyuk/.vim/plugged/new_note.lua")
+-- dofile("/Users/chanhyuk/.vim/plugged/test.lua")
 
 ----- tree-sitter settings
 vim.treesitter.language.register('markdown', 'rmd')
@@ -249,7 +250,6 @@ if not luasnip_status then
 end
 
 -- Load vs-code style snippets
-require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.vim/custom_snips/vs_snippets"})
 require("luasnip.loaders.from_lua").lazy_load({paths = "~/.vim/custom_snips/lua_snippets"})
 
@@ -257,8 +257,6 @@ require("luasnip.loaders.from_lua").lazy_load({paths = "~/.vim/custom_snips/lua_
 require("luasnip").setup({
     -- Enable autotriggered snippets
     enable_autosnippets = true,
-    -- use Tab key to trigger visual store_selection_keys
-    store_selection_keys = "<Tab>"
 })
 
 -- luasnip filetype extend
@@ -344,6 +342,10 @@ cmp.setup.filetype('gitcommit', {
     { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
     }, {
     { name = 'buffer' },
+    }, {
+    { name = "luasnip"}
+    }, {
+    { name = "path"}
     })
 })
 
