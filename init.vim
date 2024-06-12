@@ -1,6 +1,6 @@
 set runtimepath^=~/.vim
 
-" Plugins
+" ----- Plugins
 call plug#begin('~/.vim/plugged')
     " ----- LSP
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -12,19 +12,18 @@ call plug#begin('~/.vim/plugged')
   Plug 'hrsh7th/cmp-cmdline'
   Plug 'hrsh7th/nvim-cmp'
     "----- luasnip
-  Plug 'L3MON4D3/LuaSnip'
+  Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'}
   Plug 'saadparwaiz1/cmp_luasnip'
     " ----- nabla.nvim
   Plug 'jbyuki/nabla.nvim'
     "----- telescope
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-file-browser.nvim'
   Plug '~/.vim/plugged/telescope-bibtex_ch.nvim'
     " ----- Git
   Plug 'tpope/vim-fugitive'
-  Plug 'airblade/vim-gitgutter'
-    " ----- File explorer
-  " Plug 'preservim/nerdtree'
+  " Plug 'airblade/vim-gitgutter'
     " ----- Language and Keyboard Switch
   Plug 'lyokha/vim-xkbswitch'
     " ----- indentline
@@ -36,18 +35,13 @@ call plug#begin('~/.vim/plugged')
   Plug 'preservim/vimux'
     " ----- autopair brackets
   Plug 'windwp/nvim-autopairs'
-    " ----- looks
-  " Plug 'vim-airline/vim-airline'
-  " Plug 'vim-airline/vim-airline-themes'
-  " Plug 'ryanoasis/vim-devicons'
-  " Plug 'rmehri01/onenord.nvim', { 'branch': 'main' }
     " ----- vim obsession
   Plug 'tpope/vim-obsession'
 call plug#end()
 source ~/.vim/autoload/vimux_plus.vim
 
 " ----- Basic settings
-set colorcolumn=81
+" set colorcolumn=81
 set tabstop=4
 set expandtab
 set softtabstop=4
@@ -58,38 +52,40 @@ set autoindent
 set smartindent
 set smartcase
 set cindent
-set laststatus=0            "0 = hide 2 = always
+set laststatus=0            "statusline 0 = hide 2 = always
 set showmatch
 set hlsearch
 set backspace=eol,start,indent
 set noshowmode
-set cursorline
-set number
-set relativenumber
 set nospell
+set spellfile=~/.vim/spell/en.utf-8.add
 set spelllang=en_us,cjk
 set undodir=~/.vim/undo_dir
 set undofile
-set list
-set listchars=eol:↴
-set signcolumn=number
+set wrap
+set linebreak
+set cursorline
+set nonumber
+set norelativenumber
+set breakindent
 set encoding=utf-8
 set fileencodings=utf-8-sig,cp949
-set breakindent
 let &t_Cs="\e[4:3m"
 let &t_Ce="\e[4:0m"
-" set termguicolors 
 let g:tex_flavor = "latex"
 " set textwidth=80
 set title
 set titlestring=%{pathshorten(expand('%p'))}
+set autochdir
+set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
+
 
 " ----- line number auto toggle
-:augroup numbertoggle
-:  autocmd!
-:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-:augroup END
+" :augroup numbertoggle
+" :  autocmd!
+" :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+" :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+" :augroup END
 
 " ----- Copy to and Paste from clipboard
 vnoremap  <leader>y  "+y
@@ -109,13 +105,9 @@ nnoremap <silent> <c-j> :wincmd j<CR>
 nnoremap <silent> <c-h> :wincmd h<CR>
 nnoremap <silent> <c-l> :wincmd l<CR>
 
-" ----- Vim split 
-" nnoremap <silent> vv <C-w>v
-" nnoremap <silent> ss <C-w>s
-
 " ----- Code folding 
 set foldmethod=manual
-set foldcolumn=1
+set foldcolumn=0
 " Remember code fold
 augroup remember_folds
   autocmd!
@@ -138,9 +130,6 @@ autocmd BufReadPost * silent!
 \ endif
 
 " ----- (Ob)session 
-" cabbrev sos source ~/.vim/session/
-" cabbrev obs Obsess ~/.vim/session/
-" cabbrev obd Obsess!
 let g:session_dir = '~/.vim/session'
 exec 'nnoremap ,ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
 exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
@@ -152,8 +141,8 @@ exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
 
 " -- Tex
-autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -p -quiet " . expand('%:p'))<CR>
-autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c " . expand('%:p'))<CR>
+autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -quiet '" . expand('%:p') . "'")<CR>
+autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c '" . expand('%:p'). "'")<CR>
 
 " -- Rmd
 " autocmd FileType Rmd,rmd nnoremap <C-T> :call system("Rscript -e \"rmarkdown::render(\'" . expand('%:p') . "\')\" \&& open -g -a skim " . expand('%:t:r') . ".pdf")<CR>
@@ -183,7 +172,8 @@ nnoremap <leader>e <esc>:let @/=""<CR>
 nnoremap ,s :lua require("nabla").popup()<CR>
   " --- telescope
 nnoremap ,bb :Telescope buffers<CR>
-nnoremap ,ff :Telescope find_files<CR>
+nnoremap ,off :Telescope file_browser path=/Users/chanhyuk/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian<CR>
+nnoremap ,ff :Telescope file_browser<CR>
 nnoremap ,bib :Telescope bibtex<CR>
   " --- luasnips
 nnoremap ,se :lua require("luasnip.loaders").edit_snippet_files(table)<CR>
@@ -200,18 +190,21 @@ nnoremap <Leader>bd :call DeleteFileAndCloseBuffer()<CR>
 " ----- Settings in lua
 lua<<EOF
 -- indent-blankline
-require("ibl").setup()
-dofile("/Users/chanhyuk/.vim/plugged/new_note.lua")
--- dofile("/Users/chanhyuk/.vim/plugged/test.lua")
+require('ibl').setup({
+  exclude = {filetypes = {'text', 'csv'}},
+  indent = {char = '▏'},
+  scope = {show_start = false, show_end = false},
+})
+
+dofile('/Users/chanhyuk/.vim/plugged/new_note.lua')
+dofile('/Users/chanhyuk/.vim/plugged/test.lua')
 
 ----- tree-sitter settings
 vim.treesitter.language.register('markdown', 'rmd')
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"c", "lua", "latex", "python", "vim", "r"},
-    
+  ensure_installed = {'c', 'lua', 'latex', 'python', 'vim', 'r'},
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
-
   -- Automatically install missing parsers when entering buffer
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = false,
@@ -222,14 +215,14 @@ require'nvim-treesitter.configs'.setup {
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
     -- the name of the parser)
     -- list of language that will be disabled
-    -- disable = { "markdown" },
+    -- disable = { 'markdown' },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
+      local max_filesize = 100 * 1024 -- 100 KB
+      local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+      if ok and stats and stats.size > max_filesize then
+          return true
+      end
     end,
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -244,29 +237,29 @@ require'nvim-treesitter.configs'.setup {
 
 ----- luasnip settings
 -- import luasnip plugin safely
-local luasnip_status, luasnip = pcall(require, "luasnip")
+local luasnip_status, luasnip = pcall(require, 'luasnip')
 if not luasnip_status then
   return
 end
 
 -- Load vs-code style snippets
-require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.vim/custom_snips/vs_snippets"})
-require("luasnip.loaders.from_lua").lazy_load({paths = "~/.vim/custom_snips/lua_snippets"})
+require('luasnip.loaders.from_vscode').lazy_load({paths = '~/.vim/custom_snips/vs_snippets'})
+require('luasnip.loaders.from_lua').lazy_load({paths = '~/.vim/custom_snips/lua_snippets'})
 
 -- LuaSnip settings
-require("luasnip").setup({
+require('luasnip').setup({
     -- Enable autotriggered snippets
     enable_autosnippets = true,
 })
 
--- luasnip filetype extend
-luasnip.filetype_extend("rmd", { "math" }) -- treat R markdown as markdown
-luasnip.filetype_extend("markdown", { "math" }) -- treat R markdown as markdown
-luasnip.filetype_extend("tex", { "math" }) -- treat R markdown as markdown
+---- link math templates
+luasnip.filetype_extend('rmd', { 'math' })
+luasnip.filetype_extend('markdown', { 'math' })
+luasnip.filetype_extend('tex', { 'math' })
 
 ----- nvim-cmp setings
 -- import nvim-cmp plugin safely
-local cmp_status, cmp = pcall(require, "cmp")
+local cmp_status, cmp = pcall(require, 'cmp')
 if not cmp_status then
   return
 end
@@ -275,10 +268,10 @@ cmp.setup({
   snippet = {
     -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- vim.fn['vsnip#anonymous'](args.body) -- For `vsnip` users.
       require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
       -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      -- vim.fn['UltiSnips#Anon'](args.body) -- For `ultisnips` users.
     end,
   },
   window = {
@@ -289,7 +282,7 @@ cmp.setup({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-e>'] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping({
+    ['<CR>'] = cmp.mapping({
        i = function(fallback)
          if cmp.visible() and cmp.get_active_entry() then
            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
@@ -300,7 +293,7 @@ cmp.setup({
        s = cmp.mapping.confirm({ select = true }),
        c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
      }),
-    ["<Tab>"] = cmp.mapping(function(fallback)
+    ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         if #cmp.get_entries() == 1 then
           cmp.confirm({ select = true })
@@ -309,13 +302,13 @@ cmp.setup({
         end
       elseif luasnip.locally_jumpable(1) then
         luasnip.jump(1)
-      elseif require("luasnip.extras.expand_conditions").line_begin then
+      elseif require('luasnip.extras.expand_conditions').line_begin then
         fallback()
       else
         fallback()
       end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.locally_jumpable(-1) then
@@ -323,7 +316,7 @@ cmp.setup({
       else
         fallback()
       end
-    end, { "i", "s" }),
+    end, { 'i', 's' }),
   }),
   sources = cmp.config.sources({
     { name = 'luasnip' }, -- For luasnip users.
@@ -343,9 +336,9 @@ cmp.setup.filetype('gitcommit', {
     }, {
     { name = 'buffer' },
     }, {
-    { name = "luasnip"}
+    { name = 'luasnip'}
     }, {
-    { name = "path"}
+    { name = 'path'}
     })
 })
 
@@ -367,21 +360,36 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- Set up lspconfig.
-local lsp = require "lspconfig"
+-- LSP settings
+local lsp = require 'lspconfig'
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-lsp.ltex.setup{capabilities = capabilities}
+
+local words = {}
+for word in io.open('/Users/chanhyuk/.vim/spell/en.utf-8.add', 'r'):lines() do 
+  table.insert(words, word)
+end
+lsp.ltex.setup{
+  capabilities = capabilities,
+  settings = {
+    ltex = {
+      dictionary = {
+          ['en'] = words,
+          ['en-US'] = words,
+      }
+    }
+  }
+}
 lsp.pyright.setup{capabilities = capabilities}
 lsp.ccls.setup{capabilities = capabilities}
 lsp.r_language_server.setup{capabilities = capabilities}
 lsp.texlab.setup{
-    enabled = {"tex", "bibtex"},
+    enabled = {'tex', 'bibtex'},
     require('cmp_nvim_lsp').default_capabilities{
-        filetypes = {"tex", "bib",},
+        filetypes = {'tex', 'bib',},
             texlab = {
                 build = {
-                    executable = "latexmk",
-                    args = {"-pdf", "-pv", "-interaction=nonstopmode", "-synctex=1", "%f"},
+                    executable = 'latexmk',
+                    args = {'-pdf', '-pv', '-interaction=nonstopmode', '-synctex=1', '%f'},
                     onSave = true,
                     -- isContinuous = true
                 },
@@ -389,9 +397,9 @@ lsp.texlab.setup{
                     onOpenAndSave = true
                 },
                 forwardSearch = {
-                    executable = "open",
+                    executable = 'open',
                     args = {
-                        "-g", "-a skim"
+                        '-g', '-a skim'
                     }
                 }
             }
@@ -400,7 +408,7 @@ lsp.texlab.setup{
 
 ----- autopairs settings
 -- Import nvim-autopairs safely
-local autopairs_setup, autopairs = pcall(require, "nvim-autopairs")
+local autopairs_setup, autopairs = pcall(require, 'nvim-autopairs')
 if not autopairs_setup then
   return
 end
@@ -409,13 +417,13 @@ end
 autopairs.setup({
   check_ts = true, -- Enable treesitter
   ts_config = {
-    lua = { "string", "source" }, -- Don't add pairs in lua string treesitter nodes
-    javascript = { "template_string" }, -- Don't add pairs in JavaScript template_string treesitter nodes
+    lua = { 'string', 'source' }, -- Don't add pairs in lua string treesitter nodes
+    javascript = { 'template_string' }, -- Don't add pairs in JavaScript template_string treesitter nodes
     java = false, -- Don't check treesitter on Java
   },
 })
 -- Import nvim-autopairs completion functionality safely
-local cmp_autopairs_setup, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
+local cmp_autopairs_setup, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
 if not cmp_autopairs_setup then
   return
 end
@@ -424,23 +432,18 @@ end
 autopairs.remove_rule('`')
 autopairs.remove_rule('```')
 -- Make autopairs and completion work together
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 ----- diagnostics 
--- hover line diagnostic
 vim.diagnostic.config({
    virtual_text = false,
    signs = false,
-   update_in_insert = true,
+   update_in_insert = false,
    severity_sort = false,
 })
-vim.o.updatetime = 200
-vim.keymap.set(
-    'n' , ',d', function() vim.diagnostic.open_float(nil, {focus=false, scope="cursor"}) end
-)
 
 ----- telescope settings
-require("telescope").setup {
+require('telescope').setup {
   defaults = {
     -- Default configuration for telescope goes here:
     -- config_key = value,
@@ -456,7 +459,7 @@ require("telescope").setup {
         -- map actions.which_key to <C-h> (default: <C-/>)
         -- actions.which_key shows the mappings for your picker,
         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-        ["<C-h>"] = "which_key"
+        ['<C-h>'] = 'which_key'
       }
     }
   },
@@ -470,6 +473,9 @@ require("telescope").setup {
     -- builtin picker
   },
   extensions = {
+    file_browser = {
+        hijack_netrw = true,
+        },
     bibtex = {
       -- Depth for the *.bib file
       depth = 1,
@@ -481,13 +487,13 @@ require("telescope").setup {
       -- Path to global bibliographies (placed outside of the project)
       global_files = {'/Users/chanhyuk/Documents/MyLibrary.bib'},
       -- Define the search keys to use in the picker
-      search_keys = { 'author', 'year', 'title' },
+      search_keys = { 'author', 'year', 'title', 'abstract' },
       -- Template for the formatted citation
       citation_format = '{{author}}, ({{year}}), {{title}}.',
       -- Only use initials for the authors first name
       citation_trim_firstname = true,
       -- Max number of authors to write in the formatted citation
-      -- following authors will be replaced by "et al."
+      -- following authors will be replaced by 'et al.'
       citation_max_auth = 2,
       -- Context awareness disabled by default
       context = false,
@@ -500,4 +506,5 @@ require("telescope").setup {
   }
 }
 require('telescope').load_extension('bibtex')
+require('telescope').load_extension('file_browser')
 EOF
