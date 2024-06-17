@@ -448,9 +448,9 @@ require('telescope').setup {
     -- Default configuration for telescope goes here:
     -- config_key = value,
     layout_strategy = 'flex', -- vertical if small window size
-    layout_config = {
-      preview_cutoff = 1, -- Preview should always show
-    },
+    -- layout_config = {
+    --   preview_cutoff = true, -- Preview should always show
+    -- },
     file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
     grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
