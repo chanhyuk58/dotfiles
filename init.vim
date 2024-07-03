@@ -71,12 +71,11 @@ set undofile
 set wrap
 set linebreak
 set number
-"set relativenumber
-set numberwidth=10
+set relativenumber
+set numberwidth=4
 set breakindent
 set encoding=utf-8
 set fileencoding=utf-8
-let &statuscolumn='%s%l%='
 set signcolumn=yes
 let g:tex_flavor = "latex"
 set title
@@ -88,8 +87,8 @@ set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with sp
 " ----- line number auto toggle {{{
  :augroup numbertoggle
  :  autocmd!
- :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
- :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+ :  autocmd BufEnter,FocusGained,InsertLeave * let &statuscolumn='%s%r%='
+ :  autocmd BufLeave,FocusLost,InsertEnter   * let &statuscolumn='%s%l%='
  :augroup END
 " }}}
 

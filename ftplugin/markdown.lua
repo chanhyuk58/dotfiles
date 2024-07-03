@@ -4,6 +4,7 @@
 --   align_center = true,
 -- })
 vim.opt_local.cole = 2
+vim.opt_local.numberwidth = 10
 -- vim.opt_local.colorcolumn="0"
 -- vim.opt_local.listchars={}
 -- vim.opt_local.columns=81
@@ -14,8 +15,10 @@ local hooks = require "ibl.hooks"
     hooks.builtin.hide_first_space_indent_level
   )
 
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-  -- additional_vim_regex_highlighting = true,
-  }
-}
+vim.api.nvim_create_autocmd({"BufEnter"},
+    {
+        callback = function()
+            vim.cmd(":Wrapwidth 90")
+        end,
+        group = autocmd_group,
+    })
