@@ -1,6 +1,7 @@
+" vim:foldmethod=marker
 set runtimepath^=~/.vim
 
-" ----- Plugins
+" ----- Plugins {{{
 call plug#begin('~/.vim/plugged')
     " ----- LSP
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -23,7 +24,8 @@ call plug#begin('~/.vim/plugged')
   Plug '~/.vim/plugged/telescope-bibtex_ch.nvim'
     " ----- Git
   Plug 'tpope/vim-fugitive'
-  " Plug 'airblade/vim-gitgutter'
+  "Plug 'airblade/vim-gitgutter'
+  Plug 'lewis6991/gitsigns.nvim'
     " ----- Language and Keyboard Switch
   Plug 'lyokha/vim-xkbswitch'
     " ----- indentline
@@ -37,15 +39,19 @@ call plug#begin('~/.vim/plugged')
   Plug 'windwp/nvim-autopairs'
     " ----- vim obsession
   Plug 'tpope/vim-obsession'
+    " ----- nvim-web-devicons
+  Plug 'nvim-tree/nvim-web-devicons'
+    " ----- nvim-web-devicons
+  Plug 'rickhowe/wrapwidth'
 call plug#end()
 source ~/.vim/autoload/vimux_plus.vim
+" }}}
 
-" ----- Basic settings
-" set colorcolumn=81
+" ----- Basic settings {{{
 set tabstop=4
 set expandtab
-set softtabstop=4
-set shiftwidth=4
+set softtabstop=2
+set shiftwidth=2
 set splitright
 set splitbelow 
 set autoindent
@@ -59,35 +65,35 @@ set backspace=eol,start,indent
 set noshowmode
 set nospell
 set spellfile=~/.vim/spell/en.utf-8.add
-set spelllang=en_us,cjk
+set spelllang=en_us
 set undodir=~/.vim/undo_dir
 set undofile
 set wrap
 set linebreak
-set cursorline
-set nonumber
-set norelativenumber
+set number
+"set relativenumber
+set numberwidth=10
 set breakindent
 set encoding=utf-8
-set fileencodings=utf-8-sig,cp949
-let &t_Cs="\e[4:3m"
-let &t_Ce="\e[4:0m"
+set fileencoding=utf-8
+let &statuscolumn='%s%l%='
+set signcolumn=yes
 let g:tex_flavor = "latex"
-" set textwidth=80
 set title
-set titlestring=%{pathshorten(expand('%p'))}
+set titlestring=%{pathshorten(expand('%:p'))}
 set autochdir
 set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
+" }}}
 
+" ----- line number auto toggle {{{
+ :augroup numbertoggle
+ :  autocmd!
+ :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+ :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+ :augroup END
+" }}}
 
-" ----- line number auto toggle
-" :augroup numbertoggle
-" :  autocmd!
-" :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-" :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-" :augroup END
-
-" ----- Copy to and Paste from clipboard
+" ----- Copy to and Paste from clipboard {{{
 vnoremap  <leader>y  "+y
 nnoremap  <leader>Y  "+yg_
 nnoremap  <leader>y  "+y
@@ -97,15 +103,17 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
+" }}}
 
-" ----- Split pane navigation
+" ----- Split pane navigation {{{
 " Use ctrl-[hjkl] to select the active split!
 nnoremap <silent> <c-k> :wincmd k<CR>
 nnoremap <silent> <c-j> :wincmd j<CR>
 nnoremap <silent> <c-h> :wincmd h<CR>
 nnoremap <silent> <c-l> :wincmd l<CR>
+" }}}
 
-" ----- Code folding 
+" ----- Code folding {{{
 set foldmethod=manual
 set foldcolumn=0
 " Remember code fold
@@ -114,27 +122,31 @@ augroup remember_folds
   autocmd BufWinLeave * silent! mkview
   autocmd BufWinEnter * silent! loadview
 augroup END
+" }}}
 
-" ----- Theme
+" ----- Theme {{{
 colorscheme seoul256-light
 
 highlight! DiagnosticUnderlineError gui=undercurl guifg=red
 highlight! DiagnosticUnderlineWarn gui=undercurl guifg=orange
 highlight! DiagnosticUnderlineInfo gui=undercurl guifg=lightred
 highlight! DiagnosticUnderlineHint gui=undercurl guifg=green
+" }}}
 
-" ----- Remember the cursor position
+" ----- Remember the cursor position {{{
 autocmd BufReadPost * silent!
 \ if line("'\"") > 0 && line("'\"") <= line("$") |
 \ exe "norm g`\"zz" |
 \ endif
+" }}}
 
-" ----- (Ob)session 
+" ----- (Ob)session {{{
 let g:session_dir = '~/.vim/session'
 exec 'nnoremap ,ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
 exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" }}}
 
-" ----- Vimux seting
+" ----- Vimux seting{{{
 " -- C
 " autocmd FileType c nmap <buffer><silent> <C-T> :!clang % -o %:t:r && ./%:t:r <CR>
 
@@ -154,18 +166,21 @@ autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
 
 " autocmd FileType python noremap <silent> <C-n> :call RunTmuxPythonCell(0)<CR>
 " autocmd FileType python noremap <C-a> :call RunTmuxPythonAllCellsAbove()<CR>
+" }}}
 
-" ----- Tagbar toggle 
+" ----- Tagbar toggle {{{
 nmap <F8> :TagbarToggle<CR> 
-let g:tagbar_left=1
+"let g:tagbar_left=1
+" }}}
 
-" ----- XkbSwitch Settings
+" ----- XkbSwitch Settings{{{
 if has('mac') && filereadable('/usr/local/lib/libInputSourceSwitcher.dylib')
     let g:XkbSwitchEnabled = 1
     let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
 endif
+" }}}
 
-" ----- Key mapping
+" ----- Key mapping{{{
   " --- erase search register
 nnoremap <leader>e <esc>:let @/=""<CR>
   " --- nabla
@@ -186,20 +201,30 @@ fun! DeleteFileAndCloseBuffer()
   if choice == 1 | call delete(expand('%:p')) | bd | endif
 endfun
 nnoremap <Leader>bd :call DeleteFileAndCloseBuffer()<CR>
+" }}}
 
 " ----- Settings in lua
 lua<<EOF
--- indent-blankline
+
+dofile('/Users/chanhyuk/.vim/plugged/new_note.lua')
+dofile('/Users/chanhyuk/.vim/plugged/test.lua')
+
+require("gitsigns").setup()
+
+-- indent-blankline {{{
 require('ibl').setup({
   exclude = {filetypes = {'text', 'csv'}},
   indent = {char = '▏'},
   scope = {show_start = false, show_end = false},
 })
+local hooks = require "ibl.hooks"
+  hooks.register(
+    hooks.type.WHITESPACE,
+    hooks.builtin.hide_first_space_indent_level
+  )
+-- }}}
 
-dofile('/Users/chanhyuk/.vim/plugged/new_note.lua')
-dofile('/Users/chanhyuk/.vim/plugged/test.lua')
-
------ tree-sitter settings
+----- tree-sitter settings {{{
 vim.treesitter.language.register('markdown', 'rmd')
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {'c', 'lua', 'latex', 'python', 'vim', 'r'},
@@ -234,8 +259,9 @@ require'nvim-treesitter.configs'.setup {
       enable = true
   }
 }
+-- }}}
 
------ luasnip settings
+----- luasnip settings {{{
 -- import luasnip plugin safely
 local luasnip_status, luasnip = pcall(require, 'luasnip')
 if not luasnip_status then
@@ -246,18 +272,18 @@ end
 require('luasnip.loaders.from_vscode').lazy_load({paths = '~/.vim/custom_snips/vs_snippets'})
 require('luasnip.loaders.from_lua').lazy_load({paths = '~/.vim/custom_snips/lua_snippets'})
 
--- LuaSnip settings
+-- Enable autotriggered snippets
 require('luasnip').setup({
-    -- Enable autotriggered snippets
     enable_autosnippets = true,
 })
 
----- link math templates
+-- link math templates
 luasnip.filetype_extend('rmd', { 'math' })
 luasnip.filetype_extend('markdown', { 'math' })
 luasnip.filetype_extend('tex', { 'math' })
+-- }}}
 
------ nvim-cmp setings
+----- nvim-cmp setings {{{
 -- import nvim-cmp plugin safely
 local cmp_status, cmp = pcall(require, 'cmp')
 if not cmp_status then
@@ -359,8 +385,9 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
+--}}}
 
--- LSP settings
+----- LSP settings {{{
 local lsp = require 'lspconfig'
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -405,15 +432,16 @@ lsp.texlab.setup{
             }
     }
 }
+-- }}}
 
------ autopairs settings
+----- autopairs settings {{{
 -- Import nvim-autopairs safely
 local autopairs_setup, autopairs = pcall(require, 'nvim-autopairs')
 if not autopairs_setup then
   return
 end
 
--- Configure autopairs
+-- configure autopairs
 autopairs.setup({
   check_ts = true, -- Enable treesitter
   ts_config = {
@@ -433,48 +461,31 @@ autopairs.remove_rule('`')
 autopairs.remove_rule('```')
 -- Make autopairs and completion work together
 cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+-- }}}
 
------ diagnostics 
+----- diagnostic messages {{{
 vim.diagnostic.config({
    virtual_text = false,
    signs = false,
    update_in_insert = false,
    severity_sort = false,
 })
+-- }}}
 
------ telescope settings
+----- telescope settings {{{
 require('telescope').setup {
   defaults = {
-    -- Default configuration for telescope goes here:
-    -- config_key = value,
     layout_strategy = 'flex', -- vertical if small window size
-    -- layout_config = {
-    --   preview_cutoff = true, -- Preview should always show
-    -- },
     file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
     grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
-    mappings = {
-      i = {
-        -- map actions.which_key to <C-h> (default: <C-/>)
-        -- actions.which_key shows the mappings for your picker,
-        -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-        ['<C-h>'] = 'which_key'
-      }
-    }
-  },
-  pickers = {
-    -- Default configuration for builtin pickers goes here:
-    -- picker_name = {
-    --   picker_config_key = value,
-    --   ...
-    -- }
-    -- Now the picker_config_key will be applied every time you call this
-    -- builtin picker
+    initial_mode = "normal",
   },
   extensions = {
     file_browser = {
         hijack_netrw = true,
+        follow_symlinks = true,
+        git_status = false
         },
     bibtex = {
       -- Depth for the *.bib file
@@ -487,7 +498,7 @@ require('telescope').setup {
       -- Path to global bibliographies (placed outside of the project)
       global_files = {'/Users/chanhyuk/Documents/MyLibrary.bib'},
       -- Define the search keys to use in the picker
-      search_keys = { 'author', 'year', 'title', 'abstract' },
+      search_keys = { 'author', 'year', 'title' },
       -- Template for the formatted citation
       citation_format = '{{author}}, ({{year}}), {{title}}.',
       -- Only use initials for the authors first name
@@ -507,4 +518,5 @@ require('telescope').setup {
 }
 require('telescope').load_extension('bibtex')
 require('telescope').load_extension('file_browser')
+-- }}}
 EOF

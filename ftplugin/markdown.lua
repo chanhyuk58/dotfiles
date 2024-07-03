@@ -15,7 +15,7 @@ local hooks = require "ibl.hooks"
   )
 
 require'nvim-treesitter.configs'.setup {
-    highlight = {
-    -- additional_vim_regex_highlighting = true,
-    }
+  highlight = {
+  -- additional_vim_regex_highlighting = true,
+  }
 }
