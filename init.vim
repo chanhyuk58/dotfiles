@@ -123,6 +123,10 @@ augroup remember_folds
 augroup END
 " }}}
 
+" vim-gutentags{{{
+let g:gutentags_enabled=0
+"}}}
+
 " ----- Theme {{{
 colorscheme seoul256-light
 

@@ -15,7 +15,7 @@ local hooks = require "ibl.hooks"
 vim.api.nvim_create_autocmd({"BufEnter"},
     {
         callback = function()
-            vim.cmd(":Wrapwidth 90")
+            vim.cmd(":Wrapwidth 70")
         end,
         group = autocmd_group,
     })
