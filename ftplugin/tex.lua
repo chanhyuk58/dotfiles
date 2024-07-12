@@ -4,7 +4,7 @@
 --   align_center = true,
 -- })
 -- vim.opt_local.cole = 0
-vim.opt_local.numberwidth = 10
+-- vim.opt_local.numberwidth = 10
 
 local hooks = require "ibl.hooks"
   hooks.register(
@@ -15,7 +15,7 @@ local hooks = require "ibl.hooks"
 vim.api.nvim_create_autocmd({"BufEnter"},
     {
         callback = function()
-            vim.cmd(":Wrapwidth 70")
+            vim.cmd(":Wrapwidth 100")
         end,
         group = autocmd_group,
     })

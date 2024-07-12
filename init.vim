@@ -24,7 +24,6 @@ call plug#begin('~/.vim/plugged')
   Plug '~/.vim/plugged/telescope-bibtex_ch.nvim'
     " ----- Git
   Plug 'tpope/vim-fugitive'
-  "Plug 'airblade/vim-gitgutter'
   Plug 'lewis6991/gitsigns.nvim'
     " ----- Language and Keyboard Switch
   Plug 'lyokha/vim-xkbswitch'
@@ -77,11 +76,14 @@ set breakindent
 set encoding=utf-8
 set fileencoding=utf-8
 set signcolumn=yes
+set foldmethod=manual
+set foldcolumn=0
 let g:tex_flavor = "latex"
 set title
 set titlestring=%{pathshorten(expand('%:p'))}
 set autochdir
 set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
+"set termguicolors
 " }}}
 
 " ----- line number auto toggle {{{
@@ -112,10 +114,7 @@ nnoremap <silent> <c-h> :wincmd h<CR>
 nnoremap <silent> <c-l> :wincmd l<CR>
 " }}}
 
-" ----- Code folding {{{
-set foldmethod=manual
-set foldcolumn=0
-" Remember code fold
+" ----- Remember Code folding {{{
 augroup remember_folds
   autocmd!
   autocmd BufWinLeave * silent! mkview
@@ -488,7 +487,13 @@ require('telescope').setup {
     file_browser = {
         hijack_netrw = true,
         follow_symlinks = true,
-        git_status = false
+        git_status = true,
+        dir_icon = "󰉖", -- default icon is a bit wide
+        mappings = {
+          ["i"] = {
+            ["<bs>"] = false -- default behavior for backspace in normal mode is "go to the parent dir" 
+            }
+          }
         },
     bibtex = {
       -- Depth for the *.bib file
