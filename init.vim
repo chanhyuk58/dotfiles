@@ -49,8 +49,8 @@ source ~/.vim/autoload/vimux_plus.vim
 " ----- Basic settings {{{
 set tabstop=4
 set expandtab
-set softtabstop=2
-set shiftwidth=2
+set softtabstop=4
+set shiftwidth=4
 set splitright
 set splitbelow 
 set autoindent
@@ -128,7 +128,6 @@ let g:gutentags_enabled=0
 
 " ----- Theme {{{
 colorscheme seoul256-light
-
 highlight! DiagnosticUnderlineError gui=undercurl guifg=red
 highlight! DiagnosticUnderlineWarn gui=undercurl guifg=orange
 highlight! DiagnosticUnderlineInfo gui=undercurl guifg=lightred
@@ -148,33 +147,6 @@ exec 'nnoremap ,ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><B
 exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " }}}
 
-" ----- Vimux seting{{{
-" -- C
-" autocmd FileType c nmap <buffer><silent> <C-T> :!clang % -o %:t:r && ./%:t:r <CR>
-
-autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
-
-" -- Tex
-autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -quiet '" . expand('%:p') . "'")<CR>
-autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c '" . expand('%:p'). "'")<CR>
-
-" -- Rmd
-" autocmd FileType Rmd,rmd nnoremap <C-T> :call system("Rscript -e \"rmarkdown::render(\'" . expand('%:p') . "\')\" \&& open -g -a skim " . expand('%:t:r') . ".pdf")<CR>
-autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
-
-" -- Python and R interpreter
-autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
-autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
-
-" autocmd FileType python noremap <silent> <C-n> :call RunTmuxPythonCell(0)<CR>
-" autocmd FileType python noremap <C-a> :call RunTmuxPythonAllCellsAbove()<CR>
-" }}}
-
-" ----- Tagbar toggle {{{
-nmap <F8> :TagbarToggle<CR> 
-"let g:tagbar_left=1
-" }}}
-
 " ----- XkbSwitch Settings{{{
 if has('mac') && filereadable('/usr/local/lib/libInputSourceSwitcher.dylib')
     let g:XkbSwitchEnabled = 1
@@ -183,6 +155,18 @@ endif
 " }}}
 
 " ----- Key mapping{{{
+  " ----- Vimux seting {{{
+    " -- C
+autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
+    " -- Tex
+autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -quiet '" . expand('%:p') . "'")<CR>
+autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c '" . expand('%:p'). "'")<CR>
+    " -- Rmd
+autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
+    " -- Python and R interpreter
+autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
+autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
+" }}}
   " --- erase search register
 nnoremap <leader>e <esc>:let @/=""<CR>
   " --- nabla
@@ -196,13 +180,15 @@ nnoremap ,bib :Telescope bibtex<CR>
 nnoremap ,se :lua require("luasnip.loaders").edit_snippet_files(table)<CR>
   " --- new note
 nnoremap ,nn :lua new_note
-
-" ----- Delete current buffer file
+" ----- delete current buffer file
 fun! DeleteFileAndCloseBuffer()
   let choice = confirm("Delete file and close buffer?", "&Yes \n&Nonono", 1)
   if choice == 1 | call delete(expand('%:p')) | bd | endif
 endfun
 nnoremap <Leader>bd :call DeleteFileAndCloseBuffer()<CR>
+" ----- tagbar toggle
+nmap <F8> :TagbarToggle<CR> 
+" let g:tagbar_left=1 " put tagbar on the left
 " }}}
 
 " ----- Settings in lua
@@ -211,7 +197,9 @@ lua<<EOF
 dofile('/Users/chanhyuk/.vim/plugged/new_note.lua')
 dofile('/Users/chanhyuk/.vim/plugged/test.lua')
 
+----- gitsigns" {{{
 require("gitsigns").setup()
+-- }}}
 
 -- indent-blankline {{{
 require('ibl').setup({
