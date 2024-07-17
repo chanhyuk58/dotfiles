@@ -465,7 +465,16 @@ vim.diagnostic.config({
 ----- telescope settings {{{
 require('telescope').setup {
   defaults = {
-    layout_strategy = 'flex', -- vertical if small window size
+    layout_strategy = 'flex', -- flex automatically decide vertical and horizontal mode
+    layout_config = {
+      horizontal = {
+          preview_width = 0.5,
+          },
+      vertical = {
+        preview_cutoff = 1,
+        preview_height = 0.4
+        }
+      },
     file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
     grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
@@ -478,8 +487,8 @@ require('telescope').setup {
         git_status = true,
         dir_icon = "󰉖", -- default icon is a bit wide
         mappings = {
-          ["i"] = {
-            ["<bs>"] = false -- default behavior for backspace in normal mode is "go to the parent dir" 
+          ["i"] = { -- normal mode
+            ["<bs>"] = false -- unlink backspace behavior "go to the parent dir" 
             }
           }
         },

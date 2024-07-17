@@ -1,7 +1,4 @@
-vim.opt_local.cole = 2
-vim.opt_local.colorcolumn="0"
-vim.opt_local.listchars={}
-vim.opt_local.columns=81
+vim.opt_local.cole = 0
 
 local hooks = require "ibl.hooks"
   hooks.register(
