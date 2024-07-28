@@ -71,7 +71,7 @@ set wrap
 set linebreak
 set number
 set relativenumber
-set numberwidth=4
+set numberwidth=5
 set breakindent
 set encoding=utf-8
 set fileencoding=utf-8
@@ -122,16 +122,16 @@ augroup remember_folds
 augroup END
 " }}}
 
-" vim-gutentags{{{
+" ----- vim-gutentags{{{
 let g:gutentags_enabled=0
 "}}}
 
 " ----- Theme {{{
 colorscheme seoul256-light
-highlight! DiagnosticUnderlineError gui=undercurl guifg=red
-highlight! DiagnosticUnderlineWarn gui=undercurl guifg=orange
-highlight! DiagnosticUnderlineInfo gui=undercurl guifg=lightred
-highlight! DiagnosticUnderlineHint gui=undercurl guifg=green
+"highlight! DiagnosticUnderlineError gui=undercurl guifg=red
+"highlight! DiagnosticUnderlineWarn gui=undercurl guifg=orange
+"highlight! DiagnosticUnderlineInfo gui=undercurl guifg=lightred
+"highlight! DiagnosticUnderlineHint gui=undercurl guifg=green
 " }}}
 
 " ----- Remember the cursor position {{{
@@ -139,6 +139,19 @@ autocmd BufReadPost * silent!
 \ if line("'\"") > 0 && line("'\"") <= line("$") |
 \ exe "norm g`\"zz" |
 \ endif
+" }}}
+
+" ----- Insert modified timestamp for markdown files {{{
+autocmd BufWritePre,FileWritePre *.md,*rmd   ks|call LastMod()|'s
+fun LastMod()
+  if line("$") > 20
+    let l = 20
+  else
+    let l = line("$")
+  endif
+  exe "1," .. l .. "g/modified: /s/modified: .*/modified: " ..
+  \ strftime("%Y-%m-%d %H:%M:%S")
+endfun
 " }}}
 
 " ----- (Ob)session {{{
@@ -155,59 +168,58 @@ endif
 " }}}
 
 " ----- Key mapping{{{
-  " ----- Vimux seting {{{
-    " -- C
-autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
-    " -- Tex
-autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -quiet '" . expand('%:p') . "'")<CR>
-autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c '" . expand('%:p'). "'")<CR>
-    " -- Rmd
-autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
-    " -- Python and R interpreter
-autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
-autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
-" }}}
-  " --- erase search register
-nnoremap <leader>e <esc>:let @/=""<CR>
-  " --- nabla
-nnoremap ,s :lua require("nabla").popup()<CR>
-  " --- telescope
-nnoremap ,bb :Telescope buffers<CR>
-nnoremap ,off :Telescope file_browser path=/Users/chanhyuk/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian<CR>
-nnoremap ,ff :Telescope file_browser<CR>
-nnoremap ,bib :Telescope bibtex<CR>
-  " --- luasnips
-nnoremap ,se :lua require("luasnip.loaders").edit_snippet_files(table)<CR>
-  " --- new note
-nnoremap ,nn :lua new_note
-" ----- delete current buffer file
-fun! DeleteFileAndCloseBuffer()
-  let choice = confirm("Delete file and close buffer?", "&Yes \n&Nonono", 1)
-  if choice == 1 | call delete(expand('%:p')) | bd | endif
-endfun
-nnoremap <Leader>bd :call DeleteFileAndCloseBuffer()<CR>
-" ----- tagbar toggle
-nmap <F8> :TagbarToggle<CR> 
-" let g:tagbar_left=1 " put tagbar on the left
+    " ----- Vimux seting {{{
+        " -- C
+        autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
+        " -- Tex
+        autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -quiet '" . expand('%:p') . "'")<CR>
+        autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c '" . expand('%:p'). "'")<CR>
+        " -- Rmd
+        autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
+            " -- Python and R interpreter
+        autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
+        autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
+    " }}}
+    " --- erase search register
+    nnoremap <leader>e <esc>:let @/=""<CR>
+    " --- nabla
+    nnoremap ,s :lua require("nabla").popup()<CR>
+    " --- telescope
+    nnoremap ,bb :Telescope buffers<CR>
+    nnoremap ,off :Telescope file_browser path=/Users/chanhyuk/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian<CR>
+    nnoremap ,ff :Telescope file_browser<CR>
+    nnoremap ,bib :Telescope bibtex<CR>
+    " --- luasnips
+    nnoremap ,se :lua require("luasnip.loaders").edit_snippet_files(table)<CR>
+    " --- new note
+    nnoremap ,nn :lua new_note()<CR>
+    " ----- delete current buffer file
+    fun! DeleteFileAndCloseBuffer()
+      let choice = confirm("Delete file and close buffer?", "&Yes \n&Nonono", 1)
+      if choice == 1 | call delete(expand('%:p')) | bd | endif
+    endfun
+    nnoremap <Leader>bd :call DeleteFileAndCloseBuffer()<CR>
+    " ----- tagbar toggle
+    nmap <F8> :TagbarToggle<CR> 
+    " let g:tagbar_left=1 " put tagbar on the left
 " }}}
 
 " ----- Settings in lua
 lua<<EOF
+dofile('/Users/chanhyuk/.vim/plugged/custom_functions/new_note.lua')
+dofile('/Users/chanhyuk/.vim/plugged/custom_functions/test.lua')
 
-dofile('/Users/chanhyuk/.vim/plugged/new_note.lua')
-dofile('/Users/chanhyuk/.vim/plugged/test.lua')
-
------ gitsigns" {{{
-require("gitsigns").setup()
+----- gitsigns {{{
+require('gitsigns').setup()
 -- }}}
 
--- indent-blankline {{{
+----- indent-blankline {{{
 require('ibl').setup({
   exclude = {filetypes = {'text', 'csv'}},
   indent = {char = '▏'},
   scope = {show_start = false, show_end = false},
 })
-local hooks = require "ibl.hooks"
+local hooks = require 'ibl.hooks'
   hooks.register(
     hooks.type.WHITESPACE,
     hooks.builtin.hide_first_space_indent_level
@@ -478,20 +490,52 @@ require('telescope').setup {
     file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
     grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
-    initial_mode = "normal",
+    initial_mode = 'normal',
   },
   extensions = {
     file_browser = {
-        hijack_netrw = true,
-        follow_symlinks = true,
-        git_status = true,
-        dir_icon = "󰉖", -- default icon is a bit wide
-        mappings = {
-          ["i"] = { -- normal mode
-            ["<bs>"] = false -- unlink backspace behavior "go to the parent dir" 
-            }
+      hijack_netrw = true,
+      follow_symlinks = true,
+      git_status = true,
+      dir_icon = '󰉖', -- default icon is a bit wide
+      mappings = {
+        ['i'] = { -- normal mode
+          ['<bs>'] = false, -- unlink backspace behavior 'go to the parent dir' 
+          ['<C-n>'] = function(prompt_bufnr)
+            local action_state = require 'telescope.actions.state'
+            local current_picker = action_state.get_current_picker(prompt_bufnr)
+            local finder = current_picker.finder
+            local get_target_dir = function(finder)
+              local entry_path
+              if finder.files == false then
+                local entry = action_state.get_selected_entry()
+                entry_path = entry and entry.value -- absolute path
+              end
+              return finder.files and finder.path or entry_path
+            end
+            require 'telescope.actions'.close(prompt_bufnr)
+            new_note(get_target_dir(finder) .. '/')
+          end
+          },
+        ['n'] = {
+          ['n'] = function(prompt_bufnr)
+            local action_state = require 'telescope.actions.state'
+            local current_picker = action_state.get_current_picker(prompt_bufnr)
+            local finder = current_picker.finder
+            local get_target_dir = function(finder)
+              local entry_path
+              if finder.files == false then
+                local entry = action_state.get_selected_entry()
+                entry_path = entry and entry.value -- absolute path
+              end
+              return finder.files and finder.path or entry_path
+            end
+            require 'telescope.actions'.close(prompt_bufnr)
+            new_note(get_target_dir(finder) .. '/')
+          end
           }
-        },
+        }
+      },
     bibtex = {
       -- Depth for the *.bib file
       depth = 1,
