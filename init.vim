@@ -168,6 +168,8 @@ endif
 " }}}
 
 " ----- Key mapping{{{
+"  ----- Wezterm
+    nnoremap ,wz :lua sendtext
     " ----- Vimux seting {{{
         " -- C
         autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
@@ -176,7 +178,9 @@ endif
         autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c '" . expand('%:p'). "'")<CR>
         " -- Rmd
         autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
-            " -- Python and R interpreter
+        " -- md
+        autocmd FileType md,markdown nnoremap <C-T> :!pandoc % -o %:r.pdf<CR>
+        " -- Python and R interpreter
         autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
         autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
     " }}}
@@ -208,6 +212,7 @@ endif
 lua<<EOF
 dofile('/Users/chanhyuk/.vim/plugged/custom_functions/new_note.lua')
 dofile('/Users/chanhyuk/.vim/plugged/custom_functions/test.lua')
+dofile('/Users/chanhyuk/.vim/plugged/custom_functions/wezterm_sendtext.lua')
 
 ----- gitsigns {{{
 require('gitsigns').setup()
@@ -230,18 +235,10 @@ local hooks = require 'ibl.hooks'
 vim.treesitter.language.register('markdown', 'rmd')
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {'c', 'lua', 'latex', 'python', 'vim', 'r'},
-  -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
-  -- Automatically install missing parsers when entering buffer
-  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = false,
   highlight = {
-    -- `false` will disable the whole extension
     enable = true,
-    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-    -- the name of the parser)
-    -- list of language that will be disabled
     -- disable = { 'markdown' },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
@@ -251,10 +248,6 @@ require'nvim-treesitter.configs'.setup {
           return true
       end
     end,
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
   indent = {
@@ -294,12 +287,8 @@ end
 
 cmp.setup({
   snippet = {
-    -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      -- vim.fn['vsnip#anonymous'](args.body) -- For `vsnip` users.
       require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-      -- vim.fn['UltiSnips#Anon'](args.body) -- For `ultisnips` users.
     end,
   },
   window = {
@@ -311,35 +300,36 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping({
-       i = function(fallback)
-         if cmp.visible() and cmp.get_active_entry() then
-           cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-         else
-           fallback()
-         end
-       end,
-       s = cmp.mapping.confirm({ select = true }),
-       c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
+      i = function(fallback)
+        if cmp.visible() and cmp.get_active_entry() then
+            -- or #cmp.get_entries() == 1 ) then
+          cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+        else
+          fallback()
+        end
+      end,
+      s = cmp.mapping.confirm({ select = true }),
+      c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false }),
      }),
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        if #cmp.get_entries() == 1 then
-          cmp.confirm({ select = true })
-        else
-          cmp.select_next_item()
-        end
-      elseif luasnip.locally_jumpable(1) then
+      if luasnip.locally_jumpable(1) then
         luasnip.jump(1)
-      elseif require('luasnip.extras.expand_conditions').line_begin then
-        fallback()
       else
         fallback()
       end
     end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
+    ['<C-n>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+          cmp.select_next_item()
+      end
+    end, { 'i', 's' }),
+    ['<C-p>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if luasnip.locally_jumpable(-1) then
         luasnip.jump(-1)
       else
         fallback()
@@ -347,7 +337,7 @@ cmp.setup({
     end, { 'i', 's' }),
   }),
   sources = cmp.config.sources({
-    { name = 'luasnip' }, -- For luasnip users.
+    { name = 'luasnip' },
   },{
     { name = 'path' },
   },{
@@ -390,8 +380,10 @@ cmp.setup.cmdline(':', {
 --}}}
 
 ----- LSP settings {{{
+-- vim.lsp.set_log_level(“OFF”)
 local lsp = require 'lspconfig'
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 
 local words = {}
 for word in io.open('/Users/chanhyuk/.vim/spell/en.utf-8.add', 'r'):lines() do 
