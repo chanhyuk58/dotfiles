@@ -179,7 +179,7 @@ endif
         " -- Rmd
         autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
         " -- md
-        autocmd FileType md,markdown nnoremap <C-T> :!pandoc % -o %:r.pdf<CR>
+        "autocmd FileType md,markdown nnoremap <C-T> :!pandoc % -o %:r.pdf<CR>
         " -- Python and R interpreter
         autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
         autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
@@ -212,7 +212,7 @@ endif
 lua<<EOF
 dofile('/Users/chanhyuk/.vim/plugged/custom_functions/new_note.lua')
 dofile('/Users/chanhyuk/.vim/plugged/custom_functions/test.lua')
-dofile('/Users/chanhyuk/.vim/plugged/custom_functions/wezterm_sendtext.lua')
+-- dofile('/Users/chanhyuk/.vim/plugged/custom_functions/wezterm_sendtext.lua')
 
 ----- gitsigns {{{
 require('gitsigns').setup()
@@ -384,11 +384,11 @@ cmp.setup.cmdline(':', {
 local lsp = require 'lspconfig'
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-
 local words = {}
 for word in io.open('/Users/chanhyuk/.vim/spell/en.utf-8.add', 'r'):lines() do 
   table.insert(words, word)
 end
+
 lsp.ltex.setup{
   capabilities = capabilities,
   settings = {
@@ -400,32 +400,32 @@ lsp.ltex.setup{
     }
   }
 }
-lsp.pyright.setup{capabilities = capabilities}
-lsp.ccls.setup{capabilities = capabilities}
-lsp.r_language_server.setup{capabilities = capabilities}
-lsp.texlab.setup{
-    enabled = {'tex', 'bibtex'},
-    require('cmp_nvim_lsp').default_capabilities{
-        filetypes = {'tex', 'bib',},
-            texlab = {
-                build = {
-                    executable = 'latexmk',
-                    args = {'-pdf', '-pv', '-interaction=nonstopmode', '-synctex=1', '%f'},
-                    onSave = true,
-                    -- isContinuous = true
-                },
-                chktex = {
-                    onOpenAndSave = true
-                },
-                forwardSearch = {
-                    executable = 'open',
-                    args = {
-                        '-g', '-a skim'
-                    }
-                }
-            }
-    }
-}
+-- lsp.pyright.setup{capabilities = capabilities}
+-- -- lsp.ccls.setup{capabilities = capabilities}
+-- lsp.r_language_server.setup{capabilities = capabilities}
+-- lsp.texlab.setup{
+--     enabled = {'tex', 'bibtex'},
+--     require('cmp_nvim_lsp').default_capabilities{
+--         filetypes = {'tex', 'bib',},
+--             texlab = {
+--                 build = {
+--                     executable = 'latexmk',
+--                     args = {'-pdf', '-pv', '-interaction=nonstopmode', '-synctex=1', '%f'},
+--                     onSave = true,
+--                     -- isContinuous = true
+--                 },
+--                 chktex = {
+--                     onOpenAndSave = true
+--                 },
+--                 forwardSearch = {
+--                     executable = 'open',
+--                     args = {
+--                         '-g', '-a skim'
+--                     }
+--                 }
+--             }
+--     }
+-- }
 -- }}}
 
 ----- autopairs settings {{{
