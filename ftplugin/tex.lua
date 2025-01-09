@@ -12,10 +12,10 @@ local hooks = require "ibl.hooks"
     hooks.builtin.hide_first_space_indent_level
   )
 
-vim.api.nvim_create_autocmd({"BufEnter"},
-    {
-        callback = function()
-            vim.cmd(":Wrapwidth 100")
-        end,
-        group = autocmd_group,
-    })
+-- vim.api.nvim_create_autocmd({"BufEnter"},
+--     {
+--         callback = function()
+--             vim.cmd(":Wrapwidth 100")
+--         end,
+--         group = autocmd_group,
+--     })

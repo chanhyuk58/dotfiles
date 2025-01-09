@@ -5,9 +5,9 @@ set runtimepath^=~/.vim
 call plug#begin('~/.vim/plugged')
     " ----- LSP
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'neovim/nvim-lspconfig'
+  "Plug 'neovim/nvim-lspconfig'
     " ----- nvim-cmp
-  Plug 'hrsh7th/cmp-nvim-lsp'
+  "Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/cmp-cmdline'
@@ -16,7 +16,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'}
   Plug 'saadparwaiz1/cmp_luasnip'
     " ----- nabla.nvim
-  Plug 'jbyuki/nabla.nvim'
+  "Plug 'jbyuki/nabla.nvim'
     "----- telescope
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
@@ -32,21 +32,28 @@ call plug#begin('~/.vim/plugged')
     " ----- tags
   Plug 'ludovicchabant/vim-gutentags'
   Plug 'majutsushi/tagbar'
-    " ----- vimux
-  Plug 'preservim/vimux'
+    " ----- REPL
+  Plug 'jpalardy/vim-slime'
     " ----- autopair brackets
   Plug 'windwp/nvim-autopairs'
     " ----- vim obsession
   Plug 'tpope/vim-obsession'
     " ----- nvim-web-devicons
   Plug 'nvim-tree/nvim-web-devicons'
-    " ----- nvim-web-devicons
-  Plug 'rickhowe/wrapwidth'
+    " ----- wrapwidth
+  "Plug 'rickhowe/wrapwidth'
+    " ----- images.nvim
+  Plug '3rd/image.nvim'
+    " ----- markdown
+  Plug 'OXY2DEV/markview.nvim'
+    " ----- Kitty navigator
+  Plug 'MunsMan/kitty-navigator.nvim'
 call plug#end()
-source ~/.vim/autoload/vimux_plus.vim
+"source ~/.vim/autoload/vimux_plus.vim
 " }}}
 
 " ----- Basic settings {{{
+set mouse=a
 set tabstop=4
 set expandtab
 set softtabstop=4
@@ -62,9 +69,9 @@ set showmatch
 set hlsearch
 set backspace=eol,start,indent
 set noshowmode
-set nospell
+set spell
+set spelllang=cjk,en_us
 set spellfile=~/.vim/spell/en.utf-8.add
-set spelllang=en_us
 set undodir=~/.vim/undo_dir
 set undofile
 set wrap
@@ -79,8 +86,8 @@ set signcolumn=yes
 set foldmethod=manual
 set foldcolumn=0
 let g:tex_flavor = "latex"
-set title
-set titlestring=%{pathshorten(expand('%:p'))}
+"set title
+"set titlestring=%{pathshorten(expand('%:p'))}
 set autochdir
 set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
 "set termguicolors
@@ -160,34 +167,42 @@ exec 'nnoremap ,ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><B
 exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " }}}
 
-" ----- XkbSwitch Settings{{{
+" ----- XkbSwitch {{{
 if has('mac') && filereadable('/usr/local/lib/libInputSourceSwitcher.dylib')
     let g:XkbSwitchEnabled = 1
     let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
 endif
 " }}}
 
+" ----- vim-slime {{{
+let g:slime_target="kitty"
+"let g:slime_default_config={"pane_direction":"next"}
+"let g:slime_dont_ask_default = 1
+let g:slime_bracketed_paste=1
+let g:slime_no_mappings=1
+" }}}
+
 " ----- Key mapping{{{
-"  ----- Wezterm
-    nnoremap ,wz :lua sendtext
-    " ----- Vimux seting {{{
+    " ----- compile {{{
         " -- C
-        autocmd FileType c nmap <buffer><silent> <C-T> :call VimuxRunCommand("clang " . bufname('%') . " -o " . expand('%:t:r') . " && ./" . expand('%:t:r')) <CR>
-        " -- Tex
-        autocmd FileType tex nmap <buffer> <C-T> :call VimuxRunCommand("latexmk -lualatex -quiet '" . expand('%:p') . "'")<CR>
-        autocmd FileType tex nmap <buffer> <C-C> :call VimuxRunCommand("latexmk -c '" . expand('%:p'). "'")<CR>
-        " -- Rmd
-        autocmd FileType Rmd,rmd nnoremap <C-T> :call VimuxRunCommand("rmarkdown::render(\'" . expand('%:p') . "\')")<CR><CR>
+        autocmd FileType c nmap <buffer><silent> <C-T> :!clang bufname('%') -o '%:t:r' && ./'%:t:r' <CR>
+        "" -- Tex
+        autocmd FileType tex nmap <buffer> <C-T> :!latexmk -lualatex -quiet '%:p'<CR>
+        autocmd FileType tex nmap <buffer> <C-C> :!latexmk -c '%:p'<CR>
+        "" -- Rmd
+        autocmd FileType Rmd,rmd nnoremap <C-T> :!R -e "rmarkdown::render('%:p')"<CR>
         " -- md
         "autocmd FileType md,markdown nnoremap <C-T> :!pandoc % -o %:r.pdf<CR>
         " -- Python and R interpreter
-        autocmd FileType python,r,Rmd,rmd nnoremap ,l  :call VimuxSendLine()<CR>
-        autocmd FileType python,r,Rmd,rmd vnoremap ,l  :call VimuxSendMultiLine()<CR>
+        "nmap ,l <Plug>SlimeLineSend
+        autocmd FileType python,r,Rmd,rmd nmap ,l <Plug>SlimeLineSend
+        autocmd FileType python,r,Rmd,rmd xmap ,l <Plug>SlimeRegionSend
+        autocmd FileType python,r,Rmd,rmd nmap ,; <Plug>SlimeParagraphSend
     " }}}
     " --- erase search register
     nnoremap <leader>e <esc>:let @/=""<CR>
     " --- nabla
-    nnoremap ,s :lua require("nabla").popup()<CR>
+    "nnoremap ,s :lua require("nabla").popup()<CR>
     " --- telescope
     nnoremap ,bb :Telescope buffers<CR>
     nnoremap ,off :Telescope file_browser path=/Users/chanhyuk/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian<CR>
@@ -210,9 +225,50 @@ endif
 
 " ----- Settings in lua
 lua<<EOF
-dofile('/Users/chanhyuk/.vim/plugged/custom_functions/new_note.lua')
-dofile('/Users/chanhyuk/.vim/plugged/custom_functions/test.lua')
--- dofile('/Users/chanhyuk/.vim/plugged/custom_functions/wezterm_sendtext.lua')
+dofile('/Users/chanhyuk/.vim/custom_functions/new_note.lua')
+
+----- markview.nvim {{{
+require('markview').setup({
+    filetypes = { 'markdown', 'quarto', 'rmd', 'tex' },
+    -- ignore_modes = { 'n', 'i', },
+    hybrid_modes = { 'n', 'i', 'v' },
+    latex = {
+        inline = { enable = true }
+        },
+});
+--}}}
+
+----- image.nvim {{{
+require('image').setup({
+  backend = 'kitty',
+  processor = 'magick_cli', -- or 'magick_cli'
+  integrations = {
+    markdown = {
+      enabled = true,
+      clear_in_insert_mode = false,
+      download_remote_images = false,
+      only_render_image_at_cursor = false,
+      floating_windows = false, -- if true, images will be rendered in floating markdown windows
+      filetypes = { 'markdown', 'rmd', 'tex' }, -- markdown extensions (ie. quarto) can go here
+    },
+    html = {
+      enabled = false,
+    },
+    css = {
+      enabled = false,
+    },
+  },
+  max_width = nil,
+  max_height = nil,
+  max_width_window_percentage = nil,
+  max_height_window_percentage = 50,
+  window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+  window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
+  editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
+  tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+  hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' }, -- render image files as images when opened
+})
+-- }}}
 
 ----- gitsigns {{{
 require('gitsigns').setup()
@@ -268,9 +324,7 @@ require('luasnip.loaders.from_vscode').lazy_load({paths = '~/.vim/custom_snips/v
 require('luasnip.loaders.from_lua').lazy_load({paths = '~/.vim/custom_snips/lua_snippets'})
 
 -- Enable autotriggered snippets
-require('luasnip').setup({
-    enable_autosnippets = true,
-})
+require('luasnip').setup({ enable_autosnippets = true, })
 
 -- link math templates
 luasnip.filetype_extend('rmd', { 'math' })
@@ -342,9 +396,11 @@ cmp.setup({
     { name = 'path' },
   },{
     { name = 'buffer' },
-    },{
-    { name = 'nvim_lsp' },
-  })
+    }
+    -- {
+    -- { name = 'nvim_lsp' },
+  -- }
+    )
 })
 
 -- Set configuration for specific filetype.
@@ -381,27 +437,27 @@ cmp.setup.cmdline(':', {
 
 ----- LSP settings {{{
 -- vim.lsp.set_log_level(“OFF”)
-local lsp = require 'lspconfig'
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-local words = {}
-for word in io.open('/Users/chanhyuk/.vim/spell/en.utf-8.add', 'r'):lines() do 
-  table.insert(words, word)
-end
-
-lsp.ltex.setup{
-  capabilities = capabilities,
-  settings = {
-    ltex = {
-      dictionary = {
-          ['en'] = words,
-          ['en-US'] = words,
-      }
-    }
-  }
-}
+-- local lsp = require 'lspconfig'
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+--
+-- local words = {}
+-- for word in io.open('/Users/chanhyuk/.vim/spell/en.utf-8.add', 'r'):lines() do 
+--   table.insert(words, word)
+-- end
+--
+-- lsp.ltex.setup{
+--   capabilities = capabilities,
+--   settings = {
+--     ltex = {
+--       dictionary = {
+--           ['en'] = words,
+--           ['en-US'] = words,
+--       }
+--     }
+--   }
+-- }
 -- lsp.pyright.setup{capabilities = capabilities}
--- -- lsp.ccls.setup{capabilities = capabilities}
+-- lsp.ccls.setup{capabilities = capabilities}
 -- lsp.r_language_server.setup{capabilities = capabilities}
 -- lsp.texlab.setup{
 --     enabled = {'tex', 'bibtex'},
@@ -437,9 +493,11 @@ end
 
 -- configure autopairs
 autopairs.setup({
+  -- disable_filetype = { 'TelescopePrompt', 'spectre_panel' },
   check_ts = true, -- Enable treesitter
   ts_config = {
     lua = { 'string', 'source' }, -- Don't add pairs in lua string treesitter nodes
+    markdown = { 'latex_block' },
     javascript = { 'template_string' }, -- Don't add pairs in JavaScript template_string treesitter nodes
     java = false, -- Don't check treesitter on Java
   },

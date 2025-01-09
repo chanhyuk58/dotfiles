@@ -6,10 +6,10 @@
 -- })
 
 vim.opt_local.cole = 2
+vim.opt_local.columns=100
 -- vim.opt_local.numberwidth = 10
 -- vim.opt_local.colorcolumn="0"
 -- vim.opt_local.listchars={}
--- vim.opt_local.columns=81
 
 ----- Settings for Indent Blank Line
 -- no line for the 
@@ -20,10 +20,10 @@ hooks.register(
 )
 
 ----- Set Wrapwidth when entering a buffer with the filetype
-vim.api.nvim_create_autocmd({"BufEnter"},
-    {
-        callback = function()
-            vim.cmd(":Wrapwidth 100")
-        end,
-        group = autocmd_group,
-    })
+-- vim.api.nvim_create_autocmd({"BufEnter"},
+--     {
+--         callback = function()
+--             vim.cmd(":Wrapwidth 100")
+--         end,
+--         group = autocmd_group,
+--     })
