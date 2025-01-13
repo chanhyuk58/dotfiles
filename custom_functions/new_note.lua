@@ -4,14 +4,17 @@ function new_note()
 
     -- Set title based on date_time and input
     local title
+    local tag
     if input and input ~= "" then
-      title = os.date("%Y%m%d%H%M%S") .. "_" .. input:gsub(" ", "_")
+      filepath = vim.fn.expand("/Users/chanhyuk/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian/Fleeting/" .. input:gsub(" ", "_") .. "_" .. os.date("%Y%m%d%H%M%S") .. ".md")
+      title = input
+      tag = ''
     else
       title = os.date("%Y-%m-%d")
+      filepath = vim.fn.expand("/Users/chanhyuk/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian/Fleeting/" .. title .. ".md")
+      tag = 'Diary'
     end
 
-    -- Define file path
-    local filepath = vim.fn.expand("/Users/chanhyuk/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian/" .. title .. ".md")
 
     -- Open the file using :edit
     vim.cmd("edit " .. filepath)
@@ -26,6 +29,7 @@ function new_note()
         'created: '..os.date('%Y-%m-%d %H:%M:%S'),
         'modified: ',
         'tags: ',
+        '    - ' .. tag,
         '---',
         '# '.. title
       })

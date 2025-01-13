@@ -97,7 +97,7 @@ return {
   parse_snippet({ trig = "cb", name = "Cube ^3" }, "^3"),
   parse_snippet({ trig = "sr", name = "Square ^2" }, "^2"),
 
-  parse_snippet({ trig = "ex", name = "exists" }, "\\exists "),
+  parse_snippet({ trig = "Ex", name = "exists" }, "\\exists "),
   parse_snippet({ trig = "AA", name = "forall" }, "\\forall"),
   parse_snippet({ trig = "xnn", name = "xn" }, "x_{n}"),
   parse_snippet({ trig = "ynn", name = "yn" }, "y_{n}"),
