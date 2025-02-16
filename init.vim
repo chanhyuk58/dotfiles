@@ -5,23 +5,19 @@ set runtimepath^=~/.vim
 call plug#begin('~/.vim/plugged')
     " ----- LSP
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  "Plug 'neovim/nvim-lspconfig'
     " ----- nvim-cmp
-  "Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/cmp-cmdline'
   Plug 'hrsh7th/nvim-cmp'
     "----- luasnip
-  Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'}
+  Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
-    " ----- nabla.nvim
-  "Plug 'jbyuki/nabla.nvim'
     "----- telescope
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
   Plug 'nvim-telescope/telescope-file-browser.nvim'
-  Plug '~/.vim/plugged/telescope-bibtex_ch.nvim'
+  Plug 'nvim-telescope/telescope-bibtex.nvim'
     " ----- Git
   Plug 'tpope/vim-fugitive'
   Plug 'lewis6991/gitsigns.nvim'
@@ -30,8 +26,8 @@ call plug#begin('~/.vim/plugged')
     " ----- indentline
   Plug 'lukas-reineke/indent-blankline.nvim'
     " ----- tags
-  Plug 'ludovicchabant/vim-gutentags'
-  Plug 'majutsushi/tagbar'
+  "Plug 'ludovicchabant/vim-gutentags'
+  "Plug 'majutsushi/tagbar'
     " ----- REPL
   Plug 'jpalardy/vim-slime'
     " ----- autopair brackets
@@ -40,8 +36,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-obsession'
     " ----- nvim-web-devicons
   Plug 'nvim-tree/nvim-web-devicons'
-    " ----- wrapwidth
-  "Plug 'rickhowe/wrapwidth'
     " ----- images.nvim
   Plug '3rd/image.nvim'
     " ----- markdown
@@ -49,7 +43,6 @@ call plug#begin('~/.vim/plugged')
     " ----- Kitty navigator
   Plug 'MunsMan/kitty-navigator.nvim'
 call plug#end()
-"source ~/.vim/autoload/vimux_plus.vim
 " }}}
 
 " ----- Basic settings {{{
@@ -129,16 +122,8 @@ augroup remember_folds
 augroup END
 " }}}
 
-" ----- vim-gutentags{{{
-let g:gutentags_enabled=0
-"}}}
-
 " ----- Theme {{{
 colorscheme seoul256-light
-"highlight! DiagnosticUnderlineError gui=undercurl guifg=red
-"highlight! DiagnosticUnderlineWarn gui=undercurl guifg=orange
-"highlight! DiagnosticUnderlineInfo gui=undercurl guifg=lightred
-"highlight! DiagnosticUnderlineHint gui=undercurl guifg=green
 " }}}
 
 " ----- Remember the cursor position {{{
@@ -187,7 +172,7 @@ let g:slime_no_mappings=1
         " -- C
         autocmd FileType c nmap <buffer><silent> <C-T> :!clang bufname('%') -o '%:t:r' && ./'%:t:r' <CR>
         "" -- Tex
-        autocmd FileType tex nmap <buffer> <C-T> :!latexmk -lualatex -quiet '%:p'<CR>
+        autocmd FileType tex nmap <buffer> <C-T> :!latexmk -pdflatex -quiet '%:p'<CR>
         autocmd FileType tex nmap <buffer> <C-C> :!latexmk -c '%:p'<CR>
         "" -- Rmd
         autocmd FileType Rmd,rmd nnoremap <C-T> :!R -e "rmarkdown::render('%:p')"<CR>
@@ -200,7 +185,7 @@ let g:slime_no_mappings=1
         autocmd FileType python,r,Rmd,rmd nmap ,; <Plug>SlimeParagraphSend
     " }}}
     " --- erase search register
-    nnoremap <leader>e <esc>:let @/=""<CR>
+    nnoremap <leader>e <esc>:nohl<CR>
     " --- nabla
     "nnoremap ,s :lua require("nabla").popup()<CR>
     " --- telescope
@@ -227,14 +212,43 @@ let g:slime_no_mappings=1
 lua<<EOF
 dofile('/Users/chanhyuk/.vim/custom_functions/new_note.lua')
 
+----- kitty-navigator {{{
+require('kitty-navigator').setup({keybindings = {}})
+--}}}
+
 ----- markview.nvim {{{
+
 require('markview').setup({
-    filetypes = { 'markdown', 'quarto', 'rmd', 'tex' },
-    -- ignore_modes = { 'n', 'i', },
-    hybrid_modes = { 'n', 'i', 'v' },
+    -- headings = presets.simple,
+    markdown = {
+      headings = {
+        enable = false,
+        heading_1 = { style = 'simple' },
+        heading_2 = { style = 'simple' },
+        heading_3 = { style = 'simple' },
+      },
+      list_items = {
+        enable = false,
+        indent_size = 0,
+        shift_width = 2,
+      },
+    },
+    preview = {
+      filetypes = { 'markdown', 'quarto', 'rmd' },
+      hybrid_modes = { 'n', 'i', 'v' },
+    },
     latex = {
-        inline = { enable = true }
-        },
+      inlines = { 
+        enable = true,
+        hl = ''
+      }
+    },
+    code_blocks = {
+        enable = true,
+        pad_amount = 0,
+        min_width = 0,
+        style = 'simple'
+        }
 });
 --}}}
 
@@ -247,9 +261,9 @@ require('image').setup({
       enabled = true,
       clear_in_insert_mode = false,
       download_remote_images = false,
-      only_render_image_at_cursor = false,
+      only_render_image_at_cursor = true,
       floating_windows = false, -- if true, images will be rendered in floating markdown windows
-      filetypes = { 'markdown', 'rmd', 'tex' }, -- markdown extensions (ie. quarto) can go here
+      filetypes = { 'markdown', 'rmd' }, -- markdown extensions (ie. quarto) can go here
     },
     html = {
       enabled = false,
@@ -295,7 +309,6 @@ require'nvim-treesitter.configs'.setup {
   auto_install = false,
   highlight = {
     enable = true,
-    -- disable = { 'markdown' },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
       local max_filesize = 100 * 1024 -- 100 KB
@@ -349,6 +362,9 @@ cmp.setup({
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
+  view = {
+    docs = { auto_open = false },
+  },
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -395,12 +411,8 @@ cmp.setup({
   },{
     { name = 'path' },
   },{
-    { name = 'buffer' },
-    }
-    -- {
-    -- { name = 'nvim_lsp' },
-  -- }
-    )
+    { name = 'buffer'},
+  })
 })
 
 -- Set configuration for specific filetype.
@@ -424,65 +436,19 @@ cmp.setup.cmdline({ '/', '?' }, {
   }
 })
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- Source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
     { name = 'cmdline' }
-  })
+  }, {
+    { name = 'buffer' }
+     }
+  )
 })
 --}}}
-
------ LSP settings {{{
--- vim.lsp.set_log_level(“OFF”)
--- local lsp = require 'lspconfig'
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
---
--- local words = {}
--- for word in io.open('/Users/chanhyuk/.vim/spell/en.utf-8.add', 'r'):lines() do 
---   table.insert(words, word)
--- end
---
--- lsp.ltex.setup{
---   capabilities = capabilities,
---   settings = {
---     ltex = {
---       dictionary = {
---           ['en'] = words,
---           ['en-US'] = words,
---       }
---     }
---   }
--- }
--- lsp.pyright.setup{capabilities = capabilities}
--- lsp.ccls.setup{capabilities = capabilities}
--- lsp.r_language_server.setup{capabilities = capabilities}
--- lsp.texlab.setup{
---     enabled = {'tex', 'bibtex'},
---     require('cmp_nvim_lsp').default_capabilities{
---         filetypes = {'tex', 'bib',},
---             texlab = {
---                 build = {
---                     executable = 'latexmk',
---                     args = {'-pdf', '-pv', '-interaction=nonstopmode', '-synctex=1', '%f'},
---                     onSave = true,
---                     -- isContinuous = true
---                 },
---                 chktex = {
---                     onOpenAndSave = true
---                 },
---                 forwardSearch = {
---                     executable = 'open',
---                     args = {
---                         '-g', '-a skim'
---                     }
---                 }
---             }
---     }
--- }
--- }}}
 
 ----- autopairs settings {{{
 -- Import nvim-autopairs safely
@@ -497,7 +463,8 @@ autopairs.setup({
   check_ts = true, -- Enable treesitter
   ts_config = {
     lua = { 'string', 'source' }, -- Don't add pairs in lua string treesitter nodes
-    markdown = { 'latex_block' },
+    markdown = { 'inline_formula', 'displayed_equation' },
+    tex = {'inline_formula', 'displayed_equation'},
     javascript = { 'template_string' }, -- Don't add pairs in JavaScript template_string treesitter nodes
     java = false, -- Don't check treesitter on Java
   },
@@ -525,6 +492,8 @@ vim.diagnostic.config({
 -- }}}
 
 ----- telescope settings {{{
+local bibtex_actions = require('telescope-bibtex.actions')
+local bibtex_add = dofile('/Users/chanhyuk/.vim/custom_functions/bibtex_add.lua')
 require('telescope').setup {
   defaults = {
     layout_strategy = 'flex', -- flex automatically decide vertical and horizontal mode
@@ -541,15 +510,22 @@ require('telescope').setup {
     grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
     initial_mode = 'normal',
+    path_display = {
+        shorten = 2
+        }
   },
   extensions = {
     file_browser = {
-      hijack_netrw = true,
+      grouped = true,
+      depth = 3,
+      auto_depth = true,
       follow_symlinks = true,
+      display_stat = {},
+      hijack_netrw = true,
       git_status = true,
       dir_icon = '󰉖', -- default icon is a bit wide
       mappings = {
-        ['i'] = { -- normal mode
+        ['i'] = { -- insert mode
           ['<bs>'] = false, -- unlink backspace behavior 'go to the parent dir' 
           ['<C-n>'] = function(prompt_bufnr)
             local action_state = require 'telescope.actions.state'
@@ -567,33 +543,18 @@ require('telescope').setup {
             new_note(get_target_dir(finder) .. '/')
           end
           },
-        ['n'] = {
-          ['n'] = function(prompt_bufnr)
-            local action_state = require 'telescope.actions.state'
-            local current_picker = action_state.get_current_picker(prompt_bufnr)
-            local finder = current_picker.finder
-            local get_target_dir = function(finder)
-              local entry_path
-              if finder.files == false then
-                local entry = action_state.get_selected_entry()
-                entry_path = entry and entry.value -- absolute path
-              end
-              return finder.files and finder.path or entry_path
-            end
-            require 'telescope.actions'.close(prompt_bufnr)
-            new_note(get_target_dir(finder) .. '/')
-          end
-          }
         }
       },
     bibtex = {
       -- Depth for the *.bib file
       depth = 1,
       -- Custom format for citation label
-      custom_formats = {},
+      -- custom_formats = {
+      --     { id = 'obsidian', cite_marker = '[%s](../Reading_Notes/%s.md)'}
+      --     },
       -- Format to use for citation label.
       -- Try to match the filetype by default, or use 'plain'
-      format = '',
+      -- format = '',
       -- Path to global bibliographies (placed outside of the project)
       global_files = {'/Users/chanhyuk/Documents/MyLibrary.bib'},
       -- Define the search keys to use in the picker
@@ -609,9 +570,19 @@ require('telescope').setup {
       context = false,
       -- Fallback to global/directory .bib files if context not found
       -- This setting has no effect if context = false
-      context_fallback = true,
+      context_fallback = false,
       -- Wrapping in the preview window is disabled by default
       wrap = false,
+      mappings = {
+        n = {
+          ['<CR>'] = bibtex_add.citation_note(),
+          ['<C-c>'] = bibtex_actions.key_append('%s'),
+        },
+        i = {
+          ['<CR>'] = bibtex_add.citation_note(),
+          ['<C-c>'] = bibtex_actions.key_append('%s'),
+        },
+      },
     },
   }
 }
