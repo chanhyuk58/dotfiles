@@ -44,7 +44,7 @@ return {
   parse_snippet({ trig = "pmat", name = "pmat" }, "\\begin{pmatrix} $1 \\end{pmatrix}$0"),
 
   parse_snippet(
-    { trig = "lrb", name = "left( right)" },
+    { trig = "lr(", name = "left( right)" },
     "\\left( ${1:${TM_SELECTED_TEXT}} \\right)$0"
   ),
   parse_snippet(
@@ -52,7 +52,7 @@ return {
     "\\left| ${1:${TM_SELECTED_TEXT}} \\right|$0"
   ),
   parse_snippet(
-    { trig = "lrs", name = "left[ right]" },
+    { trig = "lr[", name = "left[ right]" },
     "\\left[ ${1:${TM_SELECTED_TEXT}} \\right]$0"
   ),
   parse_snippet(
@@ -60,7 +60,7 @@ return {
     "\\left< ${1:${TM_SELECTED_TEXT}} \\right>$0"
   ),
   parse_snippet(
-    { trig = "lrc", name = "left\\{ right\\}" },
+    { trig = "lr{", name = "left\\{ right\\}" },
     "\\left\\{ ${1:${TM_SELECTED_TEXT}} \\right\\\\}$0"
   ),
   parse_snippet(

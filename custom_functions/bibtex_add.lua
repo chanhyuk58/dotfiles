@@ -1,7 +1,7 @@
 --[[
-This lua script works with telescope-bibtex, add two additional functions:  
-1) Create a markdown note for the selected bibliography. 
-2) Open pdf file that is linked with the bibliography (still needs more work to run properly).
+This lua script works with telescope-bibtex, and adds two additional functions:  
+  1) Create a markdown note for the selected bibliography. 
+  2) Open pdf file that is linked with the bibliography (still needs more work to run properly).
 ]]--
 
 package.path = package.path .. ";/Users/chanhyuk/.vim/plugged/telescope-bibtex.nvim/lua/"
@@ -46,22 +46,15 @@ return {
                 '    - Research/reading',
                 '---',
                 '# '..citeKey,
-                '## Quotes',
+                '## Research Question',
                 '',
-                '## Summary',
-                '### Question',
+                '## Theory',
                 '',
-                '### Literature Review',
+                '## Design and Data',
                 '',
-                '### Argument',
+                '## Results',
                 '',
-                '### Theory',
-                '',
-                '### Empirical Strategy',
-                '',
-                '### Results',
-                '',
-                '## Comment'
+                '## Comments'
             }
       vim.cmd('e '..fileName)
       local contentCount = vim.api.nvim_buf_line_count(0)
@@ -84,7 +77,7 @@ return {
       local pubPathDecoded = from_base64(pubPath)
       print(pubPathDecoded)
       -- print('open -g -a skim '..pubPathDecoded)
-      -- os.execute('open -g -a skim '..pubPathDecoded)
+      os.execute('open -g -a skim '..pubPathDecoded)
     end
   end
 }
