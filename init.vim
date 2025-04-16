@@ -1,4 +1,3 @@
-" vim:foldmethod=marker
 set runtimepath^=~/.vim
 
 " ----- Plugins {{{
@@ -30,16 +29,16 @@ call plug#begin('~/.vim/plugged')
   "Plug 'majutsushi/tagbar'
     " ----- REPL
   Plug 'jpalardy/vim-slime'
-    " ----- autopair brackets
+    " ----- brackets
   Plug 'windwp/nvim-autopairs'
     " ----- vim obsession
   Plug 'tpope/vim-obsession'
     " ----- nvim-web-devicons
   Plug 'nvim-tree/nvim-web-devicons'
     " ----- images.nvim
-  Plug '3rd/image.nvim'
+  "Plug '3rd/image.nvim'
     " ----- markdown
-  Plug 'OXY2DEV/markview.nvim'
+  "Plug 'OXY2DEV/markview.nvim'
     " ----- Kitty navigator
   Plug 'MunsMan/kitty-navigator.nvim'
 call plug#end()
@@ -83,7 +82,7 @@ let g:tex_flavor = "latex"
 "set titlestring=%{pathshorten(expand('%:p'))}
 set autochdir
 set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
-"set termguicolors
+set termguicolors
 " }}}
 
 " ----- line number auto toggle {{{
@@ -184,7 +183,7 @@ let g:slime_no_mappings=1
         autocmd FileType python,r,Rmd,rmd xmap ,l <Plug>SlimeRegionSend
         autocmd FileType python,r,Rmd,rmd nmap ,; <Plug>SlimeParagraphSend
     " }}}
-    " --- erase search register
+    " --- no highlight
     nnoremap <leader>e <esc>:nohl<CR>
     " --- nabla
     "nnoremap ,s :lua require("nabla").popup()<CR>
@@ -192,6 +191,7 @@ let g:slime_no_mappings=1
     nnoremap ,bb :Telescope buffers<CR>
     nnoremap ,off :Telescope file_browser path=/Users/chanhyuk/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian<CR>
     nnoremap ,ff :Telescope file_browser<CR>
+    nnoremap ,fg :Telescope live_grep<CR>
     nnoremap ,bib :Telescope bibtex<CR>
     " --- luasnips
     nnoremap ,se :lua require("luasnip.loaders").edit_snippet_files(table)<CR>
@@ -216,73 +216,81 @@ dofile('/Users/chanhyuk/.vim/custom_functions/new_note.lua')
 require('kitty-navigator').setup({keybindings = {}})
 --}}}
 
------ markview.nvim {{{
+-- ----- markview.nvim {{{
+--
+-- require('markview').setup({
+--     -- headings = presets.simple,
+--     markdown = {
+--       headings = {
+--         enable = false,
+--         heading_1 = { style = 'simple' },
+--         heading_2 = { style = 'simple' },
+--         heading_3 = { style = 'simple' },
+--       },
+--       list_items = {
+--         enable = false,
+--         indent_size = 0,
+--         shift_width = 2,
+--       },
+--       code_blocks = {
+--           enable = false,
+--           pad_amount = 0,
+--           min_width = 0,
+--           -- style = 'simple',
+--       }
+--     },
+--     preview = {
+--       enable = true,
+--       filetypes = { 'markdown', 'quarto', 'rmd' },
+--       hybrid_modes = { 'n', 'i', 'v' },
+--       linewise_hybrid_mode = false,
+--     },
+--     latex = {
+--       inlines = { 
+--         enable = true,
+--         hl = '',
+--         },
+--       blocks = {
+--           enable = false,
+--       }
+--     },
+--     yaml = {
+--         enable = false,
+--         }
+-- });
+-- --}}}
 
-require('markview').setup({
-    -- headings = presets.simple,
-    markdown = {
-      headings = {
-        enable = false,
-        heading_1 = { style = 'simple' },
-        heading_2 = { style = 'simple' },
-        heading_3 = { style = 'simple' },
-      },
-      list_items = {
-        enable = false,
-        indent_size = 0,
-        shift_width = 2,
-      },
-    },
-    preview = {
-      filetypes = { 'markdown', 'quarto', 'rmd' },
-      hybrid_modes = { 'n', 'i', 'v' },
-    },
-    latex = {
-      inlines = { 
-        enable = true,
-        hl = ''
-      }
-    },
-    code_blocks = {
-        enable = true,
-        pad_amount = 0,
-        min_width = 0,
-        style = 'simple'
-        }
-});
---}}}
-
------ image.nvim {{{
-require('image').setup({
-  backend = 'kitty',
-  processor = 'magick_cli', -- or 'magick_cli'
-  integrations = {
-    markdown = {
-      enabled = true,
-      clear_in_insert_mode = false,
-      download_remote_images = false,
-      only_render_image_at_cursor = true,
-      floating_windows = false, -- if true, images will be rendered in floating markdown windows
-      filetypes = { 'markdown', 'rmd' }, -- markdown extensions (ie. quarto) can go here
-    },
-    html = {
-      enabled = false,
-    },
-    css = {
-      enabled = false,
-    },
-  },
-  max_width = nil,
-  max_height = nil,
-  max_width_window_percentage = nil,
-  max_height_window_percentage = 50,
-  window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
-  window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
-  editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
-  tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
-  hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' }, -- render image files as images when opened
-})
--- }}}
+-- ----- image.nvim {{{
+-- require('image').setup({
+--   backend = 'kitty',
+--   processor = 'magick_cli', -- or 'magick_cli'
+--   integrations = {
+--     markdown = {
+--       enabled = false,
+--       clear_in_insert_mode = false,
+--       download_remote_images = false,
+--       only_render_image_at_cursor = true,
+--       floating_windows = false, -- if true, images will be rendered in floating markdown windows
+--       filetypes = { 'markdown', 'rmd' }, -- markdown extensions (ie. quarto) can go here
+--     },
+--     html = {
+--       enabled = false,
+--     },
+--     css = {
+--       enabled = false,
+--     },
+--   },
+--   max_width = nil,
+--   max_height = nil,
+--   max_width_window_percentage = nil,
+--   max_height_window_percentage = 50,
+--   window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+--   window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
+--   editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
+--   tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+--   hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' }, -- render image files as images when opened
+-- })
+-- -- }}}
 
 ----- gitsigns {{{
 require('gitsigns').setup()
