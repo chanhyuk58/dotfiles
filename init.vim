@@ -82,14 +82,14 @@ let g:tex_flavor = "latex"
 "set titlestring=%{pathshorten(expand('%:p'))}
 set autochdir
 set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
-set termguicolors
+"set termguicolors
 " }}}
 
 " ----- line number auto toggle {{{
  :augroup numbertoggle
  :  autocmd!
- :  autocmd BufEnter,FocusGained,InsertLeave * let &statuscolumn='%s%r%='
- :  autocmd BufLeave,FocusLost,InsertEnter   * let &statuscolumn='%s%l%='
+ :  autocmd BufEnter,FocusGained,InsertLeave * let &statuscolumn='%s%{v:relnum}%='
+ :  autocmd BufLeave,FocusLost,InsertEnter   * let &statuscolumn='%s%{v:lnum}%='
  :augroup END
 " }}}
 
@@ -173,8 +173,10 @@ let g:slime_no_mappings=1
         "" -- Tex
         autocmd FileType tex nmap <buffer> <C-T> :!latexmk -pdflatex -quiet '%:p'<CR>
         autocmd FileType tex nmap <buffer> <C-C> :!latexmk -c '%:p'<CR>
+        autocmd FileType tex nmap <buffer> <C-O> :!open -ga skim '%:p:r.pdf'<CR>
         "" -- Rmd
         autocmd FileType Rmd,rmd nnoremap <C-T> :!R -e "rmarkdown::render('%:p')"<CR>
+        autocmd FileType tex nmap <buffer> <C-O> :!open -ga skim '%:p:r.pdf'<CR>
         " -- md
         "autocmd FileType md,markdown nnoremap <C-T> :!pandoc % -o %:r.pdf<CR>
         " -- Python and R interpreter
@@ -185,8 +187,6 @@ let g:slime_no_mappings=1
     " }}}
     " --- no highlight
     nnoremap <leader>e <esc>:nohl<CR>
-    " --- nabla
-    "nnoremap ,s :lua require("nabla").popup()<CR>
     " --- telescope
     nnoremap ,bb :Telescope buffers<CR>
     nnoremap ,off :Telescope file_browser path=/Users/chanhyuk/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian<CR>
