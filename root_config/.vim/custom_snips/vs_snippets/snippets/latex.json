@@ -1,0 +1,443 @@
+{
+    "Beamer": {
+        "prefix": ["beamer"],
+        "body": [
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Define Article %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "\\documentclass[xcolor=dvipsnames]{beamer}",
+            "\\usetheme{presentation}",
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Using Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "%\\usepackage[cjk]{kotex}",
+            "%\\usepackage{listings}",
+            "%\\usepackage{tikz}",
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title & Author %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "\\title{${1:Title}}",
+            "\\subtitle{${2:Subtitle}}",
+            "\\author{${3:Chanhyuk Park}}",
+            "\\institute{${4:Washington University in St. Louis}}",
+            "\\date{$5}",
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "\\begin{document}",
+            "   \\frame{\\\\titlepage}",
+            "   $0",
+            "%\\begin{frame}[allowframebreaks]{References}\\\\scriptsize",
+            "%\\bibliographystyle{apsr}",
+            "%\\bibliography{/Users/chanhyuk/Documents/MyLibrary}",
+            "%\\end{frame}",
+            "\\end{document}"
+        ]
+    },
+    "Template": {
+        "prefix": ["template"],
+        "body": [
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Define Article %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "\\documentclass[10pt]{extarticle}",
+            "\\usepackage{paper}",
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Using Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "\\usepackage{geometry}",
+            "\\geometry{",
+            "    letterpaper,",
+            "    %landscape,",
+            "    %margin=1in",
+            "}",
+            "%\\usepackage[cjk]{kotex}",
+            "%\\usepackage{listings}",
+            "%\\usepackage{tikz}",
+            "",
+            "\\usepackage{setspace}",
+            "\\doublespacing",
+            "",
+            "\\begin{document}",
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title & Author %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "\\title{${1:Title}}",
+            "\\author{${2:Chanhyuk Park}}",
+            "\\date{$3}",
+            "%\\thanks{$3}",
+            "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+            "    \\maketitle",
+            "",
+            "    $0",
+            "\\bibliographystyle{apsr}",
+            "\\bibliography{/Users/chanhyuk/Documents/MyLibrary}",
+            "\\end{document}"
+        ]
+    },
+    "Large Summation": {
+        "prefix": ["sumlarge", "\\sumlarge"],
+        "body": ["\\displaystyle\\sum_{$1}^{$2}$3"],
+        "description": "Insert a large summation notation."
+    },
+    "Inline Summation": {
+        "prefix": ["suminline", "\\suminline"],
+        "body": ["\\sum_{$1}^{$2}$3"],
+        "description": "Insert an inline summation notation, (only in the cases when the environment is inline math environment)."
+    },
+    "Section": {
+        "prefix": ["section", "\\section"],
+        "body": ["\\section{$1}$0"],
+        "description": "Insert a new section."
+    },
+    "Subsection": {
+        "prefix": ["subsection", "\\subsection"],
+        "body": ["\\subsection{$1}$0"],
+        "description": "Insert a new subsection."
+    },
+    "Header": {
+        "prefix": ["header", "\\header", "##"],
+        "body": "\\section*{$1}$0",
+        "description": "Insert a section without index."
+    },
+    "Header Small": {
+        "prefix": ["headersmall", "\\headersmall", "###"],
+        "body": "\\subsection*{$1}$0",
+        "description": "Insert a subsection without index."
+    },
+    "Italic Text": {
+        "prefix": ["italic", "\\italic", "*"],
+        "body": "\\textit{$1}$0",
+        "description": "Insert italic text."
+    },
+    "Bold Text": {
+        "prefix": ["bold", "\\bold", "**"],
+        "body": "\\textbf{$1}$0",
+        "description": "Insert bold text."
+    },
+    "Bold Italic Text": {
+        "prefix": ["bolditalic", "\\bolditalic", "***"],
+        "body": "\\textbf{\\textit{$1}}$0",
+        "description": "Insert bold italic text."
+    },
+    "emph": {
+        "prefix": "emph",
+        "body": "\\emph{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "emphasis font"
+    },
+    "textsf": {
+        "prefix": "sans",
+        "body": "\\textsf{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "sans serif font"
+    },
+    "texttt": {
+        "prefix": "type",
+        "body": "\\texttt{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "typewriter font"
+    },
+    "textsl": {
+        "prefix": "slanted",
+        "body": "\\textsl{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "slanted font"
+    },
+    "textsc": {
+        "prefix": "smallcap",
+        "body": "\\textsc{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "smallcaps font"
+    },
+    "underline": {
+        "prefix": "underline",
+        "body": "\\underline{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "Underline text"
+    },
+    "uppercase": {
+        "prefix": "uppercase",
+        "body": "\\uppercase{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "Make text uppercase (all caps)"
+    },
+    "lowercase": {
+        "prefix": "lowercase",
+        "body": "\\lowercase{${1:${TM_SELECTED_TEXT:text}}}",
+        "description": "Make text lowercase (no caps)"
+    },
+    "Itemize": {
+        "prefix": ["- ", "\\itemize", "itemize"],
+        "body": ["\\begin{itemize}", "\t\\item $1", "\\end{itemize}$0"]
+    },
+    "Enumerate": {
+        "prefix": ["- ", "\\enumerate", "enumerate"],
+        "body": ["\\begin{enumerate}", "\t\\item $1", "\\end{enumerate}$0"]
+    },
+    "Up": {
+        "prefix": ["to", "\\to"],
+        "body": ["^ {$1}$0"],
+        "description": "Superscript notation, as well as the power notation."
+    },
+    "Theorem": {
+        "prefix": ["theorem", "\\theorem"],
+        "body": [
+            "\\begin{theorem}[${1:name of the theorem}]",
+            "\t$0",
+            "\\end{theorem}"
+        ],
+        "description": "Insert a theorem, whose style is already defined in the template. The serial number is automatically generated according to the section."
+    },
+    "Problem": {
+        "prefix": ["problem", "\\problem"],
+        "body": [
+            "\\begin{problem}[${1:name of the problem}]",
+            "\t$0",
+            "\\end{problem}"
+        ],
+        "description": "Insert a problem, whose style is already defined in the template. The serial number is automatically generated according to the section."
+    },
+    "Indent": {
+        "prefix": ["tab", "\\tab"],
+        "body": ["\\indent "],
+        "description": "The equivalent of \"\\t\", also known as \"Tab\""
+    },
+    "Definition": {
+        "prefix": ["definition", "\\definition"],
+        "body": [
+            "\\begin{definition}[${1:name of the definition}]",
+            "\t$0",
+            "\\end{definition}"
+        ],
+        "description": "Insert a definition, whose style is already defined in the template. The serial number is automatically generated according to the section."
+    },
+    "Proof": {
+        "prefix": ["proof", "\\proof"],
+        "body": [
+            "\\begin{proof}[Proof ${1:Other Information}]",
+            "\t$0",
+            "\\end{proof}"
+        ],
+        "description": "Insert a proof, whose style is already defined in the template. The serial number is automatically generated according to the section."
+    },
+    "Create 2D Plot environment": {
+        "prefix": ["plotenvironment2d", "\\plotenvironment2d"],
+        "body": [
+            "\\begin{tikzpicture}",
+            "\\begin{axis}[",
+            "legend pos=outer north east,",
+            "title=${1:Example},",
+            "axis lines =${2| box, left, middle, center, right, none|},",
+            "xlabel = \\$x\\$,",
+            "ylabel = \\$y\\$,",
+            "variable = t,",
+            "trig format plots = rad,",
+            "]",
+            "$3",
+            "\\end{axis}",
+            "\\end{tikzpicture}$0"
+        ],
+        "description": "Create a 2DPlot Environment of pgfplots. The style declarations are already included in the snippet."
+    },
+    "Plot 2D Graph": {
+        "prefix": ["plotgraph2d", "\\plotgraph2d"],
+        "body": [
+            "\\addplot [",
+            "\tdomain=${1:-10}:${2:10},",
+            "\tsamples=70,",
+            "\tcolor=${3:blue},",
+            "\t]",
+            "\t{${4:x^2 + 2*x + 1}};",
+            "\\addlegendentry{$${5:x^2 + 2x + 1}$}",
+            "$0"
+        ],
+        "description": "Plot a 2D Graph in the 2D graph environment, noted that this can also be used in the 3D environment."
+    },
+    "Plot Circle 2D": {
+        "prefix": ["plotcircle2d", "\\plotcircle2d"],
+        "body": [
+            "\\addplot [",
+            "\tdomain=0:2*3.14159265,",
+            "\tsamples=70,",
+            "\tcolor=${4:blue},",
+            "\t]",
+            "\t({${1:r}*cos(t)+${2:a}},{${1:r}*sin(t)+${3:b}});",
+            "\\addlegendentry{$(x-${2:a})^2+(y-${3:b})^2=${1:r}^2$}$0"
+        ],
+        "description": "Plot a 2D Circle in the 2D graph environment, noted that this can also be used in the 3D environment."
+    },
+    "Plot Line 2D": {
+        "prefix": ["plotline2d", "\\plotline2d"],
+        "body": [
+            "\\addplot [",
+            "\tdomain=${4:x1}:${5:x2},",
+            "\tsamples=70,",
+            "\tcolor=${3:blue},",
+            "\t]",
+            "\t{${1:a}*x+${2:b}};",
+            "\\addlegendentry{$ y=${1:a}x+${2:b}$}$0"
+        ],
+        "description": "Plot a 2D Line in the 2D graph environment, noted that this can also be used in the 3D environment."
+    },
+    "Plot Ellipse 2D": {
+        "prefix": ["plotellipse2d", "\\plotellipse2d"],
+        "body": [
+            "\\addplot [",
+            "\tdomain=0:2*3.14159265,",
+            "\tsamples=70,",
+            "\tcolor=${5:blue},",
+            "\t]",
+            "\t({${1:a}*cos(t)+${3:x}},{${2:b}*sin(t)+${4:y}});",
+            "\\addlegendentry{$\\frac{(x-${3:x})^2}{${1:a}^2}+\\frac{(y-${4:y})^2}{${2:b}^2}=1$}$0"
+        ],
+        "description": "Plot a 2D Ellipse in the 2D graph environment, noted that this can also be used in the 3D environment."
+    },
+    "Plot Quadratic Function 2D by Point": {
+        "prefix": [
+            "plotquadraticfunction2dbypoint",
+            "\\plotquadraticfunction2dbypoint"
+        ],
+        "body": [
+            "\\addplot [",
+            "\tdomain=${4:x1}:${5:x2},",
+            "\tsamples=70,",
+            "\tcolor=${6:blue},",
+            "\t]",
+            "\t{${1:a}*(x-${2:m})*(x-${2:m})+${3:b}};",
+            "\\addlegendentry{$ y=${1:a}(x-${2:m})^2+${3:b}$}$0"
+        ],
+        "description": "Plot a 2D graph of a quadratic function in the 2D graph environment by the given extrema, noted that this can also be used in the 3D environment."
+    },
+    "Plot Smooth Curve By Point Set": {
+        "prefix": ["plotsmoothcurvebypointset", "\\plotsmoothcurvebypointset"],
+        "body": [
+            "\\addplot+[smooth]",
+            "coordinates",
+            "{",
+            "${1:seperate the coordinates with spaces}",
+            "};$0"
+        ],
+        "description": "Plot a Smooth Curve by point set (2D)."
+    },
+    "Create 3D Plot Environment": {
+        "prefix": ["plotenvironment3d", "\\plotenvironment3d"],
+        "body": [
+            "\\begin{tikzpicture}",
+            "\\begin{axis}[",
+            "legend pos=outer north east,",
+            "title=${1:Example},",
+            "axis lines =${2| box, left, middle, center, right, none|},",
+            "colormap/${3|hot,hot2,jet,blackwhite,bluered,cool,greenyellow,redyellow,violet|},",
+            "xlabel = \\$x\\$,",
+            "ylabel = \\$y\\$,",
+            "zlabel = \\$z\\$,",
+            "variable = t,",
+            "trig format plots = rad,",
+            "]",
+            "$4",
+            "\\end{axis}",
+            "\\end{tikzpicture}$0"
+        ],
+        "description": "Create a 3DPlot Environment of pgfplots. The style declarations are already included in the snippet."
+    },
+    "Plot 3D Graph": {
+        "prefix": ["plotgraph3d", "\\plotgraph3d"],
+        "body": [
+            "\\addplot3[",
+            "\t${1|surf,mesh|},",
+            "\tsamples=50,",
+            "]",
+            "{${2:x^2+y^2}};",
+            "\\addlegendentry{\\$${3:x}\\$}$0"
+        ],
+        "description": "Plot a 3D Graph in the 3D graph environment created."
+    },
+    "Create Align* Environment in Text": {
+        "prefix": ["aligntext", "\\aligntext"],
+        "body": ["\\begin{align*}", "\t$1", "\\end{align*}$0"],
+        "description": "Create an align environment when the context is in the text environment."
+    },
+    "Insert Problem Solving Index": {
+        "prefix": ["problemindex", "\\problemindex"],
+        "body": ["\\noindent\\textbf{$1} $0"],
+        "description": "Insert problem solving index format."
+    },
+    "Insert Solution Notation": {
+        "prefix": ["solution", "\\solution"],
+        "body": ["\\textit{ Sol. }"],
+        "description": "Insert italic 'Sol.'"
+    },
+    "Chapter": {
+        "prefix": "cha",
+        "body": [
+            "\\chapter{$1} % (fold)",
+            "\\label{chap:${1/([a-zA-Z]+)|([^a-zA-Z]+)/${1:/downcase}${2:+_}/g}}",
+            "${0:$TM_SELECTED_TEXT}",
+            "% chapter $1 (end)"
+        ],
+        "description": "Chapter"
+    },
+    "Description": {
+        "prefix": "desc",
+        "body": [
+            "\\\\begin{description}",
+            "\t\\item[$1] $0",
+            "\\\\end{description}"
+        ],
+        "description": "Description"
+    },
+    "Definition": {
+        "prefix": "definition",
+        "body": [
+            "\\begin{definition}",
+            "\t$1",
+            "\t\\begin{displaymath}",
+            "\t\t$2",
+            "\t\\end{displaymath}",
+            "\t$3",
+            "\\end{definition}",
+            "$0"
+        ],
+        "description": "Add a definition"
+    },
+    "Table:Ref": {
+        "prefix": "table:ref",
+        "body": ["${1:Table}~\\ref{tab:$2}$0"],
+        "description": "Table Reference"
+    },
+    "Tabular": {
+        "prefix": "tab",
+        "body": [
+            "\\\\begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}",
+            "$0${2/((?<=[clr])([ |]*(c|l|r)))|./(?1: & )/g}",
+            "\\\\end{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}"
+        ],
+        "description": "Tabular"
+    },
+    "\\begin{}¡¦\\end{}": {
+        "prefix": "begin",
+        "body": [
+            "\\\\begin{${1:env}}",
+            "    ${1/(enumerate|itemize|list)|(description)|(.*)/${1:+\\item }${2:+\\item[] }${3:+ }/}$0",
+            "\\\\end{${1:env}}"
+        ],
+        "description": "Begin - End"
+    },
+    "Figure": {
+        "prefix": "figure",
+        "body": [
+            "\\begin{figure}",
+            "\t\\begin{center}",
+            "\t$1",
+            "\t\\end{center}",
+            "\t\\caption{$3}\\label{fig:$4}",
+            "\\end{figure}",
+            "$0"
+        ],
+        "description": "Add a figure"
+    },
+    "Includegraphics": {
+        "prefix": ["pics", "includegraphics"],
+        "body":"\t\\includegraphics[width=${1:0.95}\\textwidth]{../figures/$2}",
+        "description": "includegraphics"
+    },
+    "tikzpicture": {
+        "prefix": "tikz",
+        "body": "\\begin{tikzpicture}\n\t${0:${TM_SELECTED_TEXT}}\n\\end{tikzpicture}",
+        "description": "tikzpicture"
+    },
+    "Cite": {
+        "prefix": "cite",
+        "body": ["\\cite{$1}$0"],
+        "description": "Add a cite"
+    },
+    "Frame": {
+        "prefix": "frame",
+        "body": [
+            "\\begin{frame}{${1:frametitle}}",
+            "$0",
+            "\\end{frame}"
+        ],
+        "description": "Add a frame"
+    }
+}
