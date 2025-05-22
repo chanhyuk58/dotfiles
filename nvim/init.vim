@@ -12,11 +12,6 @@ call plug#begin('~/.config/root_config/.vim/plugged')
     "----- luasnip
   Plug 'L3MON4D3/LuaSnip'
   Plug 'saadparwaiz1/cmp_luasnip'
-    "----- telescope
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-telescope/telescope.nvim'
-  Plug 'nvim-telescope/telescope-file-browser.nvim'
-  Plug 'nvim-telescope/telescope-bibtex.nvim'
     " ----- Git
   Plug 'tpope/vim-fugitive'
   Plug 'lewis6991/gitsigns.nvim'
@@ -24,9 +19,6 @@ call plug#begin('~/.config/root_config/.vim/plugged')
   Plug 'lyokha/vim-xkbswitch'
     " ----- indentline
   Plug 'lukas-reineke/indent-blankline.nvim'
-    " ----- tags
-  "Plug 'ludovicchabant/vim-gutentags'
-  "Plug 'majutsushi/tagbar'
     " ----- REPL
   Plug 'jpalardy/vim-slime'
     " ----- brackets
@@ -35,10 +27,6 @@ call plug#begin('~/.config/root_config/.vim/plugged')
   Plug 'tpope/vim-obsession'
     " ----- nvim-web-devicons
   Plug 'nvim-tree/nvim-web-devicons'
-    " ----- images.nvim
-  "Plug '3rd/image.nvim'
-    " ----- markdown
-  "Plug 'OXY2DEV/markview.nvim'
     " ----- Kitty navigator
   Plug 'MunsMan/kitty-navigator.nvim'
 call plug#end()
@@ -75,14 +63,16 @@ set breakindent
 set encoding=utf-8
 set fileencoding=utf-8
 set signcolumn=yes
-set foldmethod=manual
+set foldmethod=marker
 set foldcolumn=0
 let g:tex_flavor = "latex"
-"set title
-"set titlestring=%{pathshorten(expand('%:p'))}
+set title
+set titlestring=%{pathshorten(expand('%:p'))}
 set autochdir
 set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
-"set termguicolors
+"let &t_ZH="\e[3m" " italic
+let &t_ZR="\e[23m" " italic or bold
+set termguicolors
 " }}}
 
 " ----- line number auto toggle {{{
@@ -122,7 +112,8 @@ augroup END
 " }}}
 
 " ----- Theme {{{
-colorscheme seoul256-light
+"colorscheme seoul256-light
+"colorscheme solarized
 " }}}
 
 " ----- Remember the cursor position {{{
@@ -145,12 +136,6 @@ fun LastMod()
 endfun
 " }}}
 
-" ----- (Ob)session {{{
-let g:session_dir = '~/.vim/session'
-exec 'nnoremap ,ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
-exec 'nnoremap ,sf :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
-" }}}
-
 " ----- XkbSwitch {{{
 if has('mac') && filereadable('/usr/local/lib/libInputSourceSwitcher.dylib')
     let g:XkbSwitchEnabled = 1
@@ -159,11 +144,12 @@ endif
 " }}}
 
 " ----- vim-slime {{{
-let g:slime_target="kitty"
+"let g:slime_target="kitty"
+let g:slime_target="tmux"
 "let g:slime_default_config={"pane_direction":"next"}
 "let g:slime_dont_ask_default = 1
 let g:slime_bracketed_paste=1
-let g:slime_no_mappings=1
+"let g:slime_no_mappings=1
 " }}}
 
 " ----- Key mapping{{{
@@ -189,12 +175,6 @@ let g:slime_no_mappings=1
     " }}}
     " --- no highlight
     nnoremap <leader>e <esc>:nohl<CR>
-    " --- telescope
-    nnoremap ,bb :Telescope buffers<CR>
-    nnoremap ,off :Telescope file_browser path=/Users/chanhyuk/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian<CR>
-    nnoremap ,ff :Telescope file_browser<CR>
-    nnoremap ,fg :Telescope live_grep<CR>
-    nnoremap ,bib :Telescope bibtex<CR>
     " --- luasnips
     nnoremap ,se :lua require("luasnip.loaders").edit_snippet_files(table)<CR>
     " --- new note
@@ -205,9 +185,6 @@ let g:slime_no_mappings=1
       if choice == 1 | call delete(expand('%:p')) | bd | endif
     endfun
     nnoremap <Leader>bd :call DeleteFileAndCloseBuffer()<CR>
-    " ----- tagbar toggle
-    nmap <F8> :TagbarToggle<CR> 
-    " let g:tagbar_left=1 " put tagbar on the left
 " }}}
 
 " ----- Settings in lua
@@ -217,82 +194,6 @@ dofile('/Users/chanhyuk/.config/root_config/.vim/custom_functions/new_note.lua')
 ----- kitty-navigator {{{
 require('kitty-navigator').setup({keybindings = {}})
 --}}}
-
--- ----- markview.nvim {{{
---
--- require('markview').setup({
---     -- headings = presets.simple,
---     markdown = {
---       headings = {
---         enable = false,
---         heading_1 = { style = 'simple' },
---         heading_2 = { style = 'simple' },
---         heading_3 = { style = 'simple' },
---       },
---       list_items = {
---         enable = false,
---         indent_size = 0,
---         shift_width = 2,
---       },
---       code_blocks = {
---           enable = false,
---           pad_amount = 0,
---           min_width = 0,
---           -- style = 'simple',
---       }
---     },
---     preview = {
---       enable = true,
---       filetypes = { 'markdown', 'quarto', 'rmd' },
---       hybrid_modes = { 'n', 'i', 'v' },
---       linewise_hybrid_mode = false,
---     },
---     latex = {
---       inlines = { 
---         enable = true,
---         hl = '',
---         },
---       blocks = {
---           enable = false,
---       }
---     },
---     yaml = {
---         enable = false,
---         }
--- });
--- --}}}
-
--- ----- image.nvim {{{
--- require('image').setup({
---   backend = 'kitty',
---   processor = 'magick_cli', -- or 'magick_cli'
---   integrations = {
---     markdown = {
---       enabled = false,
---       clear_in_insert_mode = false,
---       download_remote_images = false,
---       only_render_image_at_cursor = true,
---       floating_windows = false, -- if true, images will be rendered in floating markdown windows
---       filetypes = { 'markdown', 'rmd' }, -- markdown extensions (ie. quarto) can go here
---     },
---     html = {
---       enabled = false,
---     },
---     css = {
---       enabled = false,
---     },
---   },
---   max_width = nil,
---   max_height = nil,
---   max_width_window_percentage = nil,
---   max_height_window_percentage = 50,
---   window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
---   window_overlap_clear_ft_ignore = { 'cmp_menu', 'cmp_docs', '' },
---   editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
---   tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
---   hijack_file_patterns = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp', '*.avif' }, -- render image files as images when opened
--- })
--- -- }}}
 
 ----- gitsigns {{{
 require('gitsigns').setup()
@@ -490,113 +391,5 @@ autopairs.remove_rule('`')
 autopairs.remove_rule('```')
 -- Make autopairs and completion work together
 cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
--- }}}
-
------ diagnostic messages {{{
-vim.diagnostic.config({
-   virtual_text = false,
-   signs = false,
-   update_in_insert = false,
-   severity_sort = false,
-})
--- }}}
-
------ telescope settings {{{
-local bibtex_actions = require('telescope-bibtex.actions')
-local bibtex_add = dofile('/Users/chanhyuk/.vim/custom_functions/bibtex_add.lua')
-require('telescope').setup {
-  defaults = {
-    layout_strategy = 'flex', -- flex automatically decide vertical and horizontal mode
-    layout_config = {
-      horizontal = {
-          preview_width = 0.5,
-          },
-      vertical = {
-        preview_cutoff = 1,
-        preview_height = 0.4
-        }
-      },
-    file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-    grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
-    qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
-    initial_mode = 'normal',
-    path_display = {
-        shorten = 2
-        }
-  },
-  extensions = {
-    file_browser = {
-      grouped = true,
-      depth = 3,
-      auto_depth = true,
-      follow_symlinks = true,
-      display_stat = {},
-      hijack_netrw = true,
-      git_status = true,
-      dir_icon = '󰉖', -- default icon is a bit wide
-      mappings = {
-        ['i'] = { -- insert mode
-          ['<bs>'] = false, -- unlink backspace behavior 'go to the parent dir' 
-          ['<C-n>'] = function(prompt_bufnr)
-            local action_state = require 'telescope.actions.state'
-            local current_picker = action_state.get_current_picker(prompt_bufnr)
-            local finder = current_picker.finder
-            local get_target_dir = function(finder)
-              local entry_path
-              if finder.files == false then
-                local entry = action_state.get_selected_entry()
-                entry_path = entry and entry.value -- absolute path
-              end
-              return finder.files and finder.path or entry_path
-            end
-            require 'telescope.actions'.close(prompt_bufnr)
-            new_note(get_target_dir(finder) .. '/')
-          end
-          },
-        }
-      },
-    bibtex = {
-      -- Depth for the *.bib file
-      depth = 1,
-      -- Custom format for citation label
-      -- custom_formats = {
-      --     { id = 'obsidian', cite_marker = '[%s](../Reading_Notes/%s.md)'}
-      --     },
-      -- Format to use for citation label.
-      -- Try to match the filetype by default, or use 'plain'
-      -- format = '',
-      -- Path to global bibliographies (placed outside of the project)
-      global_files = {'/Users/chanhyuk/Documents/MyLibrary.bib'},
-      -- Define the search keys to use in the picker
-      search_keys = { 'author', 'year', 'title' },
-      -- Template for the formatted citation
-      citation_format = '{{author}}, ({{year}}), {{title}}.',
-      -- Only use initials for the authors first name
-      citation_trim_firstname = true,
-      -- Max number of authors to write in the formatted citation
-      -- following authors will be replaced by 'et al.'
-      citation_max_auth = 2,
-      -- Context awareness disabled by default
-      context = false,
-      -- Fallback to global/directory .bib files if context not found
-      -- This setting has no effect if context = false
-      context_fallback = false,
-      -- Wrapping in the preview window is disabled by default
-      wrap = false,
-      mappings = {
-        n = {
-          ['<CR>'] = bibtex_add.citation_note(),
-          ['<C-c>'] = bibtex_actions.key_append('%s'),
-        },
-        i = {
-          ['<CR>'] = bibtex_add.citation_note(),
-          ['<C-c>'] = bibtex_actions.key_append('%s'),
-        },
-      },
-    },
-  }
-}
-require('telescope').load_extension('bibtex')
-require('telescope').load_extension('file_browser')
 -- }}}
 EOF
