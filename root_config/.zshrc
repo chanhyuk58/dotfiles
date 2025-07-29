@@ -1,6 +1,7 @@
 ##### PATH TO YOUR OH-MY-ZSH INSTALLATION #####
 export ZSH="/Users/chanhyuk/.oh-my-zsh"
 export PATH="/opt/homebrew/bin:$PATH"
+export LC_CTYPE=en_US.UTF-8
 
 ##### THEMES #####
 ZSH_THEME=""

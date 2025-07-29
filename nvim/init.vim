@@ -2,7 +2,7 @@ set runtimepath^=~/.config/root_config/.vim
 
 " ----- Plugins {{{
 call plug#begin('~/.config/root_config/.vim/plugged')
-    " ----- LSP
+    " ----- treesitter
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     " ----- nvim-cmp
   Plug 'hrsh7th/cmp-buffer'
@@ -23,12 +23,8 @@ call plug#begin('~/.config/root_config/.vim/plugged')
   Plug 'jpalardy/vim-slime'
     " ----- brackets
   Plug 'windwp/nvim-autopairs'
-    " ----- vim obsession
-  Plug 'tpope/vim-obsession'
     " ----- nvim-web-devicons
   Plug 'nvim-tree/nvim-web-devicons'
-    " ----- Kitty navigator
-  Plug 'MunsMan/kitty-navigator.nvim'
 call plug#end()
 " }}}
 
@@ -73,6 +69,8 @@ set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with sp
 "let &t_ZH="\e[3m" " italic
 let &t_ZR="\e[23m" " italic or bold
 set termguicolors
+set termguicolors
+let g:netrw_liststyle= 3
 " }}}
 
 " ----- line number auto toggle {{{
@@ -111,11 +109,6 @@ augroup remember_folds
 augroup END
 " }}}
 
-" ----- Theme {{{
-"colorscheme seoul256-light
-"colorscheme solarized
-" }}}
-
 " ----- Remember the cursor position {{{
 autocmd BufReadPost * silent!
 \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -145,9 +138,10 @@ endif
 
 " ----- vim-slime {{{
 "let g:slime_target="kitty"
-let g:slime_target="tmux"
 "let g:slime_default_config={"pane_direction":"next"}
-"let g:slime_dont_ask_default = 1
+let g:slime_target="tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
+let g:slime_dont_ask_default = 1
 let g:slime_bracketed_paste=1
 "let g:slime_no_mappings=1
 " }}}
@@ -190,10 +184,6 @@ let g:slime_bracketed_paste=1
 " ----- Settings in lua
 lua<<EOF
 dofile('/Users/chanhyuk/.config/root_config/.vim/custom_functions/new_note.lua')
-
------ kitty-navigator {{{
-require('kitty-navigator').setup({keybindings = {}})
---}}}
 
 ----- gitsigns {{{
 require('gitsigns').setup()
@@ -271,7 +261,7 @@ cmp.setup({
   },
   window = {
     completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
+    documentation = cmp.config.window.disable,
   },
   view = {
     docs = { auto_open = false },
@@ -320,9 +310,9 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = 'luasnip' },
   },{
-    { name = 'path' },
+    { name = 'buffer' },
   },{
-    { name = 'buffer'},
+    { name = 'path'},
   })
 })
 
