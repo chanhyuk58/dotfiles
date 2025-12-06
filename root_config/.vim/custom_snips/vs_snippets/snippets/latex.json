@@ -46,14 +46,14 @@
             "\\usepackage{setspace}",
             "\\doublespacing",
             "",
-            "\\begin{document}",
             "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title & Author %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
             "\\title{${1:Title}}",
             "\\author{${2:Chanhyuk Park}}",
             "\\date{$3}",
             "%\\thanks{$3}",
             "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-            "    \\maketitle",
+            "\\begin{document}",
+            "\\maketitle",
             "",
             "    $0",
             "\\bibliographystyle{apsr}",
@@ -176,11 +176,6 @@
             "\\end{problem}"
         ],
         "description": "Insert a problem, whose style is already defined in the template. The serial number is automatically generated according to the section."
-    },
-    "Indent": {
-        "prefix": ["tab", "\\tab"],
-        "body": ["\\indent "],
-        "description": "The equivalent of \"\\t\", also known as \"Tab\""
     },
     "Definition": {
         "prefix": ["definition", "\\definition"],
@@ -386,7 +381,7 @@
         "description": "Table Reference"
     },
     "Tabular": {
-        "prefix": "tab",
+        "prefix": "tabular",
         "body": [
             "\\\\begin{${1:t}${1/(t)$|(a)$|(.*)/(?1:abular)(?2:rray)/}}{${2:c}}",
             "$0${2/((?<=[clr])([ |]*(c|l|r)))|./(?1: & )/g}",

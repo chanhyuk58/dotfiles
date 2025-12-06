@@ -1,7 +1,7 @@
 {
     "library": {
         "prefix": "lib",
-        "body": ["library('${1:package}')"]
+        "body": ["library(\"${1:package}\")"]
     },
     "require": {
         "prefix": "req",

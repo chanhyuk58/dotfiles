@@ -33,7 +33,7 @@ function new_note()
         'tags: ',
         '    - ' .. tag,
         '---',
-        '# '.. title
+        '',
       })
     end
   end)

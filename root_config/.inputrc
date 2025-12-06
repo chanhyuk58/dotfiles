@@ -1,8 +1,8 @@
 set editing-mode vi
 set keymap vi
-set meta-flag on
-set input-meta on
+set meta-flag off
+set input-meta off
 set output-meta on
 
 set convert-meta off
-set enable-meta-key on
+set enable-meta-key off

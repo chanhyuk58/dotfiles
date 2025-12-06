@@ -5,9 +5,6 @@ call plug#begin('~/.config/root_config/.vim/plugged')
     " ----- treesitter
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     " ----- nvim-cmp
-  Plug 'hrsh7th/cmp-buffer'
-  Plug 'hrsh7th/cmp-path'
-  Plug 'hrsh7th/cmp-cmdline'
   Plug 'hrsh7th/nvim-cmp'
     "----- luasnip
   Plug 'L3MON4D3/LuaSnip'
@@ -17,14 +14,10 @@ call plug#begin('~/.config/root_config/.vim/plugged')
   Plug 'lewis6991/gitsigns.nvim'
     " ----- Language and Keyboard Switch
   Plug 'lyokha/vim-xkbswitch'
-    " ----- indentline
-  Plug 'lukas-reineke/indent-blankline.nvim'
-    " ----- REPL
-  Plug 'jpalardy/vim-slime'
-    " ----- brackets
-  Plug 'windwp/nvim-autopairs'
     " ----- nvim-web-devicons
   Plug 'nvim-tree/nvim-web-devicons'
+    " ----- REPL
+  Plug 'jpalardy/vim-slime'
 call plug#end()
 " }}}
 
@@ -66,11 +59,12 @@ set title
 set titlestring=%{pathshorten(expand('%:p'))}
 set autochdir
 set fillchars=fold:\ ,vert:\│,eob:\ ,msgsep:‾   " replace tilde sign with space for empty lines
-"let &t_ZH="\e[3m" " italic
+let &t_ZH="\e[3m" " italic
 let &t_ZR="\e[23m" " italic or bold
-set termguicolors
-set termguicolors
 let g:netrw_liststyle= 3
+set notermguicolors
+set backupcopy=yes
+highlight Normal guibg=#eff1f4
 " }}}
 
 " ----- line number auto toggle {{{
@@ -149,23 +143,22 @@ let g:slime_bracketed_paste=1
 " ----- Key mapping{{{
     " ----- compile {{{
         " -- C
-        autocmd FileType c nmap <buffer><silent> <C-T> :!clang bufname('%') -o '%:t:r' && ./'%:t:r' <CR>
+        autocmd FileType c nmap <buffer><silent> <C-T> :!clang '%' -o '%:t:r' <CR>
         "" -- Tex
         autocmd FileType tex nmap <buffer> <C-T> :!latexmk -pdflatex -quiet '%:p'<CR>
         autocmd FileType tex nmap <buffer> <C-C> :!latexmk -c '%:p'<CR>
-        autocmd FileType tex nmap <buffer> <C-O> :!open -ga skim '%:p:r.pdf'<CR>
+        autocmd FileType tex nmap <buffer> <C-O> :!open -a skim '%:p:r.pdf'<CR>
         "" -- Rmd
         autocmd FileType Rmd,rmd nnoremap <C-T> :!R -e "rmarkdown::render('%:p')"<CR>
-        autocmd FileType tex nmap <buffer> <C-O> :!open -ga skim '%:p:r.pdf'<CR>
-        autocmd FileType tex nmap <buffer> <C-O> :!open -ga skim '%:p:r.pdf'<CR>
+        autocmd FileType Rmd,rmd nmap <buffer> <C-O> :!open -a skim '%:p:r.pdf'<CR>
         " -- md
-        autocmd FileType md,markdown nnoremap <C-T> :!pandoc % -o %:r.pdf<CR>
-        autocmd FileType tex nmap <buffer> <C-O> :!open -ga skim '%:p:r.pdf'<CR>
+        autocmd FileType md,markdown nnoremap <C-T> :!pandoc % -o %:p:r.pdf<CR>
+        autocmd FileType md,markdown nmap <buffer> <C-O> :!open -a skim %:p:r.pdf<CR>
         " -- Python and R interpreter
         "nmap ,l <Plug>SlimeLineSend
-        autocmd FileType python,r,Rmd,rmd nmap ,l <Plug>SlimeLineSend
-        autocmd FileType python,r,Rmd,rmd xmap ,l <Plug>SlimeRegionSend
-        autocmd FileType python,r,Rmd,rmd nmap ,; <Plug>SlimeParagraphSend
+        autocmd FileType python,r,Rmd,rmd,markdown nmap ,l <Plug>SlimeLineSend
+        autocmd FileType python,r,Rmd,rmd,markdown xmap ,l <Plug>SlimeRegionSend
+        autocmd FileType python,r,Rmd,rmd,markdown nmap ,; <Plug>SlimeParagraphSend
     " }}}
     " --- no highlight
     nnoremap <leader>e <esc>:nohl<CR>
@@ -187,19 +180,6 @@ dofile('/Users/chanhyuk/.config/root_config/.vim/custom_functions/new_note.lua')
 
 ----- gitsigns {{{
 require('gitsigns').setup()
--- }}}
-
------ indent-blankline {{{
-require('ibl').setup({
-  exclude = {filetypes = {'text', 'csv'}},
-  indent = {char = '▏'},
-  scope = {show_start = false, show_end = false},
-})
-local hooks = require 'ibl.hooks'
-  hooks.register(
-    hooks.type.WHITESPACE,
-    hooks.builtin.hide_first_space_indent_level
-  )
 -- }}}
 
 ----- tree-sitter settings {{{
@@ -309,10 +289,10 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'luasnip' },
-  },{
-    { name = 'buffer' },
-  },{
-    { name = 'path'},
+  -- },{
+  --   { name = 'buffer' },
+  -- },{
+  --   { name = 'path'},
   })
 })
 
@@ -321,65 +301,33 @@ cmp.setup.filetype('gitcommit', {
   sources = cmp.config.sources({
     { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
     }, {
-    { name = 'buffer' },
-    }, {
+    -- { name = 'buffer' },
+    -- }, {
     { name = 'luasnip'}
-    }, {
-    { name = 'path'}
+    -- }, {
+    -- { name = 'path'}
     })
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ '/', '?' }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
+-- cmp.setup.cmdline({ '/', '?' }, {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = 'buffer' }
+--   }
+-- })
 
 -- Source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  }, {
-    { name = 'buffer' }
-     }
-  )
-})
+-- cmp.setup.cmdline(':', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = cmp.config.sources({
+--     { name = 'path' }
+--   }, {
+--     { name = 'cmdline' }
+--   }, {
+--     { name = 'buffer' }
+--      }
+--   )
+-- })
 --}}}
-
------ autopairs settings {{{
--- Import nvim-autopairs safely
-local autopairs_setup, autopairs = pcall(require, 'nvim-autopairs')
-if not autopairs_setup then
-  return
-end
-
--- configure autopairs
-autopairs.setup({
-  -- disable_filetype = { 'TelescopePrompt', 'spectre_panel' },
-  check_ts = true, -- Enable treesitter
-  ts_config = {
-    lua = { 'string', 'source' }, -- Don't add pairs in lua string treesitter nodes
-    markdown = { 'inline_formula', 'displayed_equation' },
-    tex = {'inline_formula', 'displayed_equation'},
-    javascript = { 'template_string' }, -- Don't add pairs in JavaScript template_string treesitter nodes
-    java = false, -- Don't check treesitter on Java
-  },
-})
--- Import nvim-autopairs completion functionality safely
-local cmp_autopairs_setup, cmp_autopairs = pcall(require, 'nvim-autopairs.completion.cmp')
-if not cmp_autopairs_setup then
-  return
-end
-
--- do not work for backticks
-autopairs.remove_rule('`')
-autopairs.remove_rule('```')
--- Make autopairs and completion work together
-cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
--- }}}
 EOF

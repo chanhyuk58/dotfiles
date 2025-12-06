@@ -31,6 +31,7 @@ alias lta="eza -alhTF"
 # alias lla="ls -AlthOF"
 alias obsidian="nvim ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian"
 alias nn="nvim -c ':lua new_note()'"
+# alias python3="python3.11"
 alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 
 ##### Configuration File Shortcuts #####
@@ -41,6 +42,7 @@ alias wezss="nvim ~/.config/wezterm/wezterm.lua"
 alias tmuxss="nvim ~/.tmux.conf"
 alias vimss="nvim ~/.config/nvim/init.vim"
 alias gitss="nvim ~/.gitconfig"
+alias ghosttyss="nvim ~/.config/ghostty/config"
 
 ##### TMUX ALIAS #####
 alias tmux="env TERM=tmux-256color tmux" # tmux with certain terminfo
