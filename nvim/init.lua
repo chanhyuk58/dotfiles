@@ -19,3 +19,4 @@ require("plugins")
 
 -- No Background
 vim.cmd("highlight Normal guibg=#ffffff")
+vim.api.nvim_set_hl(0, "Normal", { bg = "#ffffff" })
