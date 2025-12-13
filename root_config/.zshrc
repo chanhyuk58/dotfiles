@@ -1,48 +1,42 @@
-##### PATH TO YOUR OH-MY-ZSH INSTALLATION #####
-export ZSH="/Users/chanhyuk/.oh-my-zsh"
-export PATH="/opt/homebrew/bin:$PATH"
+##### OH-MY-ZSH #####
+export ZSH="$HOME/.oh-my-zsh"
 export LC_CTYPE=en_US.UTF-8
 
-##### THEMES #####
 ZSH_THEME=""
 DISABLE_AUTO_TITLE="true"
+ENABLE_CORRECTION="true"
 
-##### PLUGINS #####
-ENABLE_CORRECTION="true" # enable command auto-correction
 plugins=(
-    git
-    zsh-syntax-highlighting
-    zsh-autosuggestions
-    autojump
-    git-prompt
-    )
+  git
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  autojump
+  git-prompt
+)
+
 source $ZSH/oh-my-zsh.sh
 
-##### Keys #####
-source ~/.keys
+##### KEYS #####
+[ -f ~/.keys ] && source ~/.keys
 
-##### SHELL ALIAS #####
+##### ALIAS #####
 alias ls="eza"
 alias ll="eza -lhF"
 alias lla="eza -alhF"
 alias lt="eza -lhTF"
 alias lta="eza -alhTF"
-# alias ll="ls -lthOF"
-# alias lla="ls -AlthOF"
-alias obsidian="nvim ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian"
-alias nn="nvim -c ':lua new_note()'"
-# alias python3="python3.11"
+alias nn="nvim -c 'lua require(\"utils.new_note\").new_note()'"
 alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 
 ##### Configuration File Shortcuts #####
-alias zshss="nvim ~/.zshrc"
-alias alacss="nvim ~/.config/alacritty/alacritty.toml"
-alias kittyss="nvim ~/.config/kitty/kitty.conf"
-alias wezss="nvim ~/.config/wezterm/wezterm.lua"
-alias tmuxss="nvim ~/.tmux.conf"
-alias vimss="nvim ~/.config/nvim/init.vim"
-alias gitss="nvim ~/.gitconfig"
-alias ghosttyss="nvim ~/.config/ghostty/config"
+alias zshss="nvim $HOME/.zshrc"
+alias alacss="nvim $HOME/.config/alacritty/alacritty.toml"
+alias kittyss="nvim $HOME/.config/kitty/kitty.conf"
+alias wezss="nvim $HOME/.config/wezterm/wezterm.lua"
+alias tmuxss="nvim $HOME/.tmux.conf"
+alias vimss="nvim $HOME/.config/nvim/init.lua"
+alias gitss="nvim $HOME/.gitconfig"
+alias ghosttyss="nvim $HOME/.config/ghostty/config"
 
 ##### TMUX ALIAS #####
 alias tmux="env TERM=tmux-256color tmux" # tmux with certain terminfo
@@ -56,21 +50,22 @@ alias vim="nvim"
 alias vi="nvim"
 alias vimdiff="nvim -d"
 
-#### GIT ALIAS #####
+##### GIT ALIAS #####
 alias gitlog="git log --oneline --graph --all"
 
-#### Oracle AILAS ####
-alias ostart="oci compute instance action --action START --instance-id ocid1.instance.oc1.us-chicago-1.anxxeljrqbo6i4icbcfgambxtakvjg5o7opueq3m2zwcd2b6ozi4hiczfpgq"
-alias ostop="oci compute instance action --action STOP --instance-id ocid1.instance.oc1.us-chicago-1.anxxeljrqbo6i4icbcfgambxtakvjg5o7opueq3m2zwcd2b6ozi4hiczfpgq"
+##### NEOVIM EDITOR #####
+export EDITOR=nvim
 
-##### START WITH VIM SESSION #####
-vis() {
-    nvim -S ~/.vim/session/$1 -c "source ~/.config/nvim/init.vim | noh"
-}
+if [[ "$OS" == "mac" ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
 
-# bindkey -v # vim keybinding on zsh
+  alias obsidian="nvim ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian"
 
-##### PROMPT #####
-setopt PROMPT_SUBST # enable substitution in the prompt for the function output
-PROMPT="(%n@%m) %3~
-%F{blue}>%f "
+  #### Oracle AILAS ####
+  alias ostart="oci compute instance action --action START --instance-id ocid1.instance.oc1.us-chicago-1.anxxeljrqbo6i4icbcfgambxtakvjg5o7opueq3m2zwcd2b6ozi4hiczfpgq"
+  alias ostop="oci compute instance action --action STOP --instance-id ocid1.instance.oc1.us-chicago-1.anxxeljrqbo6i4icbcfgambxtakvjg5o7opueq3m2zwcd2b6ozi4hiczfpgq"
+fi
+
+if [[ "$OS" == "linux" ]]; then
+  alias nvim="$HOME/nvim-linux-arm64.appimage"
+fi

@@ -1,0 +1,12 @@
+---
+title: fjdkf
+subtitle: subtitle
+author: Chanhyuk Park
+date: 2025-12-12 21:46
+modified: 2025-12-12 21:50:51
+output: 
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```

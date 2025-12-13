@@ -1,0 +1,36 @@
+-- basic Vim options
+vim.opt.mouse = "a"
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.smartindent = true
+vim.opt.smartcase = true
+vim.opt.cindent = true
+vim.opt.laststatus = 0
+vim.opt.showmatch = true
+vim.opt.hlsearch = true
+vim.opt.backspace = { "eol", "start", "indent" }
+vim.opt.showmode = false
+vim.opt.spell = true
+vim.opt.spelllang = { "cjk", "en_us" }
+vim.opt.spellfile = vim.fn.expand("~/.config/root_config/.vim/spell/en.utf-8.add")
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.expand("~/.config/root_config/.vim/undo_dir")
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.numberwidth = 5
+vim.opt.breakindent = true
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
+vim.opt.signcolumn = "yes"
+vim.opt.foldmethod = "marker"
+vim.opt.foldcolumn = "0"
+vim.g.tex_flavor = "latex"
+vim.opt.fillchars = { fold = " ", vert = "│", eob = " ", msgsep = "‾" }
+vim.g.netrw_liststyle = 3
+vim.opt.termguicolors = true -- enable true color

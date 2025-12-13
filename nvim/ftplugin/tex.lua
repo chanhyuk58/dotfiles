@@ -1,12 +1,7 @@
--- vim.opt_local.cole = 2
--- vim.opt_local.columns=100
--- vim.opt_local.numberwidth = 10
--- vim.opt_local.colorcolumn="0"
--- vim.opt_local.listchars={}
+local function bufmap(mode, lhs, rhs)
+  vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
+end
 
------ Settings for Indent Blank Line
--- local hooks = require "ibl.hooks"
--- hooks.register(
---   hooks.type.WHITESPACE,
---   hooks.builtin.hide_first_space_indent_level
--- )
+bufmap("n", "<C-T>", ":!latexmk -pdflatex -quiet '%:p'<CR>")
+bufmap("n", "<C-C>", ":!latexmk -c '%:p'<CR>")
+bufmap("n", "<C-O>", ":!open -a skim '%:p:r.pdf'<CR>")
