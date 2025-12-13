@@ -14,6 +14,11 @@ plugins=(
   git-prompt
 )
 
+##### PROMPT #####
+setopt PROMPT_SUBST
+PROMPT="(%n@%m) %3~
+%F{blue}>%f "
+
 source $ZSH/oh-my-zsh.sh
 
 ##### KEYS #####

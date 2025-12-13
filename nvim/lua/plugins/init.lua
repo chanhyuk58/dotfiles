@@ -4,7 +4,12 @@ require("lazy").setup({
   { "lewis6991/gitsigns.nvim" },
   { "tpope/vim-fugitive" },
   { "jpalardy/vim-slime", config = function() require("plugins.slime") end },
-  { "ivanesmantovich/xkbswitch.nvim", config = function() require('xkbswitch').setup() end },
+  { "ivanesmantovich/xkbswitch.nvim", 
+    cond = function()
+      return vim.fn.has("mac") == 1
+    end,
+    config = function() require('xkbswitch').setup() end 
+  },
   {"saghen/blink.cmp", version = "1.*", 
     dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
     opts = function() require("plugins.blink") end,
