@@ -8,4 +8,11 @@ require("blink.cmp").setup({
     preset = 'default',
     ['<CR>'] = { 'accept', 'fallback' },
   },
+  cmdline = {
+    keymap = { preset = 'inherit' },
+    completion = { 
+      menu = { auto_show = true },
+      list = { selection = { preselect = false, auto_insert = false } },
+    },
+  },
 })
