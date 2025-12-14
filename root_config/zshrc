@@ -25,6 +25,7 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.keys ] && source ~/.keys
 
 ##### ALIAS #####
+alias rm="rm -i"
 alias ls="eza"
 alias ll="eza -lhF"
 alias lla="eza -alhF"
