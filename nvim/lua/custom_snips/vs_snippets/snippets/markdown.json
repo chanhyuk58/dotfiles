@@ -8,6 +8,12 @@
             "modified: ",
             "tags: ",
             "\t- ${4:tags}",
+            "fontsize: 11pt",
+            "header-includes: ",
+            "\t- \\usepackage{setspace}",
+            "\t- \\doublespacing",
+            "\t- \\usepackage[margin=1in]{geometry}",
+            "\t- \\let\\maketitle\\relax",
             "---",
             "# ${1:title}",
             "$0"
