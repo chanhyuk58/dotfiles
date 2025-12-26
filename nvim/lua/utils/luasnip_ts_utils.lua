@@ -63,16 +63,7 @@ end
 function M.in_text(check_parent)
   local node = get_node_at_cursor()
   while node do
-    if MATH_NODES[node:type()] then
-      return false
-    elseif node:type() == "text_mode" then
-      if check_parent then
-        -- For \text{}
-        local parent = node:parent()
-        if parent and MATH_NODES[parent:type()] then
-          return false
-        end
-      end
+    if TEXT_NODES[node:type()] then
       return true
     end
     node = node:parent()

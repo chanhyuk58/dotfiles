@@ -1,9 +1,4 @@
 require("blink.cmp").setup({
-  window = {
-    draw = {
-      delay = 50,
-    },
-  },
   snippets = { preset = "luasnip" },
   sources = { default = { "lsp", "path", "snippets", "buffer" } },
   fuzzy = {
