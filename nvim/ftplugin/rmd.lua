@@ -11,8 +11,6 @@ bufmap("n", ",l", "<Plug>SlimeLineSend")
 bufmap("x", ",l", "<Plug>SlimeRegionSend")
 bufmap("n", ",;", "<Plug>SlimeParagraphSend")
 
-vim.opt_local.filetype = "markdown"
-
 -- tabs
 vim.o.softtabstop=2
 vim.o.shiftwidth=2
