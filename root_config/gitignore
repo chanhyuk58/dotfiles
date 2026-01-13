@@ -536,6 +536,9 @@ cython_debug/
 # }}}
 
 # R{{{
+## Rout file
+.Rout
+
 ## History files
 .Rhistory
 .Rapp.history
