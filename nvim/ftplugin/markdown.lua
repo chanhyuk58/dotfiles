@@ -3,8 +3,8 @@ local function bufmap(mode, lhs, rhs)
 end
 
 -- Compile
-bufmap("n", "<C-T>", ":!pandoc % -o %:p:r.pdf<CR>")
-bufmap("n", "<C-O>", ":!open -a skim %:p:r.pdf<CR>")
+bufmap("n", "<C-T>", ":!pandoc %:. -o %:.:r.pdf<CR>")
+bufmap("n", "<C-O>", ":!open -a skim %:.:r.pdf<CR>")
 
 -- Slime mappings
 bufmap("n", ",l", "<Plug>SlimeLineSend")

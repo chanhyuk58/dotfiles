@@ -2,7 +2,8 @@
 local M = {}
 
 -- Base directory for notes
-local base_dir = "/Users/chanhyuk/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian/Fleeting/"
+-- local base_dir = "/Users/chanhyuk/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian/Fleeting/"
+local base_dir = vim.fn.getcwd() .. "/"
 
 -- Helper to sanitize filenames
 local function sanitize_filename(str)
@@ -39,10 +40,16 @@ function M.new_note()
         'title: "' .. title .. '"',
         "created: " .. os.date("%Y-%m-%d %H:%M:%S"),
         "modified: ",
+        "fontsize: 11pt",
+        "header-includes: ",
+        "  - \\usepackage{setspace}",
+        "  - \\doublespacing",
+        "  - \\usepackage[margin=1in]{geometry}",
+        "  - \\let\\maketitle\\relax",
         "tags: ",
         "  - " .. tag,
         "---",
-        "# " .. title,
+        ""
       })
     end
   end)
