@@ -1,5 +1,4 @@
-local function bufmap(mode, lhs, rhs)
-  vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
-end
+local opts = { buffer = true, silent = true }
 
-bufmap("n", "<C-T>", ":!clang '%' -o '%:t:r'<CR>")
+-- Compile/Run
+vim.keymap.set("n", "<C-T>", ":!clang '%' -o '%:t:r'<CR>", opts)

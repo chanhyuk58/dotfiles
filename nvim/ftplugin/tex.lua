@@ -1,13 +1,11 @@
-local function bufmap(mode, lhs, rhs)
-  vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
-end
+local opts = { buffer = true, silent = true }
 
--- Compile
-bufmap("n", "<C-T>", ":!latexmk -pdflatex -quiet '%:p'<CR>")
-bufmap("n", "<C-C>", ":!latexmk -c '%:p'<CR>")
-bufmap("n", "<C-O>", ":!open -a skim '%:p:r.pdf'<CR>")
+-- Compile/Run
+vim.keymap.set("n", "<C-T>", ":!latexmk -pdflatex -quiet '%:p'<CR>", opts)
+vim.keymap.set("n", "<C-C>", ":!latexmk -c '%:p'<CR>", opts)
+vim.keymap.set("n", "<C-O>", ":!open -a skim '%:p:r.pdf'<CR>", opts)
 
--- Slime mappings (optional)
-bufmap("n", ",l", "<Plug>SlimeLineSend")
-bufmap("x", ",l", "<Plug>SlimeRegionSend")
-bufmap("n", ",;", "<Plug>SlimeParagraphSend")
+-- Slime mappings
+vim.keymap.set("n", ",l", "<Plug>SlimeLineSend", { buffer = true, remap = true })
+vim.keymap.set("x", ",l", "<Plug>SlimeRegionSend", { buffer = true, remap = true })
+vim.keymap.set("n", ",;", "<Plug>SlimeParagraphSend", { buffer = true, remap = true })

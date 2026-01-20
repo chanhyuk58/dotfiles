@@ -1,18 +1,16 @@
-local function bufmap(mode, lhs, rhs)
-  vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
-end
-
--- Compile
-bufmap("n", "<C-T>", ":!pandoc %:. -o %:.:r.pdf<CR>")
-bufmap("n", "<C-O>", ":!open -a skim %:.:r.pdf<CR>")
-
--- Slime mappings
-bufmap("n", ",l", "<Plug>SlimeLineSend")
-bufmap("x", ",l", "<Plug>SlimeRegionSend")
-bufmap("n", ",;", "<Plug>SlimeParagraphSend")
-
+local opts = { buffer = true, silent = true }
 local bufnr = vim.api.nvim_get_current_buf()
 
+-- Compile/Run
+vim.keymap.set("n", "<C-T>", ":!pandoc %:. -o %:.:r.pdf<CR>", opts)
+vim.keymap.set("n", "<C-O>", ":!open -a skim %:.:r.pdf<CR>", opts)
+
+-- Slime mappings
+vim.keymap.set("n", ",l", "<Plug>SlimeLineSend", { buffer = true, remap = true })
+vim.keymap.set("x", ",l", "<Plug>SlimeRegionSend", { buffer = true, remap = true })
+vim.keymap.set("n", ",;", "<Plug>SlimeParagraphSend", { buffer = true, remap = true })
+
+-- Modification dates
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   buffer = bufnr,
   callback = function()

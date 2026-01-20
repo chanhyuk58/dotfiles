@@ -1,8 +1,6 @@
-local function bufmap(mode, lhs, rhs)
-  vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
-end
+local opts = { buffer = true, silent = true }
 
--- Slime mappings (optional)
-bufmap("n", ",l", "<Plug>SlimeLineSend")
-bufmap("x", ",l", "<Plug>SlimeRegionSend")
-bufmap("n", ",;", "<Plug>SlimeParagraphSend")
+-- Slime mappings
+vim.keymap.set("n", ",l", "<Plug>SlimeLineSend", { buffer = true, remap = true })
+vim.keymap.set("x", ",l", "<Plug>SlimeRegionSend", { buffer = true, remap = true })
+vim.keymap.set("n", ",;", "<Plug>SlimeParagraphSend", { buffer = true, remap = true })
