@@ -74,4 +74,5 @@ fi
 
 if [[ "$OS" == "linux" ]]; then
   alias nvim="$HOME/nvim-linux-arm64.appimage"
+  export TMPDIR=$HOME/Rtmp
 fi
