@@ -9,6 +9,7 @@ vim.opt.splitbelow = true
 vim.opt.smartindent = true
 vim.opt.smartcase = true
 vim.opt.cindent = true
+vim.opt.autochdir = true
 vim.opt.laststatus = 3
 vim.opt.cmdheight = 1
 vim.opt.showmatch = true
