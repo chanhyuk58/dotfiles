@@ -22,11 +22,12 @@ return {
   with_priority({ trig = "atan", name = "atan" }, "\\arctan"),
   with_priority({ trig = "asec", name = "asec" }, "\\arcsec"),
 
-  parse_snippet({ trig = "set", name = "set" }, "\\{$1\\\\}$0"),
+  parse_snippet({ trig = "set", name = "set" }, "\\set{$1}$0"),
+  parse_snippet({ trig = "vec", name = "vector" }, "\\vect{$1}$0"),
   parse_snippet({ trig = "fun", name = "function map" }, "f \\colon $1 \\R \\to \\R \\colon $0"),
 
   parse_snippet(
-    { trig = "abs", name = "absolute value \\abs{}" },
-    "|${1:${TM_SELECTED_TEXT}}|$0"
+    { trig = "abs", name = "absolute value" },
+    "\\abs{$1}$0"
   ),
 }
