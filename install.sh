@@ -46,16 +46,10 @@ link "$DOTFILES_DIR/root_config/latexmkrc" "$HOME/.latexmkrc"
 link "$DOTFILES_DIR/root_config/Rprofile" "$HOME/.Rprofile"
 
 # ----------- link LaTeX files ----------
-# LaTeX is picky: .sty files MUST be in texmf/tex/latex/
 if [ "$PLATFORM" != "unknown" ]; then
     echo "Configuring LaTeX for $PLATFORM..."
-    
-    # Path to where your style files are kept in your dotfiles
-    # Assuming your dotfiles has a folder named 'latex' containing paper.sty
-    LATEX_SRC="$DOTFILES_DIR/latex" 
-    
-    # Path to the specific LaTeX search directory
-    LATEX_DEST="$TEXMF_HOME/tex/latex/common"
+    LATEX_SRC="$DOTFILES_DIR/tex" 
+    LATEX_DEST="$TEXMF_HOME/tex"
 
     link "$LATEX_SRC" "$LATEX_DEST"
 fi
