@@ -1,248 +1,123 @@
-% ---- Select text fonts -----
-
-% Apply more sophisticated fonts
+% ---- 1. Fonts & Character Management -----
 \usefonttheme{professionalfonts}
-
-% Select text font
 \usepackage{sourcesanspro}
+\usepackage{sourcecodepro}
+\usepackage[T1]{fontenc}
+\usepackage{url}
 
 % Define semibold font series
 \DeclareRobustCommand{\sbseries}{\fontseries{sb}\selectfont}
 \DeclareTextFontCommand{\textsb}{\sbseries}
 
-% Select monospaced font
-\usepackage{sourcecodepro}
+% Pandoc-friendly microtype loading
+\@ifpackageloaded{microtype}{}{
+  \usepackage[nopatch=footnote]{microtype}
+}
+\DisableLigatures[f]{encoding = *, family = * }
 
-% Select font encoding 
-\usepackage[T1]{fontenc}
-
-% Select URL font
-\usepackage{url}
-
-% ---- Select math fonts -----
-
-% Select symbol font
-\usepackage{MnSymbol}
-
-% Select calligraphic and blackboard-bold fonts
+% ---- 2. Math Stack & Fonts -----
+\usepackage{amsmath, amsthm, mathtools, dsfont}
 \usepackage[cal=euler,bb=fourier]{mathalpha}
+\usepackage{bm} % Bold math
 
-% Enable bold math characters
-\newcommand{\hmmax}{0} % Avoid "Too many math alphabets" error
-\newcommand{\bmmax}{0} % Avoid "Too many math alphabets" error
-\usepackage{bm}
-
-% Select font for Roman letters, Greek letters, digits, and punctuation
-\usepackage[italic,euler,nolessnomore,noparenthesis,noplusnominus,noequal,nohbar]{mathastext}
-
-% Correct spacing around certain Roman letters
+% mathastext for consistency between text and math fonts
+\usepackage[italic,nolessnomore,noparenthesis,noplusnominus,noequal,nohbar]{mathastext}
 \MTsetmathskips{y}{2mu}{0mu}
 \MTsetmathskips{j}{2mu}{0mu}
 
-% ---- Select Beamer theme ----
+% ---- 3. Probability & Measure Theory ----
+\newcommand\given{\nonscript\mskip-\medmuskip\delimsize\vert\nonscript\mskip-\medmuskip\allowbreak}
 
-% Select theme
+\DeclarePairedDelimiterX{\parentheses}[1]{(}{)}{#1}
+\DeclarePairedDelimiterX{\brackets}[1]{[}{]}{#1}
+
+\renewcommand{\P}[1]{\mathbb{P}\parentheses*{#1}}
+\newcommand{\E}[1]{\mathbb{E}\brackets*{#1}}
+\newcommand{\Ec}[2]{\mathbb{E}\brackets*{#1 \given #2} }
+\newcommand{\Pc}[2]{\mathbb{P}\parentheses*{#1 \given #2} }
+
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\V}[1]{\Var\brackets*{#1}}
+\newcommand{\ind}[1]{\mathds{1}_{\{#1\}}}
+\newcommand{\diff}{\mathrm{d}}
+\newcommand{\R}{\mathbb{R}}
+
+% Causal Inference Independence
+\newcommand{\indep}{\mathrel{\perp\mskip-7mu\perp}}
+\newcommand{\cindep}[3]{#1 \indep #2 \given #3}
+
+% Vectors & Matrices
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\matr}[1]{\bm{#1}}
+\newcommand{\vbeta}{\vect{\beta}}
+
+% ---- 4. Beamer Theme & Layout ----
 \usetheme{Boadilla}
-
-% Select color theme
-\usecolortheme[]{seagull}
-
-% Make covered elements transparent
+\usecolortheme{seagull}
 \setbeamercovered{transparent}
-
-% Remove navigation symbols
 \setbeamertemplate{navigation symbols}{}
 
-% ---- Adjust slide layout ----
-
-% Set layout on title page
-\setbeamertemplate{title page}[default][left,leftskip=-8pt]
-
-% Set margins on regular pages
+% Margins
 \setbeamersize{text margin left=5mm,text margin right=5mm}
-
-% ---- Adjust spacing ----
-
-% Set spacing between lines
 \usepackage[onehalfspacing]{setspace}
 
-% Set spacing on lines
-\usepackage{microtype}
-
-% Remove ligatures
-\DisableLigatures[f]{encoding = *, family = * }
-
-% ---- Adjust font sizes and shapes ----
-
-% Set title font
+% Titles & Headers (The Lowercase Aesthetic)
 \setbeamerfont{title}{size=\huge, series=\scshape}
-
-% Set author font
 \setbeamerfont{author}{size=\large}
-
-% Set frame title font
 \setbeamerfont{frametitle}{series=\scshape}
-
-% Ensure uniform capitalization of frame title, and lower title
 \setbeamertemplate{frametitle}{\vskip3mm\MakeLowercase{\insertframetitle}}
-
-% Format continuation count for multipage slides
 \setbeamertemplate{frametitle continuation}{[\insertcontinuationcount]}
 
-% Set list font
-%\setbeamerfont{itemize/enumerate subbody}{size=\normalsize} % Second level
-%\setbeamerfont{itemize/enumerate subsubbody}{size=\normalsize} % Third level
-
-% Set theorem fonts
-\setbeamerfont{block title}{series=\sbseries,size=\normalsize} % Title
-
-% Set button font
-\setbeamerfont{button}{size=\footnotesize}
-
-% ---- Adjust colors ----
-
-% Define colors
+% Colors
 \colorlet{BlackGray}{black!85!}
 \colorlet{DarkGray}{gray!60!}
 \colorlet{LightGray}{gray!30!}
 
-% Set title color
 \setbeamercolor{title}{fg=BlackGray}
-
-% Set frame title color
 \setbeamercolor{frametitle}{fg=BlackGray}
-
-% Set text color
 \setbeamercolor{normal text}{fg=BlackGray}
+\setbeamercolor{itemize item}{fg=DarkGray}
+\setbeamercolor{block title}{fg=BlackGray,bg=LightGray}
+\setbeamercolor{block body}{fg=BlackGray,bg=LightGray}
 
-% Set list items color
-\setbeamercolor{itemize item}{fg=DarkGray} % Itemized list, first level
-\setbeamercolor{itemize subitem}{fg=DarkGray}  % Itemized list, second level
-\setbeamercolor{itemize subsubitem}{fg=DarkGray}  % Itemized list, third level
-\setbeamercolor{enumerate item}{fg=DarkGray}  % Numbered list, first level
-\setbeamercolor{enumerate subitem}{fg=DarkGray}  % Numbered list, second level
-\setbeamercolor{enumerate subsubitem}{fg=DarkGray}  % Numbered list, third level
-
-% Set theorem colors
-\setbeamercolor{block title}{fg=BlackGray,bg=LightGray} % Title
-\setbeamercolor{block body}{fg=BlackGray,bg=LightGray} % Body
-
-% Set footer color
-\setbeamercolor{footline}{fg=DarkGray}
-
-% Set button colors
-\setbeamercolor{button}{fg=DarkGray, bg=white}
-
-% ---- Format title slide ----
-
-% Title capitalization and underline
+% ---- 5. Title Page Customization ----
 \let\oldtitle\title
 \renewcommand{\title}[1]{\oldtitle[]{\MakeLowercase{#1}\vspace{-7mm}\\\color{BlackGray}{\rule{\textwidth}{2pt}}}}
 
-% Customize the layout
 \defbeamertemplate*{title page}{customized}[1][]{
   \vskip0pt plus 1filll
   \usebeamerfont{title}\inserttitle\par
-  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
   \vskip0pt plus 1filll
   \usebeamerfont{author}\insertauthor\par
-  \usebeamerfont{institute}\insertinstitute\par
   \usebeamerfont{date}\insertdate\par
-  \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
   \vspace{0.2in}
 }
 
-% Define custom commands with complex argument specifications
-\usepackage{xparse}
+% ---- 6. Alerts (Fixed xparse syntax) ----
+% Standard alert: \al<1>{text} or \al{text}
+\NewDocumentCommand{\al}{d<> m}{\textcolor<#1>{red!80!black}{#2}}
+\NewDocumentCommand{\alg}{d<> m}{\textcolor<#1>{green!50!black}{#2}}
+\NewDocumentCommand{\alr}{d<> m}{\textcolor<#1>{red}{#2}}
+\NewDocumentCommand{\alb}{d<> m}{\textcolor<#1>{blue!80!black}{#2}}
 
-% ---- Format lists ----
+% ---- 7. Tables & Figures ----
+\usepackage{booktabs, multirow, caption}
+\captionsetup{labelformat=empty, size=normalsize}
 
-% Format itemized lists
-\setbeamertemplate{itemize item}{\textbullet} % First-level item
-\setbeamertemplate{itemize subitem}{\textendash} % Second-level item
-\setbeamertemplate{itemize subsubitem}{\textsquare} % Third-level item
-
-% Format numbered lists
-\setbeamertemplate{enumerate item}[default] % First-level item
-\setbeamertemplate{enumerate subitem}{\alph{enumii}.} % Second-level item
-\setbeamertemplate{enumerate subsubitem}{\roman{enumiii}.} % Third-level item
-
-% ---- Create text alerts ----
-
-% Standard alert
-\NewDocumentCommand{\al}{o g}{%
-\IfNoValueTF{#1}{\textcolor{RubineRed}{#2}}%
-{\textcolor<#1>{RubineRed}{#2}}}
-
-% Green, positive alert
-\NewDocumentCommand{\alg}{o g}{%
-\IfNoValueTF{#1}{\textcolor{Green}{#2}}%
-{\textcolor<#1>{Green}{#2}}}
-
-% Red, negative alert
-\NewDocumentCommand{\alr}{o g}{%
-\IfNoValueTF{#1}{\textcolor{Red}{#2}}%
-{\textcolor<#1>{Red}{#2}}}
-
-% Blue, zero alert
-\NewDocumentCommand{\alb}{o g}{%
-\IfNoValueTF{#1}{\textcolor{NavyBlue}{#2}}%
-{\textcolor<#1>{NavyBlue}{#2}}}
-
-% ---- Format figures and tables ----
-
-% Enhance table formatting
-\usepackage{booktabs}
-
-% Enable multiple rows in table
-\usepackage{multirow}
-
-% Customize captions
-\usepackage{caption}
-
-% Format captions
-\captionsetup{labelformat=empty,size=normalsize}
-
-% Center figures
-\let\oldincludegraphics\includegraphics 
-\renewcommand{\includegraphics}[2][]{\centering\oldincludegraphics[#1]{#2}}
-
-% ---- Format theorems ----
-
-\setbeamertemplate{blocks}[rounded][shadow=false]
-
-% Define new theorems
-\newtheorem{proposition}{Proposition}
-\newtheorem{assumption}{Assumption}
-\newtheorem{remark}{Remark}
-
-% ---- Create section slide ----
-
-\newcommand{\heading}[1]{\LARGE\scshape\color{BlackGray}\singlespacing\MakeLowercase{#1}}
-
-% ---- Create last slide ----
-
-\newcommand{\lastslide}{{\setbeamercolor{normal text}{bg=LightGray}\begin{frame}\end{frame}}}
-
-% ---- Define shortcuts for pictograms ----
-
+% ---- 8. Shortcuts & Symbols ----
 \newcommand{\up}{\textuparrow\,}
 \newcommand{\down}{\textdownarrow\,}
-\renewcommand{\flat}{\textrightarrow\,}
 \newcommand{\then}{$\rightsquigarrow\,$}
-\newcommand{\so}{{$\Rightarrow\,$}}
+\newcommand{\so}{$\Rightarrow\,$}
+\newcommand{\heading}[1]{{\LARGE\scshape\color{BlackGray}\MakeLowercase{#1}}}
 
-% ---- Remove or insert slide numbers ----
-
-% Remove slide numbers by default
-\setbeamertemplate{footline}{}
-
-% Uncomment the line below to insert slide numbers
-%\setbeamertemplate{footline}[frame number]
-
-% ---- Citations ----
+% ---- 9. Citations ----
 \usepackage[round]{natbib}
-\definecolor{citecolor}{gray}{0.7}
-\DeclareRobustCommand\citep
-{\begingroup\color{citecolor}\tiny\NAT@swatrue\let\NAT@ctype\z@\NAT@partrue
-    \@ifstar{\NAT@fulltrue\NAT@citetp}{\NAT@fullfalse\NAT@citetp}}
+\definecolor{citecolor}{gray}{0.6}
+
+% This ensures natbib works inside Beamer frames
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+% Create a dedicated command for tiny, grayed out citations on slides
+% Usage: \cite{Jones2020}
+\renewcommand{\cite}[1]{{\color{citecolor}\tiny\citep{#1}}}
