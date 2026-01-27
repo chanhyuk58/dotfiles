@@ -1,4 +1,4 @@
-% ---- 1. Fonts & Character Management -----
+% ---- 1. Select text fonts -----
 \usefonttheme{professionalfonts}
 \usepackage{sourcesanspro}
 \usepackage{sourcecodepro}
@@ -9,66 +9,96 @@
 \DeclareRobustCommand{\sbseries}{\fontseries{sb}\selectfont}
 \DeclareTextFontCommand{\textsb}{\sbseries}
 
+% ---- 2. Unified Math Infrastructure -----
+\usepackage{amsmath, amsthm, mathtools, dsfont, bm, amssymb}
+
+% Fix MnSymbol/Mathtools conflicts and select symbols
+\usepackage{MnSymbol}
+\usepackage[cal=euler,bb=fourier]{mathalpha}
+
+% mathastext for consistency
+\usepackage[italic,nolessnomore,noparenthesis,noplusnominus,noequal,nohbar]{mathastext}
+\MTsetmathskips{y}{2mu}{0mu}
+\MTsetmathskips{j}{2mu}{0mu}
+
+% ---- 3. Unified Math & Causal Inference Shortcuts ----
+\newcommand{\R}{\mathbb{R}} 
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathcal{F}} 
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\Power}{\mathcal{P}}
+
+% Sets, Vectors, and Matrices
+\DeclarePairedDelimiterX{\setarg}[1]{\{}{\}}{#1}
+\newcommand{\set}[1]{\setarg*{#1}}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\matr}[1]{\bm{#1}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\eye}{\mathbf{I}}
+
+% Parentheses Helper
+\DeclarePairedDelimiterX{\parentheses}[1]{(}{)}{#1}
+\DeclarePairedDelimiterX{\brackets}[1]{[}{]}{#1}
+\DeclarePairedDelimiterX{\braces}[1]{\{}{\}}{#1}
+
+% Expectation and Probability
+\renewcommand{\P}[1]{\mathbb{P}\parentheses*{#1}}
+\newcommand{\E}[1]{\mathbb{E}\brackets*{#1}}
+\newcommand{\V}[1]{\Var\brackets*{#1}}
+\newcommand{\indep}{\perp\!\!\!\perp}
+
+% Conditional Version
+\newcommand\given{\nonscript\mskip-\medmuskip\mid\nonscript\mskip-\medmuskip\allowbreak}
+\newcommand{\Ec}[2]{\mathbb{E}\brackets*{#1 \given #2}}
+\newcommand{\Pc}[2]{\mathbb{P}\parentheses*{#1 \given #2}}
+
+% All other
+\newcommand{\T}{^{\intercal}}
+\DeclarePairedDelimiterX{\absarg}[1]{\lvert}{\rvert}{#1}
+\newcommand{\abs}[1]{\absarg*{#1}}
+\DeclarePairedDelimiterX{\normarg}[1]{\lVert}{\rVert}{#1}
+\newcommand{\norm}[1]{\normarg*{#1}}
+\newcommand{\ind}[1]{\mathds{1}\braces*{#1}}
+\newcommand{\diff}{\mathrm{d}}
+\newcommand{\as}{\text{a.s.}}
+\newcommand{\toprob}{\xrightarrow{p}}
+\newcommand{\todist}{\xrightarrow{d}}
+\newcommand{\toas}{\xrightarrow{\text{a.s.}}}
+\newcommand{\iid}{\overset{\text{i.i.d.}}{\sim}}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\atarg}{.}{\vert}
+\newcommand{\eval}[3]{\atarg*{#1}_{#2}^{#3}}
+
+% ---- 4. Select Beamer theme ----
+\usetheme{Boadilla}
+\usecolortheme[]{seagull}
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+
+% ---- 5. Adjust slide layout & Spacing ----
+\setbeamertemplate{title page}[default][left,leftskip=-8pt]
+\setbeamersize{text margin left=5mm,text margin right=5mm}
+
+\usepackage[onehalfspacing]{setspace}
+
 % Pandoc-friendly microtype loading
 \@ifpackageloaded{microtype}{}{
   \usepackage[nopatch=footnote]{microtype}
 }
 \DisableLigatures[f]{encoding = *, family = * }
 
-% ---- 2. Math Stack & Fonts -----
-\usepackage{amsmath, amsthm, mathtools, dsfont}
-\usepackage[cal=euler,bb=fourier]{mathalpha}
-\usepackage{bm} % Bold math
-
-% mathastext for consistency between text and math fonts
-\usepackage[italic,nolessnomore,noparenthesis,noplusnominus,noequal,nohbar]{mathastext}
-\MTsetmathskips{y}{2mu}{0mu}
-\MTsetmathskips{j}{2mu}{0mu}
-
-% ---- 3. Probability & Measure Theory ----
-\newcommand\given{\nonscript\mskip-\medmuskip\delimsize\vert\nonscript\mskip-\medmuskip\allowbreak}
-
-\DeclarePairedDelimiterX{\parentheses}[1]{(}{)}{#1}
-\DeclarePairedDelimiterX{\brackets}[1]{[}{]}{#1}
-
-\renewcommand{\P}[1]{\mathbb{P}\parentheses*{#1}}
-\newcommand{\E}[1]{\mathbb{E}\brackets*{#1}}
-\newcommand{\Ec}[2]{\mathbb{E}\brackets*{#1 \given #2} }
-\newcommand{\Pc}[2]{\mathbb{P}\parentheses*{#1 \given #2} }
-
-\DeclareMathOperator{\Var}{Var}
-\newcommand{\V}[1]{\Var\brackets*{#1}}
-\newcommand{\ind}[1]{\mathds{1}_{\{#1\}}}
-\newcommand{\diff}{\mathrm{d}}
-\newcommand{\R}{\mathbb{R}}
-
-% Causal Inference Independence
-\newcommand{\indep}{\mathrel{\perp\mskip-7mu\perp}}
-\newcommand{\cindep}[3]{#1 \indep #2 \given #3}
-
-% Vectors & Matrices
-\newcommand{\vect}[1]{\bm{#1}}
-\newcommand{\matr}[1]{\bm{#1}}
-\newcommand{\vbeta}{\vect{\beta}}
-
-% ---- 4. Beamer Theme & Layout ----
-\usetheme{Boadilla}
-\usecolortheme{seagull}
-\setbeamercovered{transparent}
-\setbeamertemplate{navigation symbols}{}
-
-% Margins
-\setbeamersize{text margin left=5mm,text margin right=5mm}
-\usepackage[onehalfspacing]{setspace}
-
-% Titles & Headers (The Lowercase Aesthetic)
+% ---- 6. Font Sizes, Shapes & Colors ----
 \setbeamerfont{title}{size=\huge, series=\scshape}
 \setbeamerfont{author}{size=\large}
 \setbeamerfont{frametitle}{series=\scshape}
+
+% Uniform capitalization: lowercase aesthetic
 \setbeamertemplate{frametitle}{\vskip3mm\MakeLowercase{\insertframetitle}}
 \setbeamertemplate{frametitle continuation}{[\insertcontinuationcount]}
 
-% Colors
 \colorlet{BlackGray}{black!85!}
 \colorlet{DarkGray}{gray!60!}
 \colorlet{LightGray}{gray!30!}
@@ -79,45 +109,63 @@
 \setbeamercolor{itemize item}{fg=DarkGray}
 \setbeamercolor{block title}{fg=BlackGray,bg=LightGray}
 \setbeamercolor{block body}{fg=BlackGray,bg=LightGray}
+\setbeamercolor{footline}{fg=DarkGray}
 
-% ---- 5. Title Page Customization ----
+% ---- 7. Format title slide ----
 \let\oldtitle\title
 \renewcommand{\title}[1]{\oldtitle[]{\MakeLowercase{#1}\vspace{-7mm}\\\color{BlackGray}{\rule{\textwidth}{2pt}}}}
 
 \defbeamertemplate*{title page}{customized}[1][]{
   \vskip0pt plus 1filll
   \usebeamerfont{title}\inserttitle\par
+  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
   \vskip0pt plus 1filll
   \usebeamerfont{author}\insertauthor\par
+  \usebeamerfont{institute}\insertinstitute\par
   \usebeamerfont{date}\insertdate\par
   \vspace{0.2in}
 }
 
-% ---- 6. Alerts (Fixed xparse syntax) ----
-% Standard alert: \al<1>{text} or \al{text}
+% ---- 8. Text Alerts (Modern xparse syntax) ----
+\usepackage{xparse}
+% Usage: \al<1>{text}
 \NewDocumentCommand{\al}{d<> m}{\textcolor<#1>{red!80!black}{#2}}
 \NewDocumentCommand{\alg}{d<> m}{\textcolor<#1>{green!50!black}{#2}}
 \NewDocumentCommand{\alr}{d<> m}{\textcolor<#1>{red}{#2}}
 \NewDocumentCommand{\alb}{d<> m}{\textcolor<#1>{blue!80!black}{#2}}
 
-% ---- 7. Tables & Figures ----
+% ---- 9. Figures & Tables ----
 \usepackage{booktabs, multirow, caption}
-\captionsetup{labelformat=empty, size=normalsize}
+\captionsetup{labelformat=empty,size=normalsize}
 
-% ---- 8. Shortcuts & Symbols ----
+% Safe Centering (Avoids LR Mode Error)
+\newcommand{\centerfig}[2][]{\begin{center}\includegraphics[#1]{#2}\end{center}}
+
+% ---- 10. Lists, Theorems & Symbols ----
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{\textendash}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{remark}{Remark}
+
+\newcommand{\heading}[1]{{\LARGE\scshape\color{BlackGray}\MakeLowercase{#1}}}
+\newcommand{\lastslide}{{\setbeamercolor{normal text}{bg=LightGray}\begin{frame}\end{frame}}}
+
 \newcommand{\up}{\textuparrow\,}
 \newcommand{\down}{\textdownarrow\,}
 \newcommand{\then}{$\rightsquigarrow\,$}
 \newcommand{\so}{$\Rightarrow\,$}
-\newcommand{\heading}[1]{{\LARGE\scshape\color{BlackGray}\MakeLowercase{#1}}}
 
-% ---- 9. Citations ----
-\usepackage[round]{natbib}
-\definecolor{citecolor}{gray}{0.6}
+\setbeamertemplate{footline}{}
 
-% This ensures natbib works inside Beamer frames
-\setbeamertemplate{bibliography item}{\insertbiblabel}
-
-% Create a dedicated command for tiny, grayed out citations on slides
-% Usage: \cite{Jones2020}
-\renewcommand{\cite}[1]{{\color{citecolor}\tiny\citep{#1}}}
+% ---- 11. Bibliography & Silence Logic ----
+% \usepackage[round]{natbib}
+% \usepackage{bibentry} 
+% \definecolor{citecolor}{gray}{0.6}
+%
+% % Dedicated tiny gray cite: \cite{...}
+% \renewcommand{\cite}[1]{{\color{citecolor}\tiny\citep{#1}}}
+%
+% \nobibliography*

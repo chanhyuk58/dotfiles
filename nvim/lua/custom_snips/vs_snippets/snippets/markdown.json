@@ -12,7 +12,32 @@
             "fontsize: 11pt",
             "header-includes: ",
             "\t- \\usepackage{paper}",
+            "csl: american-journal-of-political-science.csl",
+            "link-citations: true",
             "---",
+            "",
+            "$0"
+        ]
+    },
+    "beamer_temp": {
+        "prefix": "beamer_template",
+        "body": [
+            "---",
+            "title: ${1:title}",
+            "author: Chanhyuk Park",
+            "institue: Washington University in St. Louis",
+            "created: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}",
+            "modified: ",
+            "tags: ",
+            "\t- ${4:tags}",
+            "fontsize: 11pt",
+            "format: beamer",
+            "theme: presentation",
+            "bibliography: \"/Users/chanhyuk/Documents/MyLibrary.bib\"",
+            "suppress-bibliography: true",
+            "link-citations: true",
+            "---",
+            "",
             "$0"
         ]
     },

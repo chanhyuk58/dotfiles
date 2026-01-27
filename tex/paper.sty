@@ -58,12 +58,10 @@
 \renewcommand{\tamark}{} % Remove thanks marks
 
 % 6. LISTS & BIBLIOGRAPHY
-\usepackage{enumitem, natbib}
+\usepackage{enumitem}
 \setlist{nosep}
 \setlist[itemize,1]{leftmargin=\parindent,label=\color{gray}{\textbullet}}
 \setlist[enumerate,1]{leftmargin=\parindent,label=\color{gray}{\alph*.}}
-\setcitestyle{aysep={}}
-\renewcommand{\bibfont}{\small}
 
 % 7. PROBABILITY & MEASURE THEORY SHORTCUTS
 \newcommand{\R}{\mathbb{R}} 
@@ -106,7 +104,6 @@
 \newcommand{\norm}[1]{\normarg*{#1}}
 \newcommand{\ind}[1]{\mathds{1}\braces*{#1}}
 \newcommand{\diff}{\mathrm{d}}
-\newcommand{\ind}[1]{\mathds{1}_{\{#1\}}}
 \newcommand{\as}{\text{a.s.}}
 \newcommand{\toprob}{\xrightarrow{p}}
 \newcommand{\todist}{\xrightarrow{d}}

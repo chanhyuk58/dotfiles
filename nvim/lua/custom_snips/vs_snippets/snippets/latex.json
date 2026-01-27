@@ -4,6 +4,7 @@
         "body": [
             "\\documentclass[xcolor=dvipsnames]{beamer}",
             "\\usetheme{presentation}",
+            "\\usepackage[round]{natbib}",
             "%\\usepackage[cjk]{kotex}",
             "%\\usepackage{listings}",
             "%\\usepackage{tikz}",
@@ -29,6 +30,7 @@
         "body": [
             "\\documentclass[10pt]{extarticle}",
             "\\usepackage{paper}",
+            "\\usepackage{natbib}",
             "\\usepackage{geometry}",
             "\\geometry{",
             "    letterpaper,",
