@@ -12,6 +12,7 @@
             "fontsize: 11pt",
             "header-includes: ",
             "\t- \\usepackage{paper}",
+            "bibliography: \"/Users/chanhyuk/Documents/MyLibrary.bib\"",
             "csl: american-journal-of-political-science.csl",
             "link-citations: true",
             "---",

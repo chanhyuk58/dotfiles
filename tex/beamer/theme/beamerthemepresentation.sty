@@ -48,11 +48,14 @@
 \newcommand{\E}[1]{\mathbb{E}\brackets*{#1}}
 \newcommand{\V}[1]{\Var\brackets*{#1}}
 \newcommand{\indep}{\perp\!\!\!\perp}
+\newcommand{\Ex}[2]{\mathbb{E}_{#1}\brackets*{#2}}
+\newcommand{\Px}[2]{\mathbb{P}_{#1}\parentheses*{#2}}
 
 % Conditional Version
 \newcommand\given{\nonscript\mskip-\medmuskip\mid\nonscript\mskip-\medmuskip\allowbreak}
 \newcommand{\Ec}[2]{\mathbb{E}\brackets*{#1 \given #2}}
 \newcommand{\Pc}[2]{\mathbb{P}\parentheses*{#1 \given #2}}
+\newcommand{\Exc}[3]{\mathbb{E}_{#1}\brackets*{#2 \given #3}}
 
 % All other
 \newcommand{\T}{^{\intercal}}
@@ -160,12 +163,3 @@
 
 \setbeamertemplate{footline}{}
 
-% ---- 11. Bibliography & Silence Logic ----
-% \usepackage[round]{natbib}
-% \usepackage{bibentry} 
-% \definecolor{citecolor}{gray}{0.6}
-%
-% % Dedicated tiny gray cite: \cite{...}
-% \renewcommand{\cite}[1]{{\color{citecolor}\tiny\citep{#1}}}
-%
-% \nobibliography*
