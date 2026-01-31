@@ -10,6 +10,6 @@ require("nvim-treesitter.configs").setup({
       return ok and stats and stats.size > 100 * 1024
     end,
   },
-  indent = { enable = false },
+  indent = { enable = true },
 })
 vim.treesitter.language.register('markdown', 'rmd')

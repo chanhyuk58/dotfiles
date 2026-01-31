@@ -1,4 +1,31 @@
 {
+    "Appendix": {
+        "prefix": ["appendix"],
+        "body": [
+            "\\usepackage{paper, appendix}",
+            "%\\usepackage[cjk]{kotex}",
+            "%\\usepackage{listings}",
+            "%\\usepackage{tikz}",
+            "% --------------------------------------------------------------------------- %",
+            "\\title{${1:Title}}",
+            "\\subtitle{${2:Subtitle}}",
+            "\\author{${3:Chanhyuk Park}}",
+            "\\institute{${4:Washington University in St. Louis}}",
+            "\\date{$5}",
+            "% --------------------------------------------------------------------------- %",
+            "\\begin{document}",
+            "\\begin{titlepage}",
+            "\\maketitle",
+            "",
+            "$0",
+            "\\tableofcontents",
+            "\\end{titlepage}",
+            "\\bibliographystyle{apsr}",
+            "\\bibliography{/Users/chanhyuk/Documents/MyLibrary}",
+            "",
+            "\\end{document}"
+        ]
+    },
     "Beamer": {
         "prefix": ["beamer"],
         "body": [
