@@ -22,7 +22,7 @@ local s = ls.extend_decorator.apply(ls.snippet, {
 return {
   s(
     { trig = "ali", name = "Aligned" },
-    { t({ "\\begin{aligned}", "\t" }), i(1), t("&="), i(2), t("\\\\"), t({ "", "\\end{aligned}" }) }
+    { t({ "\\begin{aligned}", "\t" }), i(1), t(" &= "), i(2), t(" \\\\"), t({ "", "\\end{aligned}" }) }
   ),
   s(
     { trig = "nali", name = "New Aligned line" },
