@@ -10,9 +10,9 @@ require("lazy").setup({
     lazy = false,
     cond = function() return vim.fn.has("mac") == 1 end,
   },
-  {"saghen/blink.cmp", version = "1.*", 
+  { "saghen/blink.cmp", 
     lazy = false,
     dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
     opts = function() require("plugins.blink") end,
-  }
+  }, 
 })

@@ -1,6 +1,6 @@
 {
   "LuaSnip": { "branch": "master", "commit": "5a1e39223db9a0498024a77b8441169d260c8c25" },
-  "blink.cmp": { "branch": "main", "commit": "4b18c32adef2898f95cdef6192cbd5796c1a332d" },
+  "blink.cmp": { "branch": "main", "commit": "f85eb6252f4c0212be15c6c4213e9af587574cbe" },
   "gitsigns.nvim": { "branch": "main", "commit": "1ce96a464fdbc24208e24c117e2021794259005d" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },

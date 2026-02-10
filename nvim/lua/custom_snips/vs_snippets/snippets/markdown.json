@@ -53,12 +53,23 @@
             "modified: ",
             "output: ",
             "\tpdf_document: default",
+            "fontsize: 11pt",
+            "header-includes: ",
+            "\t- \\usepackage{paper}",
+            "bibliography: \"/Users/chanhyuk/Documents/MyLibrary.bib\"",
+            "csl: american-journal-of-political-science.csl",
+            "link-citations: true",
             "---",
             "```{r setup, include=FALSE}",
             "knitr::opts_chunk\\$set(echo = TRUE, cache = TRUE)",
             "```",
             "$0"
         ]
+    },
+    "Answers": {
+        "prefix": "Answers",
+        "body": ["\\vspace{1cm}", "***Answers:***", "$0", "", "\\vspace{1cm}"],
+        "description": "Add header level 1"
     },
     "header 1": {
         "prefix": "h1",
