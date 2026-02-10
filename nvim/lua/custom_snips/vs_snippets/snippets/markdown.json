@@ -68,7 +68,7 @@
     },
     "Answers": {
         "prefix": "Answers",
-        "body": ["\\vspace{1cm}", "***Answers:***", "$0", "", "\\vspace{1cm}"],
+        "body": ["\\vspace{1cm}", "***Answers:***", "", "$0", "", "\\vspace{1cm}"],
         "description": "Add header level 1"
     },
     "header 1": {
