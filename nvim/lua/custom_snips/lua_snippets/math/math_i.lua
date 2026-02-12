@@ -8,7 +8,8 @@ local parse_snippet = ls.extend_decorator.apply(ls.parser.parse_snippet,
   }
 )
 return {
-  parse_snippet({ trig = "exp", name = "exponential" }, "\\exp \\left( $1 \\right)"),
+  parse_snippet({ trig = "exp", name = "exponential" }, "\\expo{$1}"),
+  parse_snippet({ trig = "\\loge", name = "log with adjustable brackets" }, "\\loge{$1}"),
   parse_snippet({ trig = "sum", name = "sum" }, "\\sum"),
   parse_snippet({ trig = "\\sume", name = "sum with from to" }, "\\sum_{${1:n}=${2:1}}^{${3:\\infty}} $0"),
 

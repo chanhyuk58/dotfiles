@@ -9,6 +9,7 @@ require("lazy").setup({
     "ivanesmantovich/xkbswitch.nvim",
     lazy = false,
     cond = function() return vim.fn.has("mac") == 1 end,
+    config = function() require("xkbswitch").setup() end,
   },
   { "saghen/blink.cmp", 
     lazy = false,
