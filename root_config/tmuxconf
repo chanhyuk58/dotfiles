@@ -6,20 +6,19 @@ set -sg escape-time 10
 set -g focus-events on
 set -g history-limit 50000
 
-# Start numbering at 1 (more natural for keyboard shortcuts)
+# Start numbering at 1
 set -g base-index 1
 setw -g pane-base-index 1
 set -g renumber-windows on
 
-##### Title (Terminal Window Tab) #####
+##### Title #####
 set-option -g set-titles on
-# Format: [Session] WindowIndex.ProcessName
 set-option -g set-titles-string "[#S] #I.#W"
 set-option -g allow-rename on
 
-##### Status Bar (The line at the bottom) #####
+##### Status Bar #####
 set -g status-position bottom
-set -g status-style 'bg=default,fg=default' # Fully transparent/Standard
+set -g status-style 'bg=default,fg=default'
 set -g status-interval 5
 
 # Left side: [Session Name]
@@ -59,3 +58,6 @@ bind - split-window -v -c "#{pane_current_path}"
 
 # Simple detach
 bind d detach
+
+# TMUX Resurrect
+run-shell $HOME/.tmux_resurrect/resurrect.tmux
