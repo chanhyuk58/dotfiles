@@ -2,7 +2,9 @@
     "Appendix": {
         "prefix": ["appendix"],
         "body": [
-            "\\usepackage{paper, appendix}",
+            "\\usepackage{paper}",
+            "\\usepackage{math}",
+            "\\usepackage{appendix}",
             "%\\usepackage[cjk]{kotex}",
             "%\\usepackage{listings}",
             "%\\usepackage{tikz}",
@@ -31,6 +33,7 @@
         "body": [
             "\\documentclass[xcolor=dvipsnames]{beamer}",
             "\\usetheme{presentation}",
+            "\\usepackage{math}",
             "\\usepackage[round]{natbib}",
             "\\usepackage{bibentry}",
             "\\definecolor{citecolor}{gray}{0.6}",
@@ -63,6 +66,7 @@
         "body": [
             "\\documentclass[10pt]{extarticle}",
             "\\usepackage{paper}",
+            "\\usepackage{math}",
             "\\usepackage{natbib}",
             "\\usepackage{geometry}",
             "\\geometry{",
