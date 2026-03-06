@@ -31,4 +31,5 @@ vim.opt.foldcolumn = "0"
 vim.g.tex_flavor = "latex"
 vim.opt.fillchars = { fold = " ", vert = "│", eob = " ", msgsep = "‾" }
 vim.g.netrw_liststyle = 3
-vim.opt.termguicolors = true -- enable true color
+vim.opt.termguicolors = true
+vim.g.loaded_matchparen = 1
