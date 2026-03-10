@@ -18,5 +18,12 @@ require("core.autocmds")
 require("plugins")
 
 -- No Background
-vim.cmd("highlight Normal guibg=None")
-vim.api.nvim_set_hl(0, "Normal", { bg = "None" })
+-- vim.cmd("highlight Normal guibg=None")
+-- vim.api.nvim_set_hl(0, "Normal", { bg = "None" })
+
+-- Colorscheme
+require("catppuccin").setup({
+  flavour = "latte",
+  auto_integrations = true,
+})
+vim.cmd.colorscheme("catppuccin")

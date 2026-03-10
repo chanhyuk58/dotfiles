@@ -13,7 +13,7 @@ require("lazy").setup({
   },
   { "saghen/blink.cmp", 
     lazy = false,
-    dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
     opts = function() require("plugins.blink") end,
   }, 
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 })
