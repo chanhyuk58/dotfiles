@@ -76,6 +76,3 @@ if [[ "$OS" == "linux" ]]; then
   alias nvim="$HOME/nvim-linux-arm64.appimage"
   export TMPDIR=$HOME/Rtmp
 fi
-
-# Created by `pipx` on 2026-03-10 22:33:28
-export PATH="$PATH:/Users/chanhyuk/.local/bin"
