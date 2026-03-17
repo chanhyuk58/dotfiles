@@ -159,7 +159,7 @@ return {
   parse_snippet({ trig = "eval", name = "ceil" }, "\\eval{$1}{${2:lower}}{${3:upper}}$0"),
   parse_snippet({ trig = "EE", name = "Expectation" }, "\\E{$1}$0"),
   parse_snippet({ trig = "PP", name = "Probability" }, "\\P{$1}$0"),
-  parse_snippet({ trig = "*", name = "asterisk" }, "\\ast"),
+  -- parse_snippet({ trig = "*", name = "asterisk" }, "\\ast"),
   parse_snippet({ trig = "ind", name = "independent" }, "\\indep"),
   parse_snippet({ trig = "1i", name = "Indicator" }, "\\ind{$1}$0"),
   
