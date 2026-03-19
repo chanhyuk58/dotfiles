@@ -21,5 +21,4 @@ return {
   parse_snippet({ trig = "inf", name = "\\infty" }, "\\infty"),
   parse_snippet({ trig = "inn", name = "in" }, "\\in"),
   parse_snippet({ trig = "SI", name = "SI" }, "\\SI{$1}{$2}"),
-  parse_snippet({ trig = "|", name = "given" }, "\\given $1"),
 }
