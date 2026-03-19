@@ -191,11 +191,6 @@
         "prefix": ["- ", "\\enumerate", "enumerate"],
         "body": ["\\begin{enumerate}", "\t\\item $1", "\\end{enumerate}$0"]
     },
-    "Up": {
-        "prefix": ["to", "\\to"],
-        "body": ["^ {$1}$0"],
-        "description": "Superscript notation, as well as the power notation."
-    },
     "Theorem": {
         "prefix": ["theorem", "\\theorem"],
         "body": [
@@ -402,20 +397,6 @@
             "\\\\end{description}"
         ],
         "description": "Description"
-    },
-    "Definition": {
-        "prefix": "definition",
-        "body": [
-            "\\begin{definition}",
-            "\t$1",
-            "\t\\begin{displaymath}",
-            "\t\t$2",
-            "\t\\end{displaymath}",
-            "\t$3",
-            "\\end{definition}",
-            "$0"
-        ],
-        "description": "Add a definition"
     },
     "Table:Ref": {
         "prefix": "table:ref",
