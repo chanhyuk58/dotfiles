@@ -68,7 +68,6 @@
         "body": [
             "\\documentclass[10pt]{extarticle}",
             "\\usepackage{paper}",
-            "\\usepackage{math}",
             "\\usepackage{natbib}",
             "\\usepackage{geometry}",
             "\\geometry{",
