@@ -44,4 +44,10 @@ M.math_begin = create_context({
   condition = snip_utils.pipe({ conds.line_begin, snip_utils.is_math }),
 })
 
+-- 5. Math + Word Begin
+M.math_word = create_context({
+  snippetType = "autosnippet",
+  condition = snip_utils.pipe({ snip_utils.word_begin, snip_utils.is_math }),
+})
+
 return M
