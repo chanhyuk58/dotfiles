@@ -57,6 +57,29 @@ for entry in "${configs[@]}"; do
     link "$DOTFILES_DIR/$src_rel" "$HOME/$dest_rel"
 done
 
+# ----------- Neovim AppImage Setup ----------
+info "Checking for Neovim AppImage..."
+
+# Find the newest nvim-*.appimage in the home directory
+# (ls -t sorts by modification time, head -n 1 picks the newest)
+NVIM_APPIMAGE=$(ls -t "$HOME"/nvim-*.appimage 2>/dev/null | head -n 1)
+
+if [[ -n "$NVIM_APPIMAGE" ]]; then
+    info "Found Neovim AppImage: $(basename "$NVIM_APPIMAGE")"
+    
+    # Ensure the AppImage is executable
+    chmod +x "$NVIM_APPIMAGE"
+    
+    # Define where the 'nvim' command should live. 
+    # Based on your .bashrc, ~/.local/bin is a good choice.
+    NVIM_BIN_DEST="$HOME/.local/bin/nvim"
+    
+    # Use your existing link helper
+    link "$NVIM_APPIMAGE" "$NVIM_BIN_DEST"
+else
+    info "No nvim-*.appimage found in $HOME. Skipping Neovim binary setup."
+fi
+
 # ----------- Pandoc Setup ----------
 info "Configuring Pandoc at $PANDOC_DATA_DIR"
 # Link the whole directory to maintain /templates, /filters, and /defaults structure

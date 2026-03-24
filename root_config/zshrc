@@ -73,6 +73,5 @@ if [[ "$OS" == "mac" ]]; then
 fi
 
 if [[ "$OS" == "linux" ]]; then
-  ln -sf $HOME/nvim-linux*.appimage $HOME/nvim
   export TMPDIR=$HOME/Rtmp
 fi
