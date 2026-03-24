@@ -29,7 +29,6 @@ local symbol_map = {
   PP = "\\mathcal{P}",
   
   -- Operators & Misc
-  ooo = "\\infty",
   inf = "\\infty",
   nabl = "\\nabla",
   xx = "\\times",

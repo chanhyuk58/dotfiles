@@ -11,6 +11,7 @@ ls.filetype_extend("rmd", { "tex" })
 ls.filetype_extend("markdown", { "tex" })
 
 ls.config.set_config({
+  store_selection_keys = "<Tab>", 
   enable_autosnippets = true,
   update_events = "TextChanged,TextChangedI",
 })
