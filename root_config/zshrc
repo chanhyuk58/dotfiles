@@ -73,6 +73,6 @@ if [[ "$OS" == "mac" ]]; then
 fi
 
 if [[ "$OS" == "linux" ]]; then
-  alias nvim="$HOME/nvim-linux-arm64.appimage"
+  ln -sf $HOME/nvim-linux*.appimage $HOME/nvim
   export TMPDIR=$HOME/Rtmp
 fi
