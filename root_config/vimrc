@@ -48,7 +48,11 @@ endif
 set undodir=~/.vim/undo
 
 " Status line simplicity
-set fillchars=vert:│,fold:\ ,eob:\ 
+if has('patch-8.2.2508')
+    set fillchars=vert:\|,fold:\ ,eob:\ 
+else
+    set fillchars=vert:\|,fold:\ 
+endif
 
 " =============================================================================
 " UI & COLORS
