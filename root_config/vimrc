@@ -1,0 +1,119 @@
+" =============================================================================
+" BASIC SETTINGS
+" =============================================================================
+set nocompatible            " Use Vim defaults instead of Vi
+syntax on                   " Enable syntax highlighting
+filetype plugin indent on   " Enable filetype detection and indenting
+
+set mouse=a                 " Enable mouse support
+set tabstop=4               " Number of visual spaces per TAB
+set softtabstop=4           " Number of spaces in tab when editing
+set shiftwidth=4            " Number of spaces to use for autoindent
+set expandtab               " Tabs are spaces
+set autoindent
+set smartindent
+set cindent
+
+set splitright              " Vertical splits open to the right
+set splitbelow              " Horizontal splits open to the bottom
+set laststatus=2            " Always show status line (set to 0 to hide)
+set showmatch               " Highlight matching brackets
+set hlsearch                " Highlight search results
+set incsearch               " Search as characters are entered
+set ignorecase              " Ignore case when searching
+set smartcase               " ...unless search contains uppercase
+
+set backspace=eol,start,indent " Fix backspace behavior
+set noshowmode              " Hide --INSERT-- (useful if you use a statusline)
+set number                  " Show line numbers
+set relativenumber          " Show relative line numbers
+set numberwidth=5
+set wrap                    " Wrap lines
+set linebreak               " Break lines at words
+set breakindent             " Wrapped lines maintain indent
+set encoding=utf-8
+set fileencoding=utf-8
+set signcolumn=yes          " Always show sign column (prevents 'jumping' text)
+set foldmethod=marker       " Fold based on markers {{{ }}}
+set title                   " Change terminal title
+set autochdir               " Automatically change directory to current file
+set backupcopy=yes          " Handle symlinks/truncation safely
+
+" Performance and Undo
+set undofile                " Save undo history to a file
+" Create directory if it doesn't exist to prevent errors
+if !isdirectory($HOME . '/.vim/undo')
+    call mkdir($HOME . '/.vim/undo', 'p', 0700)
+endif
+set undodir=~/.vim/undo
+
+" Status line simplicity
+set fillchars=vert:│,fold:\ ,eob:\ 
+
+" =============================================================================
+" UI & COLORS
+" =============================================================================
+" Use a basic color scheme that works well on most terminals
+colorscheme desert 
+set notermguicolors
+
+" =============================================================================
+" MAPPINGS
+" =============================================================================
+let mapleader = " "
+
+" Split pane navigation (Ctrl + hjkl)
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Clipboard (Requires Vim compiled with +clipboard, often missing on servers)
+" If these don't work, use your terminal's shift+click/drag paste.
+vnoremap <leader>y "+y
+nnoremap <leader>Y "+yg_
+nnoremap <leader>y "+y
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" =============================================================================
+" AUTO-COMMANDS
+" =============================================================================
+
+" Remember cursor position
+autocmd BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
+
+" Auto-toggle relative numbers (Vim compatible version)
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+" Remember Code folding (requires ~/.vim/view directory)
+if !isdirectory($HOME . '/.vim/view')
+    call mkdir($HOME . '/.vim/view', 'p', 0700)
+endif
+augroup remember_folds
+  autocmd!
+  autocmd BufWinLeave * silent! mkview
+  autocmd BufWinEnter * silent! loadview
+augroup END
+
+" Insert modified timestamp for markdown files
+autocmd BufWritePre,FileWritePre *.md,*.rmd ks|call LastMod()|'s
+fun LastMod()
+  if line("$") > 20
+    let l = 20
+  else
+    let l = line("$")
+  endif
+  exe "1," .. l .. "g/modified: /s/modified: .*/modified: " .. strftime("%Y-%m-%d %H:%M:%S")
+endfun
+
+" Netrw (built-in file explorer)
+let g:netrw_liststyle = 3 " Tree view
+let g:netrw_banner = 0    " Hide banner
