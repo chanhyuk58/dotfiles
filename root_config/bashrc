@@ -19,8 +19,9 @@ alias ta="tmux source ~/.tmux.conf && tmux a -t"
 alias tk="tmux kill-session -t"
 
 # ---------- 8. Neovim & Git Aliases ----------
-alias vim="nvim"
-alias vi="nvim"
-alias vimdiff="nvim -d"
+if command -v nvim >/dev/null 2>&1; then
+    alias vim="nvim"
+    alias vi="nvim"
+    alias vimdiff="nvim -d"
+fi
 alias gitlog="git log --oneline --graph --all"
-

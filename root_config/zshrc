@@ -52,6 +52,7 @@ alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instanc
 
 ##### Configuration File Shortcuts #####
 alias zshss="$EDITOR $HOME/.zshrc"
+alias bashss="$EDITOR $HOME/.bashrc"
 alias alacss="$EDITOR $HOME/.config/alacritty/alacritty.toml"
 alias kittyss="$EDITOR $HOME/.config/kitty/kitty.conf"
 alias wezss="$EDITOR $HOME/.config/wezterm/wezterm.lua"
