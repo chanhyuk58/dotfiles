@@ -1,6 +1,11 @@
 ##### Basics #####
-set -g default-terminal "xterm-256color"
-set-option -sa terminal-features ',*:RGB'
+# Use screen-256color for better compatibility across most Linux distros
+set -g default-terminal "screen-256color"
+
+# Robust version check for terminal-features (handles versions < 3.2 safely)
+if-shell '[[ $(tmux -V | cut -d" " -f2 | tr -d "A-Za-z") >= 3.2 ]]' \
+    'set -s terminal-features ",xterm-256color:RGB"'
+
 set -g mouse on
 set -sg escape-time 10
 set -g focus-events on
@@ -21,43 +26,38 @@ set -g status-position bottom
 set -g status-style 'bg=default,fg=default'
 set -g status-interval 5
 
-# Left side: [Session Name]
 set -g status-left '[#S] '
 set -g status-left-length 20
 
-# Right side: Prefix indicator (Show "WAIT" when prefix pressed) | Date Time
+# Use simpler conditional syntax that works on older tmux versions
 set -g status-right '#{?client_prefix,WAIT ,} | %Y-%m-%d %H:%M '
 set -g status-right-length 50
 
 ##### Window List Format #####
-# Inactive windows: Index:ProcessName (dimmed)
 setw -g window-status-style 'dim'
 setw -g window-status-format '#I:#{=10:pane_current_command}#F'
 
-# Active window: Index:ProcessName (Bold and Underlined, no color)
 setw -g window-status-current-style 'bold'
 setw -g window-status-current-format '#I:#{=10:pane_current_command}#F'
 
-# Pane borders (Simple lines)
 set -g pane-border-style 'fg=default,dim'
 set -g pane-active-border-style 'fg=default,bold'
 
 ##### Key Bindings #####
-# Reload config
 bind r source-file ~/.tmux.conf \; display 'Reloaded!'
 
-# Vim-style pane navigation
 bind h select-pane -L 
 bind j select-pane -D 
 bind k select-pane -U 
 bind l select-pane -R
 
-# Logical splitting ( | and - )
 bind | split-window -h -c "#{pane_current_path}"
 bind - split-window -v -c "#{pane_current_path}"
 
-# Simple detach
 bind d detach
 
-# TMUX Resurrect
-run-shell $HOME/.tmux_resurrect/resurrect.tmux
+##### Plugins #####
+# Check if the resurrect script exists before trying to run it
+# This prevents errors if you move to a server where you haven't installed plugins yet
+if-shell 'test -f ~/.tmux_resurrect/resurrect.tmux' \
+    'run-shell ~/.tmux_resurrect/resurrect.tmux'
