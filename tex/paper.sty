@@ -7,13 +7,14 @@
 \input{glyphtounicode}
 \pdfgentounicode=1
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[hyphens]{url}
 \usepackage{setspace} \doublespacing
 \usepackage{geometry}
 \geometry{margin=1in, footskip=0.5in}
 
 % Pandoc-friendly microtype loading
-\@ifpackageloaded{microtype}{}{\usepackage[nopatch=footnote, final]{microtype}}
+\@ifpackageloaded{microtype}{}{\usepackage[expansion=false, nopatch=footnote, final]{microtype}}
 
 % 2. THE MATH STACK
 \usepackage{amsmath, amsthm, mathtools, amssymb, dsfont, bm}

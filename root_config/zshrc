@@ -26,23 +26,40 @@ source $ZSH/oh-my-zsh.sh
 
 ##### ALIAS #####
 alias rm="rm -i"
-alias ls="eza"
-alias ll="eza -lhF"
-alias lla="eza -alhF"
-alias lt="eza -lhTF"
-alias lta="eza -alhTF"
+
+if command -v eza >/dev/null 2>&1; then
+    alias ls="eza --icons"
+else
+    alias ls="ls --color=auto"
+fi
+alias ll="ls -lhF"
+alias lla="ls -alhF"
+alias lt="ls -lhTF"
+alias lta="ls -alhTF"
+
+if command -v nvim >/dev/null 2>&1; then
+    alias nn="nvim -c 'lua require(\"utils.new_note\").new_note()'"
+    alias vim="nvim"
+    alias vi="nvim"
+    alias vimdiff="nvim -d"
+    export EDITOR=nvim
+else
+    export EDITOR=vi
+fi
+
 alias nn="nvim -c 'lua require(\"utils.new_note\").new_note()'"
 alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 
 ##### Configuration File Shortcuts #####
-alias zshss="nvim $HOME/.zshrc"
-alias alacss="nvim $HOME/.config/alacritty/alacritty.toml"
-alias kittyss="nvim $HOME/.config/kitty/kitty.conf"
-alias wezss="nvim $HOME/.config/wezterm/wezterm.lua"
-alias tmuxss="nvim $HOME/.tmux.conf"
-alias vimss="nvim $HOME/.config/nvim/init.lua"
-alias gitss="nvim $HOME/.gitconfig"
-alias ghosttyss="nvim $HOME/.config/ghostty/config"
+alias zshss="$EDITOR $HOME/.zshrc"
+alias alacss="$EDITOR $HOME/.config/alacritty/alacritty.toml"
+alias kittyss="$EDITOR $HOME/.config/kitty/kitty.conf"
+alias wezss="$EDITOR $HOME/.config/wezterm/wezterm.lua"
+alias tmuxss="$EDITOR $HOME/.tmux.conf"
+alias vimss="$EDITOR $HOME/.vimrc"
+alias nvimss="$EDITOR $HOME/.config/nvim/init.lua"
+alias gitss="$EDITOR $HOME/.gitconfig"
+alias ghosttyss="$EDITOR $HOME/.config/ghostty/config"
 
 ##### TMUX ALIAS #####
 alias tmux="env TERM=tmux-256color tmux" # tmux with certain terminfo
@@ -51,16 +68,8 @@ alias tn="tmux new -s"
 alias ta="tmux source ~/.tmux.conf && tmux a -t"
 alias tk="tmux kill-session -t"
 
-##### NEOVIM ALIAS #####
-# alias vim="nvim"
-# alias vi="nvim"
-# alias vimdiff="nvim -d"
-
 ##### GIT ALIAS #####
 alias gitlog="git log --oneline --graph --all"
-
-##### NEOVIM EDITOR #####
-export EDITOR=nvim
 
 if [[ "$OS" == "mac" ]]; then
   export PATH="/opt/homebrew/bin:$PATH"
