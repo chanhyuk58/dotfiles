@@ -6,56 +6,52 @@ ZSH_THEME=""
 DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="true"
 
-plugins=(
-  git
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  autojump
-  git-prompt
-)
+plugins=(git git-prompt)
+[[ -d $ZSH/custom/plugins/zsh-syntax-highlighting ]] && plugins+=(zsh-syntax-highlighting)
+[[ -d $ZSH/custom/plugins/zsh-autosuggestions ]] && plugins+=(zsh-autosuggestions)
+[[ -d $ZSH/custom/plugins/autojump ]] && plugins+=(autojump)
 
 ##### PROMPT #####
 setopt PROMPT_SUBST
 PROMPT="(%n@%m) %3~
 %F{blue}>%f "
 
-source $ZSH/oh-my-zsh.sh
+[ -d "$ZSH" ] && source $ZSH/oh-my-zsh.sh
 
-##### KEYS #####
+##### KEYS & ENV #####
 [ -f ~/.keys ] && source ~/.keys
+export EDITOR=${EDITOR:-vi}
 
 ##### ALIAS #####
 alias rm="rm -i"
 
+# Smart LS: Check for eza, then exa, fallback to ls
 if command -v eza >/dev/null 2>&1; then
     alias ls="eza --icons"
+elif command -v exa >/dev/null 2>&1; then
+    alias ls="exa"
 else
     alias ls="ls --color=auto"
 fi
 alias ll="ls -lhF"
 alias lla="ls -alhF"
-alias lt="ls -lhTF"
-alias lta="ls -alhTF"
 
+# Smart NVIM
 if command -v nvim >/dev/null 2>&1; then
     alias nn="nvim -c 'lua require(\"utils.new_note\").new_note()'"
     alias vim="nvim"
     alias vi="nvim"
     alias vimdiff="nvim -d"
     export EDITOR=nvim
-else
-    export EDITOR=vi
 fi
 
-alias nn="nvim -c 'lua require(\"utils.new_note\").new_note()'"
 alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 
 ##### Configuration File Shortcuts #####
 alias zshss="$EDITOR $HOME/.zshrc"
+alias tmuxss="$EDITOR $HOME/.tmux.conf"
+[ -f "$HOME/.config/nvim/init.lua" ] && alias nvimss="$EDITOR $HOME/.config/nvim/init.lua"
 alias bashss="$EDITOR $HOME/.bashrc"
-alias alacss="$EDITOR $HOME/.config/alacritty/alacritty.toml"
-alias kittyss="$EDITOR $HOME/.config/kitty/kitty.conf"
-alias wezss="$EDITOR $HOME/.config/wezterm/wezterm.lua"
 alias tmuxss="$EDITOR $HOME/.tmux.conf"
 alias vimss="$EDITOR $HOME/.vimrc"
 alias nvimss="$EDITOR $HOME/.config/nvim/init.lua"
@@ -63,7 +59,7 @@ alias gitss="$EDITOR $HOME/.gitconfig"
 alias ghosttyss="$EDITOR $HOME/.config/ghostty/config"
 
 ##### TMUX ALIAS #####
-alias tmux="env TERM=tmux-256color tmux" # tmux with certain terminfo
+alias tmux="tmux" 
 alias tls="tmux ls"
 alias tn="tmux new -s"
 alias ta="tmux source ~/.tmux.conf && tmux a -t"
@@ -72,16 +68,13 @@ alias tk="tmux kill-session -t"
 ##### GIT ALIAS #####
 alias gitlog="git log --oneline --graph --all"
 
-if [[ "$OS" == "mac" ]]; then
-  export PATH="/opt/homebrew/bin:$PATH"
+##### PLATFORM SPECIFIC #####
+OS_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-  alias obsidian="nvim ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/Obsidian"
-
-  #### Oracle AILAS ####
-  alias ostart="oci compute instance action --action START --instance-id ocid1.instance.oc1.us-chicago-1.anxxeljrqbo6i4icbcfgambxtakvjg5o7opueq3m2zwcd2b6ozi4hiczfpgq"
-  alias ostop="oci compute instance action --action STOP --instance-id ocid1.instance.oc1.us-chicago-1.anxxeljrqbo6i4icbcfgambxtakvjg5o7opueq3m2zwcd2b6ozi4hiczfpgq"
+if [[ "$OS_TYPE" == "darwin" ]]; then
+  [ -d "/opt/homebrew/bin" ] && export PATH="/opt/homebrew/bin:$PATH"
 fi
 
-if [[ "$OS" == "linux" ]]; then
-  export TMPDIR=$HOME/Rtmp
+if [[ "$OS_TYPE" == "linux" ]]; then
+  [ -d "$HOME/Rtmp" ] && export TMPDIR=$HOME/Rtmp
 fi
