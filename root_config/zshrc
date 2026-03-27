@@ -7,9 +7,12 @@ DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="true"
 
 plugins=(git git-prompt)
-[[ -d $ZSH/custom/plugins/zsh-syntax-highlighting ]] && plugins+=(zsh-syntax-highlighting)
-[[ -d $ZSH/custom/plugins/zsh-autosuggestions ]] && plugins+=(zsh-autosuggestions)
-[[ -d $ZSH/custom/plugins/autojump ]] && plugins+=(autojump)
+optional_plugins=(zsh-syntax-highlighting zsh-autosuggestions autojump)
+for plugin in $optional_plugins; do
+  if [[ -d "$ZSH_CUSTOM/plugins/$plugin" || -d "$ZSH/plugins/$plugin" ]]; then
+    plugins+=($plugin)
+  fi
+done
 
 ##### PROMPT #####
 setopt PROMPT_SUBST
