@@ -7,19 +7,28 @@ DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="true"
 
 plugins=(git git-prompt)
-optional_plugins=(zsh-syntax-highlighting zsh-autosuggestions autojump)
+optional_plugins=(zsh-syntax-highlighting zsh-autosuggestions)
 for plugin in $optional_plugins; do
   if [[ -d "$ZSH_CUSTOM/plugins/$plugin" || -d "$ZSH/plugins/$plugin" ]]; then
     plugins+=($plugin)
   fi
 done
 
+[ -d "$ZSH" ] && source $ZSH/oh-my-zsh.sh
+
+##### TOOLS (Autojump) #####
+if [ -f /opt/homebrew/etc/profile.d/autojump.sh ]; then
+    . /opt/homebrew/etc/profile.d/autojump.sh        # Apple Silicon Mac
+elif [ -f /usr/local/etc/profile.d/autojump.sh ]; then
+    . /usr/local/etc/profile.d/autojump.sh       # Intel Mac
+elif [ -f /usr/share/autojump/autojump.sh ]; then
+    . /usr/share/autojump/autojump.sh            # Linux (Ubuntu/Debian)
+fi
+
 ##### PROMPT #####
 setopt PROMPT_SUBST
 PROMPT="(%n@%m) %3~
 %F{blue}>%f "
-
-[ -d "$ZSH" ] && source $ZSH/oh-my-zsh.sh
 
 ##### KEYS & ENV #####
 [ -f ~/.keys ] && source ~/.keys
@@ -55,9 +64,6 @@ alias zshss="$EDITOR $HOME/.zshrc"
 alias tmuxss="$EDITOR $HOME/.tmux.conf"
 [ -f "$HOME/.config/nvim/init.lua" ] && alias nvimss="$EDITOR $HOME/.config/nvim/init.lua"
 alias bashss="$EDITOR $HOME/.bashrc"
-alias tmuxss="$EDITOR $HOME/.tmux.conf"
-alias vimss="$EDITOR $HOME/.vimrc"
-alias nvimss="$EDITOR $HOME/.config/nvim/init.lua"
 alias gitss="$EDITOR $HOME/.gitconfig"
 alias ghosttyss="$EDITOR $HOME/.config/ghostty/config"
 
