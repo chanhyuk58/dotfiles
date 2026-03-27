@@ -9,7 +9,7 @@ ENABLE_CORRECTION="true"
 plugins=(git git-prompt)
 optional_plugins=(zsh-syntax-highlighting zsh-autosuggestions)
 for plugin in $optional_plugins; do
-  if [[ -d "$ZSH_CUSTOM/plugins/$plugin" || -d "$ZSH/plugins/$plugin" ]]; then
+  if [[ -d "$ZSH/custom/plugins/$plugin" || -d "$ZSH/plugins/$plugin" ]]; then
     plugins+=($plugin)
   fi
 done
