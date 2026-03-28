@@ -47,6 +47,7 @@ info "Installing standard configs..."
 configs=(
     "root_config/zshrc:.zshrc"
     "root_config/bashrc:.bashrc"
+    "root_config/shell_common:.shell_common"
     "root_config/vimrc:.vimrc"
     "root_config/tmuxconf:.tmux.conf"
     "root_config/gitconfig:.gitconfig"

@@ -1,27 +1,14 @@
-# ------------- Prompt -----------------
+# Load standard Bash defaults
+[ -f /etc/bashrc ] && . /etc/bashrc
+
+# Prompt
 BLUE='\[\e[34m\]'
 RESET='\[\e[0m\]'
 PS1="(\u@\h) \w\n${BLUE}>${RESET} "
 
-# ---------- Standard Aliases ----------
-alias rm="rm -i"
-alias ls="ls"
-alias ll="ls -lhF"
-alias lla="ls -alhF"
-alias lt="ls -lhTF"
-alias lta="ls -alhTF"
+# History
+export HISTCONTROL=ignoreboth:erasedups
+shopt -s histappend
 
-# ---------- 7. Tmux Aliases ----------
-alias tmux="env TERM=tmux-256color tmux"
-alias tls="tmux ls"
-alias tn="tmux new -s"
-alias ta="tmux source ~/.tmux.conf && tmux a -t"
-alias tk="tmux kill-session -t"
-
-# ---------- 8. Neovim & Git Aliases ----------
-if command -v nvim >/dev/null 2>&1; then
-    alias vim="nvim"
-    alias vi="nvim"
-    alias vimdiff="nvim -d"
-fi
-alias gitlog="git log --oneline --graph --all"
+# Load Shared Config
+[[ -f ~/.shell_common ]] && source ~/.shell_common

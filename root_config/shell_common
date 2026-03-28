@@ -1,0 +1,88 @@
+# ------------------------------------------------------------------------------
+# SHARED ENVIRONMENT & PATH
+# ------------------------------------------------------------------------------
+[ -d "/opt/homebrew/bin" ] && export PATH="/opt/homebrew/bin:$PATH"
+[ -d "$HOME/.local/bin" ] && export PATH="$HOME/.local/bin:$PATH"
+
+# Platform Specific
+OS_TYPE=$(uname -s | tr '[:upper:]' '[:lower:]')
+if [[ "$OS_TYPE" == "linux" ]]; then
+  [ -d "$HOME/Rtmp" ] && export TMPDIR=$HOME/Rtmp
+fi
+
+# ------------------------------------------------------------------------------
+# SMART TOOLS (Eza, Nvim, Autojump)
+# ------------------------------------------------------------------------------
+# Smart LS (eza > exa > ls)
+if command -v eza >/dev/null 2>&1; then
+    alias ls="eza --icons --group-directories-first"
+    alias ll="eza -lh --icons --git"
+    alias lla="eza -lah --icons --git"
+    alias lt="eza --tree --level=2"
+elif command -v exa >/dev/null 2>&1; then
+    alias ls="exa --icons"
+    alias ll="exa -lh"
+    alias lla="exa -lah"
+else
+    alias ls="ls --color=auto"
+    alias ll="ls -lhF"
+    alias lla="ls -alhF"
+fi
+
+# Smart NVIM
+if command -v nvim >/dev/null 2>&1; then
+    export EDITOR="nvim"
+    alias vim="nvim"
+    alias vi="nvim"
+    alias vimdiff="nvim -d"
+    alias nn="nvim -c 'lua require(\"utils.new_note\").new_note()'"
+fi
+
+# zoxide
+if command -v zoxide >/dev/null 2>&1; then
+    if [ -n "$ZSH_VERSION" ]; then
+        eval "$(zoxide init zsh)"
+    elif [ -n "$BASH_VERSION" ]; then
+        eval "$(zoxide init bash)"
+    fi
+    alias cd="z"
+fi
+
+# fzf
+if command -v eza >/dev/null 2>&1; then
+  export FZF_CTRL_T_OPTS="--preview 'eza --tree --level=2 --color=always {} | head -20'"
+fi
+
+# fd
+if command -v fd >/dev/null 2>&1; then
+  export FZF_DEFAULT_COMMAND='fd --type f'
+fi
+
+# ------------------------------------------------------------------------------
+# ALIASES
+# ------------------------------------------------------------------------------
+alias rm="rm -i"
+alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
+
+# Git
+alias gitlog="git log --graph --topo-order --pretty='format:%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(reset)%s%C(reset) %C(magenta)%an%C(reset)%C(cyan)%d%C(reset)' --date=short"
+
+# Tmux
+alias tl="tmux ls"
+alias tn="tmux new -s"
+alias ta="tmux attach -t"
+alias tk="tmux kill-session -t"
+
+# Config Shortcuts
+alias zshss="$EDITOR ~/.zshrc"
+alias bashss="$EDITOR ~/.bashrc"
+alias commonss="$EDITOR ~/.shell_common"
+alias tmuxss="$EDITOR ~/.tmux.conf"
+alias gitss="$EDITOR ~/.gitconfig"
+alias ghosttyss="$EDITOR ~/.config/ghostty/config"
+[ -f "$HOME/.config/nvim/init.lua" ] && alias nvimss="$EDITOR ~/.config/nvim/init.lua"
+
+# ------------------------------------------------------------------------------
+# SECRETS
+# ------------------------------------------------------------------------------
+[ -f ~/.keys ] && source ~/.keys
