@@ -11,7 +11,7 @@ if [[ "$OS_TYPE" == "linux" ]]; then
 fi
 
 # ------------------------------------------------------------------------------
-# SMART TOOLS (Eza, Nvim, Autojump)
+# SMART TOOLS (Eza, Nvim, zoxide, fzf)
 # ------------------------------------------------------------------------------
 # Smart LS (eza > exa > ls)
 if command -v eza >/dev/null 2>&1; then
@@ -45,7 +45,7 @@ if command -v zoxide >/dev/null 2>&1; then
     elif [ -n "$BASH_VERSION" ]; then
         eval "$(zoxide init bash)"
     fi
-    alias cd="z"
+    # alias cd="z"
 fi
 
 # fzf
@@ -68,7 +68,7 @@ alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instanc
 alias gitlog="git log --graph --topo-order --pretty='format:%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(reset)%s%C(reset) %C(magenta)%an%C(reset)%C(cyan)%d%C(reset)' --date=short"
 
 # Tmux
-alias tl="tmux ls"
+alias tls="tmux ls"
 alias tn="tmux new -s"
 alias ta="tmux attach -t"
 alias tk="tmux kill-session -t"
