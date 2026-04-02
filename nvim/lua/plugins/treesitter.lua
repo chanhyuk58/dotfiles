@@ -1,5 +1,5 @@
-require("nvim-treesitter.configs").setup({
-  ensure_installed = { "c", "lua", "latex", "python", "vim", "r", "markdown", "markdown_inline" },
+require("nvim-treesitter").setup({
+  ensure_installed = { "zsh", "bash", "c", "lua", "latex", "python", "vim", "r", "markdown", "markdown_inline" },
   sync_install = false,
   auto_install = true,
   
