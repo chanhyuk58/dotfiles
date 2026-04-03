@@ -1,31 +1,30 @@
 [core]
-	quotepath = false
-	editor = nvim
+    quotepath = false
     symlinks = true
     excludesFile = ~/.gitignore
 [user]
-	email = chan.hyuk.58@gmail.com
-	name = Chanhyuk Park
+    email = chan.hyuk.58@gmail.com
+    name = Chanhyuk Park
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
 [push]
-	default = current
+    default = current
 [diff]
-    tool = nvimdiff
+    tool = vimdiff
 [difftool]
     prompt = false
-[difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [merge]
-    tool = nvimdiff
+    tool = vimdiff
 [mergetool]
     prompt = true
-[mergetool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'"
+[mergetool "vimdiff"]
+    cmd = "if command -v nvim >/dev/null 2>&1; then nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'; else vimdiff \"$LOCAL\" \"$REMOTE\" \"$MERGED\"; fi"
 [credential]
     helper = cache
 [init]
-	defaultBranch = main
+    defaultBranch = main
+[url "git@github.com:"]
+    insteadOf = https://github.com/

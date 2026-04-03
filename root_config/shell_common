@@ -36,7 +36,12 @@ if command -v nvim >/dev/null 2>&1; then
     alias vi="nvim"
     alias vimdiff="nvim -d"
     alias nn="nvim -c 'lua require(\"utils.new_note\").new_note()'"
+elif command -v vim >/dev/null 2>&1; then
+    export EDITOR='vim'
+else
+    export EDITOR='vi'
 fi
+export VISUAL=$EDITOR
 
 # zoxide
 if command -v zoxide >/dev/null 2>&1; then
