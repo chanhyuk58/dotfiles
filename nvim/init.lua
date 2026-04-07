@@ -17,13 +17,17 @@ require("core.autocmds")
 -- load remote plugins via lazy.nvim
 require("plugins")
 
--- No Background
--- vim.cmd("highlight Normal guibg=None")
--- vim.api.nvim_set_hl(0, "Normal", { bg = "None" })
-
 -- Colorscheme
 require("catppuccin").setup({
   flavour = "latte",
   auto_integrations = true,
 })
 vim.cmd.colorscheme("catppuccin")
+
+-- treesitter
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'python', 'tex', 'R', 'markdown', 
+  'lua', 'vim', 'zsh', 'bash', 'rmd'},
+  callback = function() vim.treesitter.start() end,
+})
+

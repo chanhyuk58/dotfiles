@@ -26,7 +26,6 @@ local symbol_map = {
   cc = "\\subset",
   inn = "\\in",
   BB = "\\mathcal{B}",
-  PP = "\\mathcal{P}",
   
   -- Operators & Misc
   inf = "\\infty",

@@ -70,13 +70,18 @@ alias rm="rm -i"
 alias ipy="python3 -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 
 # Git
-alias gitlog="git log --graph --topo-order --pretty='format:%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(reset)%s%C(reset) %C(magenta)%an%C(reset)%C(cyan)%d%C(reset)' --date=short"
+alias gitlog="git log --graph --topo-order --pretty='format:%C(yellow)%h%C(reset) %C(blue)%ad%C(reset) %C(reset)%s%C(reset) %C(magenta)%an%C(reset)%C(cyan)%d%C(reset)' --date=format:'%Y-%m-%d %H:%M:%S'"
 
 # Tmux
 alias tls="tmux ls"
 alias tn="tmux new -s"
 alias ta="tmux attach -t"
 alias tk="tmux kill-session -t"
+
+# R
+if command -v R >/dev/null 2>&1; then
+    alias R="R --vanilla"
+fi
 
 # Config Shortcuts
 alias zshss="$EDITOR ~/.zshrc"

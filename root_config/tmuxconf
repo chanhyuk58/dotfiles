@@ -17,9 +17,9 @@ setw -g pane-base-index 1
 set -g renumber-windows on
 
 ##### Title #####
-set-option -g set-titles on
-set-option -g set-titles-string "[#S] #I.#W"
-set-option -g allow-rename on
+# set-option -g set-titles on
+# set-option -g set-titles-string "[#S] #I.#W"
+# set-option -g allow-rename on
 
 ##### Status Bar #####
 set -g status-position bottom
