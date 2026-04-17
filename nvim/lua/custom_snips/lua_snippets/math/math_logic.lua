@@ -40,8 +40,7 @@ table.insert(snippets, s({
   name = "smart fraction (parens)",
 }, vim.deepcopy(smart_frac_node)))
 
--- Trigger B: No Parentheses (Step 3 code)
--- Handles: x/ -> \frac{x}{}, \alpha/ -> \frac{\alpha}{}, x_n/ -> \frac{x_n}{}
+-- Trigger B: No Parentheses
 local frac_no_parens_triggers = {
   "[%w\\]+/",              -- matches x/ or \alpha/
   "[%w\\]+[%^_]{[%w]+}/",  -- matches x^{12}/
@@ -53,7 +52,7 @@ for _, trig in ipairs(frac_no_parens_triggers) do
     trig = trig,
     regTrig = true,
     name = "smart fraction (no parens)",
-    priority = 500, -- Higher priority to catch triggers before they are treated as plain text
+    priority = 500, 
   }, vim.deepcopy(smart_frac_node)))
 end
 
@@ -89,7 +88,6 @@ table.insert(snippets, s({
 -- 4. Delimiters & Visual Wrappers
 ----------------------------------------------------------------------------
 
--- Map of trigger -> { left_delimiter, right_delimiter }
 local wrappers = {
   ["lr("] = { "\\left( ", " \\right)" },
   ["lr["] = { "\\left[ ", " \\right]" },
@@ -110,12 +108,18 @@ for trig, delimiters in pairs(wrappers) do
     name = trig .. " wrapper",
   }, {
     t(delimiters[1]),
-    -- If text was visually selected, insert it here. Otherwise, leave a blank insert node.
     f(function(_, snip) return snip.env.TM_SELECTED_TEXT[1] or "" end),
     i(1),
     t(delimiters[2]),
     i(0)
   }))
 end
+
+----------------------------------------------------------------------------
+-- 5. Basic Syntax
+----------------------------------------------------------------------------
+
+table.insert(snippets, p({ trig = "_", name = "subscript" }, "_{$1}$0"))
+table.insert(snippets, p({ trig = "^", name = "superscript" }, "^{$1}$0"))
 
 return snippets

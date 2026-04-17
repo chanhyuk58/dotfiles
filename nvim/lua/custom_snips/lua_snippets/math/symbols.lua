@@ -13,8 +13,8 @@ local symbol_map = {
   HH = "\\mathbb{H}",
 
   -- Bold Font
-  ["11"] = "\\mathbf{1}",
-  ["00"] = "\\mathbf{0}",
+  ["1i"] = "\\mathbf{1}",
+  ["0i"] = "\\mathbf{0}",
   II = "\\mathbf{I}",
 
   -- Caligraphy & Logic

@@ -1,6 +1,6 @@
 local ls = require("luasnip")
 local f = ls.function_node
-local ctx = require("utils.factory").math_nb
+local ctx = require("utils.factory").math
 local s = ctx.s
 
 local decos = {
@@ -16,7 +16,7 @@ local snippets = {}
 
 for trig, command in pairs(decos) do
   table.insert(snippets, s({
-    trig = "(%a+)" .. trig,
+    trig = "(\\\\?%a+)" .. trig,
     regTrig = true,
     wordTrig = false,
     name = trig,
