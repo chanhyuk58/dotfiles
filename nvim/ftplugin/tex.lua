@@ -1,5 +1,10 @@
 local opts = { buffer = true, silent = true }
 
+-- Tabs
+vim.o.softtabstop=2
+vim.o.shiftwidth=2
+vim.o.tabstop=2
+
 -- Compile/Run
 vim.keymap.set("n", "<C-T>", ":!latexmk -pdflatex -quiet '%:p'<CR>", opts)
 vim.keymap.set("n", "<C-C>", ":!latexmk -c '%:p'<CR>", opts)

@@ -1,6 +1,11 @@
 local opts = { buffer = true, silent = true }
 local bufnr = vim.api.nvim_get_current_buf()
 
+-- Tabs
+vim.o.softtabstop=2
+vim.o.shiftwidth=2
+vim.o.tabstop=2
+
 -- Compile/Run
 local function compile_beamer_with_style()
     local buf_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")

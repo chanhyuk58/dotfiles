@@ -9,11 +9,11 @@ vim.keymap.set("n", ",l", "<Plug>SlimeLineSend", { buffer = true, remap = true }
 vim.keymap.set("x", ",l", "<Plug>SlimeRegionSend", { buffer = true, remap = true })
 vim.keymap.set("n", ",;", "<Plug>SlimeParagraphSend", { buffer = true, remap = true })
 
--- tabs
--- vim.o.softtabstop=2
--- vim.o.shiftwidth=2
--- vim.o.tabstop=2
---
+-- Tabs
+vim.o.softtabstop=2
+vim.o.shiftwidth=2
+vim.o.tabstop=2
+
 -- Modification dates
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   buffer = bufnr,

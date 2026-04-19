@@ -10,6 +10,6 @@ vim.keymap.set("x", ",l", "<Plug>SlimeRegionSend", { buffer = true, remap = true
 vim.keymap.set("n", ",;", "<Plug>SlimeParagraphSend", { buffer = true, remap = true })
 
 -- Tabs
--- vim.o.softtabstop=2
--- vim.o.shiftwidth=2
--- vim.o.tabstop=2
+vim.o.softtabstop=2
+vim.o.shiftwidth=2
+vim.o.tabstop=2

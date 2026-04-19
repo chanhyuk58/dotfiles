@@ -32,7 +32,6 @@ require("blink.cmp").setup({
   },
 
   completion = {
-    -- Show a preview of the snippet code in a side window
     documentation = { 
       auto_show = true, 
       auto_show_delay_ms = 200 
@@ -52,5 +51,17 @@ require("blink.cmp").setup({
         },
       }
     }
+  },
+  cmdline = {
+    keymap = { preset = 'inherit' },
+    completion = { 
+      menu = { auto_show = true },
+      list = { 
+        selection = { 
+          preselect = false,
+          auto_insert = false 
+        } 
+      },
+    },
   },
 })

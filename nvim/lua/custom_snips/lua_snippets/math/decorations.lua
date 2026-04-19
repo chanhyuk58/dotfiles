@@ -16,7 +16,7 @@ local snippets = {}
 
 for trig, command in pairs(decos) do
   table.insert(snippets, s({
-    trig = "(\\\\?%a+)" .. trig,
+    trig = "(%a+)" .. trig,
     regTrig = true,
     wordTrig = false,
     name = trig,
