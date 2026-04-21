@@ -24,9 +24,13 @@ require("catppuccin").setup({
 vim.cmd.colorscheme("catppuccin")
 
 -- treesitter
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c', 'python', 'tex', 'R', 'markdown', 
-  'lua', 'vim', 'zsh', 'bash', 'rmd'},
-  callback = function() vim.treesitter.start() end,
+vim.treesitter.language.register("markdown", "rmd")
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+    if lang then
+      pcall(vim.treesitter.start, bufnr, lang)
+    end
+  end,
 })
-

@@ -1,6 +1,14 @@
 require("lazy").setup({
-  { "nvim-treesitter/nvim-treesitter", lazy = false, branch = "main", 
-    build = ":TSUpdate", config = function() require("plugins.treesitter") end },
+    {
+    "romus204/tree-sitter-manager.nvim",
+    lazy = false,
+    opts = {
+      ensure_installed = { 
+        "c", "python", "latex", "r", "markdown", 
+        "lua", "vim", "zsh", "bash" 
+      },
+    },
+  },
   { "L3MON4D3/LuaSnip", lazy = false, config = function() require("plugins.luasnip") end },
   { "lewis6991/gitsigns.nvim", lazy = false },
   { "tpope/vim-fugitive" },
