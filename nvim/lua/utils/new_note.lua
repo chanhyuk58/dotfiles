@@ -37,17 +37,21 @@ function M.new_note()
     if vim.fn.line("$") == 1 and vim.fn.getline(1) == "" then
       vim.api.nvim_buf_set_lines(0, 0, 0, false, {
         "---",
-        'title: "' .. title .. '"',
+        "title: \"" .. title .. "\"",
+        "author: Chanhyuk Park",
         "created: " .. os.date("%Y-%m-%d %H:%M:%S"),
         "modified: ",
+        "tags: ",
+        "  - " .. tag,
         "fontsize: 11pt",
         "header-includes: ",
         "  - \\usepackage{setspace}",
         "  - \\doublespacing",
         "  - \\usepackage[margin=1in]{geometry}",
         "  - \\let\\maketitle\\relax",
-        "tags: ",
-        "  - " .. tag,
+        "bibliography: \"/Users/chanhyuk/Documents/MyLibrary.bib\"",
+        "csl: american-journal-of-political-science.csl",
+        "link-citations: true",
         "---",
         ""
       })
