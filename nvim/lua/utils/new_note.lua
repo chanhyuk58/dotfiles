@@ -24,7 +24,7 @@ function M.new_note()
       filename = sanitize_filename(title) .. "_" .. os.date("%Y%m%d%H%M%S") .. ".md"
     else
       title = os.date("%Y-%m-%d")
-      tag = "Diary"
+      tag = "diary"
       filename = title .. ".md"
     end
 
