@@ -28,3 +28,10 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
     end
   end,
 })
+
+-- Treesitter
+vim.treesitter.language.register("markdown", "rmd")
+
+if not vim.treesitter.highlighter.active[vim.api.nvim_get_current_buf()] then
+  vim.treesitter.start(0, "markdown")
+end
