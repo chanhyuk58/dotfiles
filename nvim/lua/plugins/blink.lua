@@ -14,7 +14,10 @@ require("blink.cmp").setup({
       }
     }
   },
-  fuzzy = { prebuilt_binaries = { download = true } },
+  fuzzy = { 
+    prebuilt_binaries = { download = true },
+    implementation = "prefer_rust",
+  },
 
   keymap = {
     preset = 'none',
