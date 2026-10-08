@@ -43,15 +43,6 @@ function M.new_note()
         "modified: ",
         "tags: ",
         "  - " .. tag,
-        "fontsize: 11pt",
-        "header-includes: ",
-        "  - \\usepackage{setspace}",
-        "  - \\doublespacing",
-        "  - \\usepackage[margin=1in]{geometry}",
-        "  - \\let\\maketitle\\relax",
-        "bibliography: \"/Users/chanhyuk/Documents/MyLibrary.bib\"",
-        "csl: american-journal-of-political-science.csl",
-        "link-citations: true",
         "---",
         ""
       })
