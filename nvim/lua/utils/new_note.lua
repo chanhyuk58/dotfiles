@@ -38,7 +38,6 @@ function M.new_note()
       vim.api.nvim_buf_set_lines(0, 0, 0, false, {
         "---",
         "title: \"" .. title .. "\"",
-        "author: Chanhyuk Park",
         "created: " .. os.date("%Y-%m-%d %H:%M:%S"),
         "modified: ",
         "tags: ",

@@ -1,7 +1,11 @@
 pdf-engine: pdflatex
+citeproc: true
 variables:
   fontsize: 11pt
   geometry: margin=1in
   linestretch: 2
-bibliography: /Users/chanhyuk/Documents/MyLibrary.bib
-csl: american-journal-of-political-science.csl
+metadata:
+  author: Chanhyuk Park
+  bibliography: /Users/chanhyuk/Documents/MyLibrary.bib
+  csl: american-journal-of-political-science.csl
+  link-citations: true
