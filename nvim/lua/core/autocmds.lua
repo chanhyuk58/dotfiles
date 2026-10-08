@@ -19,3 +19,11 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end
   end
 })
+
+-- "_" as separator
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python", "javascript", "c", "markdown", "r", "tex" },
+  callback = function()
+    vim.opt_local.iskeyword:remove("_")
+  end,
+})

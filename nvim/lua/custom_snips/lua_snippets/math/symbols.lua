@@ -44,12 +44,12 @@ local symbol_map = {
   ["=>"] = "\\implies",
   ["iff"] = "\\iff",
   ["siff"] = { res = "\\Leftrightarrow", prio = 100 },
-  ["->p"] = "\\xrightarrow{p}",
-  ["->d"] = "\\xrightarrow{d}",
-  ["->as"] = "\\xrightarrow{\\text{a.s.}}",
+  ["\\to p"] = "\\xrightarrow{p}",
+  ["\\to d"] = "\\xrightarrow{d}",
+  ["\\to as"] = "\\xrightarrow{\\text{a.s.}}",
 
   -- Comparisons
-  ["=="] = "&=$1 \\\\",
+  ["=="] = "&=$1 \\\\\\",
   ["!="] = "\\neq ",
   ["<="] = "\\le",
   [">="] = "\\ge",
