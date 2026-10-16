@@ -4,7 +4,7 @@ require("lazy").setup({
     dependencies = {},
     config = function()
       require("tree-sitter-manager").setup({
-        -- ensure_installed = {},
+        ensure_installed = {"c", "python", "r", "lua", "vim", "sh", "markdown"},
         -- border = nil,
         auto_install = true,
         highlight = true,
